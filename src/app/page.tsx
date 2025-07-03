@@ -25,7 +25,7 @@ type Balance = {
   asset?: {
     coin: string;
     walletBalance: string;
-    cumRealisedPnl: string | number;
+    cumRealisedPnl: string ;
   }[];
 };
 
@@ -136,7 +136,7 @@ export default function Home() {
                   <h4 className="text-[12px]/[18px] text-[#D1D5DB]">
                     Realized PnL
                   </h4>
-                  <p className={`text-[27px]/[27px] tracking-[-1.62px] font-semibold ${cumRealisedPnl >= 0 ? 'text-[#22C55E]' : 'text-[#B91C1C]'}`}>
+                  <p className={`text-[27px]/[27px] tracking-[-1.62px] font-semibold ${Number(cumRealisedPnl) >= 0 ? 'text-[#22C55E]' : 'text-[#B91C1C]'}`}>
                     {
                       balance ? parseFloat(Number(cumRealisedPnl).toFixed(2)) + '%' : 'Loading...'
                     }
