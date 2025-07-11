@@ -8,7 +8,7 @@ export async function GET() {
             return NextResponse.json({ error: 'No balance data found' }, { status: 404 });
         }
         const safeData = JSON.parse(JSON.stringify(balanceData))
-        console.log('Bybit Balance Data:', safeData);
+        //console.log('Bybit Balance Data:', safeData);
         return NextResponse.json(safeData) 
     } catch (error: any) {
         console.log('Bybit Balance Data fetch failed:', error);
