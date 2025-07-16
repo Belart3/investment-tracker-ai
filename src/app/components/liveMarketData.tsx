@@ -7,7 +7,7 @@ type MarketDatum = {
     symbol: string;
     latestPrice: number;
     percIncr: number;
-    volume?: number; // Optional, if you want to include volume
+    volume?: number; 
 };
 
 type props = {
@@ -23,10 +23,11 @@ const LiveMarketData: React.FC<props> = (props) => {
     return (
         <Marquee >
         {
+            topAssets ? 
             topAssets.map((data, index) => (
                 <div key={index} className="flex items-center gap-1 me-5">
                     <p className="uppercase text-[14px]/[21px] text-white tracking-[-0.56px] font-bold">
-                        {data.symbol}
+                        {data.symbol.replace('USDT', '')}
                     </p>
                     <p className={`uppercase text-[14px]/[21px] tracking-[-0.56px] font-normal ${data.percIncr > 0 ? 'text-[#22C55E]' : 'text-[#B91C1C]'}`}>
                         ${data.latestPrice}
@@ -40,11 +41,13 @@ const LiveMarketData: React.FC<props> = (props) => {
                             )
                         }
                         <p className={`uppercase text-[14px]/[21px] text-[#22C55E] tracking-[-0.56px] font-normal ${data.percIncr > 0 ? 'text-[#22C55E]' : 'text-[#B91C1C]'}`}>
-                            {data.percIncr.toString().replace(/-/g,'')}%
+                            {(data.percIncr*100).toFixed(2).toString().replace(/-/g,'')}%
                         </p>
                     </div>
                 </div>
             ))
+            : 
+            <div className="text-white capitalize">loading data</div>
         }
         </Marquee>
     )

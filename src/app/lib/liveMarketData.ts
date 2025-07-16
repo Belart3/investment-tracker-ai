@@ -12,9 +12,9 @@ export async function fetchLiveMarketData () {
         const result = await client.getTickers({
             category: 'spot',
         })
-        const data = result.result.list;
+        const data = result.result.list.filter((item) => item.symbol.includes('USDT'));
         //console.log('Bybit Market Data:', data);
-
+        
         const res = [];
         for (const item of data) {
             res.push({

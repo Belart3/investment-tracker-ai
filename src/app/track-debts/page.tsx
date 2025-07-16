@@ -111,6 +111,7 @@ const page = () => {
                 </div>
             </div>
             <div className="mt-[42px] grid grid-rows-3 grid-cols-1 md:grid-cols-2 gap-5 px-5">
+                {/* debts overview */}
                 <div className=" bg-[#161B22] rounded-[16px] flex flex-col justify-center col-span-1 row-span-1 border border-[#374151] ">
                     <div className="flex items-center justify-between p-5">
                         <h3 className="text-white text-[16px]/[16px] font-medium capitalize">
@@ -152,6 +153,7 @@ const page = () => {
                         </div>
                     </div>
                 </div>
+                {/* debtee bar chart */}
                 <div className="bg-[#161B22] rounded-[16px] flex flex-col justify-center col-span-1 row-span-3 border border-[#374151] ">
                     <div className="flex items-center justify-between p-5 border-b border-[#374151]">
                         <h3 className="text-white text-[16px]/[16px] font-medium capitalize">
@@ -216,25 +218,37 @@ const page = () => {
                     </div>
                 </div>
                 <div className="flex flex-col justify-center col-span-2 gap-5">
+                    {/* action buttons */}
                     <div className="flex items-center justify-end gap-8">
+                        {/* add debt button */}
                         <button className={`bg-transparent text-[#28C76F] text-[16px]/[16px] font-semibold tracking-[-0.64px] capitalize text-center transition-colors flex items-center gap-2 cursor-pointer`} onClick={() => setShowAddDebtModal(true)}>
                             <GoPlus size={24} />
                             add debt
                         </button>
+                        {/* edit debt button */}
                         <button className={`bg-transparent  ${!checked ? 'text-[#6B7280] cursor-not-allowed' : 'text-[#28C76F] cursor-pointer'} text-[16px]/[16px] font-semibold tracking-[-0.64px] capitalize text-center transition-colors flex items-center gap-2`}  disabled={!checked}>
                             <AiOutlineEdit size={24} />
                             edit
                         </button>
+                        {/* delete button */}
                         <button className={`bg-transparent  ${!checked ? 'text-[#6B7280] cursor-not-allowed' : 'text-[#28C76F] cursor-pointer'} text-[16px]/[16px] font-semibold tracking-[-0.64px] capitalize text-center transition-colors flex items-center gap-2`}  disabled={!checked} onClick={
                             () => {
                                 const id = debtData.findIndex(debtee => debtee.name === selectedDebteeData.debteeName)
-                                setDebtData(debtData.splice(id, 1))                                
+                                console.log('this is the selected id:' + id)
+                                setDebtData(prev => {
+                                    const newData = [...prev];
+                                    if (id > -1) {
+                                        newData.splice(id, 1);
+                                    }
+                                    return newData;
+                                })
                             }
                         }>
                             <RiDeleteBinLine size={24} />
                             delete
                         </button>
                     </div>
+                    {/* table container */}
                     <div className=" bg-[#161B22] flex flex-col justify-center">
                         <div className="rounded-[16px] border border-[#374151] !overflow-hidden">
                             <table className="table-auto w-full">
@@ -256,7 +270,7 @@ const page = () => {
                                                 <td className='w-[200px] px-5'>
                                                     <input type="checkbox" id={`check-${index}`} checked={selectedId === data.id} className='size-[16px] appearance-none checked:bg-[#28C76F] border border-[#374151] rounded-[4px]' />
                                                 </td>
-                                                <td className='py-5'>{data.name}</td>
+                                                <td className='py-5 capitalize'>{data.name}</td>
                                                 <td className='py-5'>
                                                     {data.items.reduce((sum, item) => sum + Number(item.itemAmount), 0)}
                                                 </td>
@@ -390,7 +404,7 @@ const page = () => {
                         {/* form actions */}
                         <div className="flex items-center justify-end gap-3">
                             {/* cancel debt addition */}
-                            <button type="button" className="bg-[#161B22] hover:bg-[#28C76F] transition-colors ease-linear duration-100 text-white font-semibold py-3 px-6 rounded-[12px] text-[14px]/[14px] tracking-[-0.56px] capitalize focus:outline-none focus:shadow-outline cursor-pointer" 
+                            <button type="button" className="bg-[#161B22] hover:bg-[#28C76F] transition-colors ease-linear duration-100 text-white font-semibold py-3 px-6 rounded-[12px] text-[14px]/[14px] tracking-[-0.56px] capitalize focus:shadow-outline cursor-pointer" 
                             onClick={
                                 (e) => {
                                     e.preventDefault();
@@ -401,7 +415,7 @@ const page = () => {
                                 cancel
                             </button>
                             {/* submit new debt */}
-                            <button type='button' className="bg-[#28C76F] text-white font-semibold py-3 px-6 rounded-[12px] text-[14px]/[14px] tracking-[-0.56px] capitalize focus:outline-none focus:shadow-outline cursor-pointer" onClick={() => {
+                            <button type='button' className="bg-[#28C76F] text-white font-semibold py-3 px-6 rounded-[12px] text-[14px]/[14px] tracking-[-0.56px] capitalize focus:shadow-outline cursor-pointer" onClick={() => {
                             setDebtData([
                                 ...debtData,
                                 {
