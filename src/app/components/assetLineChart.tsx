@@ -1,0 +1,81 @@
+import React from 'react'
+import { Line } from "react-chartjs-2";
+import {
+    Chart as ChartJS,
+    ArcElement,
+    LineElement,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    BarElement,
+    Title,
+    Filler,
+    Tooltip,
+    Legend,
+    LogarithmicScale,
+} from 'chart.js';
+ChartJS.register(ArcElement, LineElement, CategoryScale, LinearScale, PointElement, BarElement, LogarithmicScale, Title, Filler, Tooltip, Legend);
+import TimeFilter from './timeFilter';
+
+type Props = {
+    label: [];
+    labelValue: []
+}
+
+const AssetLineChart = (props: Props) => {
+    return (
+        <div className="col-span-2 bg-[#161B22] rounded-[16px] flex flex-col justify-start border border-[#374151] row-span-2 space-y-2 order-3">
+            <div className="p-4 border-b border-[#374151] flex items-center justify-between">
+                <h3 className="text-white text-[16px]/[16px] font-medium">Portfolio Distribution</h3>
+                <TimeFilter />
+            </div>
+            <div className="h-[300px] w-full px-4">
+                <Line
+                data={{
+                    labels: props.label,
+                    datasets: [
+                    {
+                        label: '',
+                        data: props.labelValue,
+                        fill: true,
+                        backgroundColor: "rgba(40, 199, 111, 0.2)",
+                        borderColor: "#28C76F",
+                        borderWidth: 1,
+                        tension: 0.4,
+                        pointRadius: 2,
+                        pointHoverRadius: 5,
+                    },
+                    ],
+                }}
+                options={{
+                    responsive: true,
+                    plugins: {
+                    legend: {
+                        display: false,
+                    },
+                    },
+                    scales: {
+                    x: {
+                        grid: {
+                        display: false,
+                        },
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                        color: '#374151',
+                        },
+                        ticks: {
+                        color: '#D1D5DB',
+                        stepSize: 50,
+                        },
+                    },
+                    },        
+                }}
+                />
+            </div>
+        </div>
+    )
+}
+
+export default AssetLineChart

@@ -1,6 +1,7 @@
 import React from "react";
 import Marquee from "react-fast-marquee";
 import { IoTriangleSharp } from "react-icons/io5";
+import TimeFilter from "./timeFilter";
 
 
 type MarketDatum = {
@@ -21,35 +22,38 @@ const LiveMarketData: React.FC<props> = (props) => {
     const sortedData = spotData.sort((a, b) => (b.latestPrice ?? 0) - (a.latestPrice ?? 0));
     const topAssets = sortedData.slice(0, 20);
     return (
-        <Marquee >
-        {
-            topAssets ? 
-            topAssets.map((data, index) => (
-                <div key={index} className="flex items-center gap-1 me-5">
-                    <p className="uppercase text-[14px]/[21px] text-white tracking-[-0.56px] font-bold">
-                        {data.symbol.replace('USDT', '')}
-                    </p>
-                    <p className={`uppercase text-[14px]/[21px] tracking-[-0.56px] font-normal ${data.percIncr > 0 ? 'text-[#22C55E]' : 'text-[#B91C1C]'}`}>
-                        ${data.latestPrice}
-                    </p>
-                    <div className="flex gap-1 items-center">
-                        {
-                            data.percIncr > 0 ? (
-                                <IoTriangleSharp size={6} color="#22C55E" className="translate-y-[-25%]" />
-                            ) : (
-                                <IoTriangleSharp size={6} color="#B91C1C" className="translate-y-[0%] rotate-180" />
-                            )
-                        }
-                        <p className={`uppercase text-[14px]/[21px] text-[#22C55E] tracking-[-0.56px] font-normal ${data.percIncr > 0 ? 'text-[#22C55E]' : 'text-[#B91C1C]'}`}>
-                            {(data.percIncr*100).toFixed(2).toString().replace(/-/g,'')}%
-                        </p>
-                    </div>
-                </div>
-            ))
-            : 
-            <div className="text-white capitalize">loading data</div>
-        }
-        </Marquee>
+        <div className="border-b border-[#374151] bg-[#161B22] p-5 w-[calc(100%-237px)] flex items-center gap-2.5 fixed top-0 right-0">
+            <TimeFilter />
+            <Marquee>
+                {
+                    topAssets ? 
+                    topAssets.map((data, index) => (
+                        <div key={index} className="flex items-center gap-1 me-5">
+                            <p className="uppercase text-[14px]/[21px] text-white tracking-[-0.56px] font-bold">
+                                {data.symbol.replace('USDT', '')}
+                            </p>
+                            <p className={`uppercase text-[14px]/[21px] tracking-[-0.56px] font-normal ${data.percIncr > 0 ? 'text-[#22C55E]' : 'text-[#B91C1C]'}`}>
+                                ${data.latestPrice}
+                            </p>
+                            <div className="flex gap-1 items-center">
+                                {
+                                    data.percIncr > 0 ? (
+                                        <IoTriangleSharp size={6} color="#22C55E" className="translate-y-[-25%]" />
+                                    ) : (
+                                        <IoTriangleSharp size={6} color="#B91C1C" className="translate-y-[0%] rotate-180" />
+                                    )
+                                }
+                                <p className={`uppercase text-[14px]/[21px] text-[#22C55E] tracking-[-0.56px] font-normal ${data.percIncr > 0 ? 'text-[#22C55E]' : 'text-[#B91C1C]'}`}>
+                                    {(data.percIncr*100).toFixed(2).toString().replace(/-/g,'')}%
+                                </p>
+                            </div>
+                        </div>
+                    ))
+                    : 
+                    <div className="text-white capitalize">loading data</div>
+                }
+            </Marquee>
+        </div>
     )
 }
 
