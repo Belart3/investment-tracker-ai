@@ -6,7 +6,6 @@ export const client = new RestClientV5({
     testnet: false,
 })
 
-
 export async function fetchExchangeRecords () {
     try {
         const result = await client.getCoinExchangeRecords({
