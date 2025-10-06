@@ -234,7 +234,6 @@ const page = () => {
                         <button className={`bg-transparent  ${!checked ? 'text-[#6B7280] cursor-not-allowed' : 'text-[#28C76F] cursor-pointer'} text-[16px]/[16px] font-semibold tracking-[-0.64px] capitalize text-center transition-colors flex items-center gap-2`}  disabled={!checked} onClick={
                             () => {
                                 const id = debtData.findIndex(debtee => debtee.name === selectedDebteeData.debteeName)
-                                console.log('this is the selected id:' + id)
                                 setDebtData(prev => {
                                     const newData = [...prev];
                                     if (id > -1) {
@@ -302,7 +301,6 @@ const page = () => {
                                                             }))
                                                         })
                                                     }
-                                                    console.log(selectedDebteeData)
                                                 }}></label>
                                             </tr> 
                                         ))
@@ -427,7 +425,6 @@ const page = () => {
                                     }))
                                 }
                             ]);
-                            console.log(debtData)
                             setShowAddDebtModal(false);
                             setAddDebt({
                                 id: 0,

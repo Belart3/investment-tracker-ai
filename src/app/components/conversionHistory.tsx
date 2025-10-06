@@ -40,101 +40,101 @@ const ConversionHistory = (props: Props) => {
                     setShowConversionFilter(!showConversionFilter)
                     }}
                     >
-                    <PiSlidersHorizontalDuotone size={16}/>
-                    filter by
+                        <PiSlidersHorizontalDuotone size={16}/>
+                        filter by
                     </button>
                     <div className={`flex-col w-[140px] ${showConversionFilter ? 'flex absolute z-50 right-0 mt-[30px] rounded-b-[12px]' : 'hidden'}`}>
-                    <div className="w-full group">
-                        <button className={`py-1.5 px-4 bg-[#1F2937] text-white uppercase flex gap-1 items-center ${filterBy === '' ? 'justify-between' : 'justify-end'} text-[12px]/[18px] tracking-[-0.48px] cursor-pointer border-t border-[#374151] w-full`}
-                        onClick={() => {
-                            setShowConversionFilter(!showConversionFilter);
-                            setFilterBy('')
-                        }}
-                        >
-                            {
-                            filterBy === '' ?
-                                <Check color="#28C76F" size={16} />
-                            : null
-                            }
-                            all
-                        </button>
-                    </div>
-
-                    <div className="w-full group relative">
-                        <button className="py-1.5 px-4 bg-[#1F2937] text-white uppercase flex gap-1 items-center justify-between text-[12px]/[18px] tracking-[-0.48px] cursor-pointer border-t border-[#374151] w-full"
-                        >
-                            <GoChevronLeft size={16} />
-                            assets
-                        </button>
-                        <div className="hidden group-hover:flex flex-col absolute top-0 left-[-80px] z-20 w-[80px]">
-                        {
-                        props.filterAssets ?
-                        props.filterAssets.map((asset, index) => (
-                            <button className="py-1.5 px-4 bg-[#1F2937] text-white flex gap-1 items-center justify-between capitalize text-[12px]/[18px] tracking-[-0.48px] cursor-pointer border-t border-[#374151] z-20 w-full" key={index}
+                        {/* filter by all */}
+                        <div className="w-full group">
+                            <button className={`py-1.5 px-4 bg-[#1F2937] text-white uppercase flex gap-1 items-center ${filterBy === '' ? 'justify-between' : 'justify-end'} text-[12px]/[18px] tracking-[-0.48px] cursor-pointer border-t border-[#374151] w-full`}
                             onClick={() => {
-                            setShowConversionFilter(!showConversionFilter);
-                            setFilterBy(asset.fromCoin.toUpperCase())
+                                setShowConversionFilter(!showConversionFilter);
+                                setFilterBy('')
                             }}
                             >
-                            {asset.fromCoin}
-                            {
-                                asset.fromCoin.toUpperCase() === filterBy ?
-                                <Check color="#28C76F" size={16} />
+                                {
+                                filterBy === '' ?
+                                    <Check color="#28C76F" size={16} />
                                 : null
-                            }
+                                }
+                                all
                             </button>
-                        ))
-                        :
-                        <button className="py-1.5 px-4 bg-[#1F2937] text-white uppercase flex gap-1 items-center text-[12px]/[18px] tracking-[-0.48px] cursor-pointer border-t border-[#374151]"
-                            onClick={() => {
-                            setShowConversionFilter(!showConversionFilter);
-                            }}
-                            >
-                            n/a
-                        </button>
-                        }
                         </div>
-                    </div>
-
-                    <div className="w-full group relative">
-                        <button className="py-1.5 px-4 bg-[#1F2937] text-white uppercase flex gap-1 items-center justify-between text-[12px]/[18px] tracking-[-0.48px] cursor-pointer border-t border-[#374151] w-full"
-                        >
-                            <GoChevronLeft size={16} />
-                            transaction
-                        </button>
-                        <div className="hidden group-hover:flex flex-col absolute top-0 left-[-80px] z-20 w-[80px]">
-                        {
-                        props.filterAssets ?
-                        props.filterAssets.map((asset, index) => (
-                            <button className="py-1.5 px-4 bg-[#1F2937] text-white flex gap-1 items-center justify-between capitalize text-[12px]/[18px] tracking-[-0.48px] cursor-pointer border-t border-[#374151] z-20 w-full" key={index}
-                            onClick={() => {
-                            setShowConversionFilter(!showConversionFilter);
-                            setFilterBy(asset.fromCoin.toUpperCase())
-                            }}
+                        {/* filter by assets */}
+                        <div className="w-full group relative">
+                            <button className="py-1.5 px-4 bg-[#1F2937] text-white uppercase flex gap-1 items-center justify-between text-[12px]/[18px] tracking-[-0.48px] cursor-pointer border-t border-[#374151] w-full"
                             >
-                            {
-                                asset.fromCoin === 'USDT' ?
-                                'sell' : 'buy'
-                            }
-                            {
-                                asset.fromCoin.toUpperCase() === filterBy ?
-                                <Check color="#28C76F" size={16} />
-                                : null
-                            }
+                                <GoChevronLeft size={16} />
+                                assets
                             </button>
-                        ))
-                        :
-                        <button className="py-1.5 px-4 bg-[#1F2937] text-white uppercase flex gap-1 items-center text-[12px]/[18px] tracking-[-0.48px] cursor-pointer border-t border-[#374151]"
-                            onClick={() => {
-                            setShowConversionFilter(!showConversionFilter);
-                            }}
-                            >
-                            n/a
-                        </button>
-                        }
+                            <div className="hidden group-hover:flex flex-col absolute top-0 left-[-80px] z-20 w-[80px]">
+                            {
+                            props.filterAssets ?
+                            props.filterAssets.map((asset, index) => (
+                                <button className="py-1.5 px-4 bg-[#1F2937] text-white flex gap-1 items-center justify-between capitalize text-[12px]/[18px] tracking-[-0.48px] cursor-pointer border-t border-[#374151] z-20 w-full" key={index}
+                                onClick={() => {
+                                setShowConversionFilter(!showConversionFilter);
+                                setFilterBy(asset.fromCoin.toUpperCase())
+                                }}
+                                >
+                                {asset.fromCoin}
+                                {
+                                    asset.fromCoin.toUpperCase() === filterBy ?
+                                    <Check color="#28C76F" size={16} />
+                                    : null
+                                }
+                                </button>
+                            ))
+                            :
+                            <button className="py-1.5 px-4 bg-[#1F2937] text-white uppercase flex gap-1 items-center text-[12px]/[18px] tracking-[-0.48px] cursor-pointer border-t border-e border-[#374151]"
+                                onClick={() => {
+                                setShowConversionFilter(!showConversionFilter);
+                                }}
+                                >
+                                n/a
+                            </button>
+                            }
+                            </div>
                         </div>
-                    </div>
-                    
+                        {/* filter by transaction */}
+                        <div className="w-full group relative">
+                            <button className="py-1.5 px-4 bg-[#1F2937] text-white uppercase flex gap-1 items-center justify-between text-[12px]/[18px] tracking-[-0.48px] cursor-pointer border-t border-[#374151] w-full"
+                            >
+                                <GoChevronLeft size={16} />
+                                transaction
+                            </button>
+                            <div className="hidden group-hover:flex flex-col absolute top-0 left-[-80px] z-20 w-[80px]">
+                            {
+                            props.filterAssets ?
+                            props.filterAssets.map((asset, index) => (
+                                <button className="py-1.5 px-4 bg-[#1F2937] text-white flex gap-1 items-center justify-between capitalize text-[12px]/[18px] tracking-[-0.48px] cursor-pointer border-t border-[#374151] z-20 w-full" key={index}
+                                onClick={() => {
+                                setShowConversionFilter(!showConversionFilter);
+                                setFilterBy(asset.fromCoin.toUpperCase())
+                                }}
+                                >
+                                {
+                                    asset.fromCoin === 'USDT' ?
+                                    'sell' : 'buy'
+                                }
+                                {
+                                    asset.fromCoin.toUpperCase() === filterBy ?
+                                    <Check color="#28C76F" size={16} />
+                                    : null
+                                }
+                                </button>
+                            ))
+                            :
+                            <button className="py-1.5 px-4 bg-[#1F2937] text-white uppercase flex gap-1 items-center text-[12px]/[18px] tracking-[-0.48px] cursor-pointer border-t border-e border-[#374151]"
+                                onClick={() => {
+                                setShowConversionFilter(!showConversionFilter);
+                                }}
+                                >
+                                n/a
+                            </button>
+                            }
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

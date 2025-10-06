@@ -1,4 +1,4 @@
-import { fetchExchangeRecords } from "@/app/lib/exchangeHistory";
+import { fetchExchangeRecords } from "@/app/utils/exchangeHistory";
 import { NextResponse } from "next/server";
 
 export async function GET () {
@@ -8,7 +8,7 @@ export async function GET () {
             return NextResponse.json({ error: 'No exchange history found' }, { status: 404 });
         }
         const data = JSON.parse(JSON.stringify(exchangeHistory));
-        console.log('exchange history Data:', data);
+        //console.log('exchange history Data:', data);
         return NextResponse.json(data)
     } catch (error: any) {
         console.error('Trade History Data fetch failed:', error);

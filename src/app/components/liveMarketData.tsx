@@ -2,7 +2,8 @@ import React from "react";
 import Marquee from "react-fast-marquee";
 import { IoTriangleSharp } from "react-icons/io5";
 import TimeFilter from "./timeFilter";
-
+import { useEffect, useState } from "react";
+import Skeleton from "@mui/material/Skeleton";
 
 type MarketDatum = {
     symbol: string;
@@ -11,22 +12,33 @@ type MarketDatum = {
     volume?: number; 
 };
 
-type props = {
-    marketData?: MarketDatum[];
-};
 
-
-const LiveMarketData: React.FC<props> = (props) => {
-    const data = props.marketData || [];
+const LiveMarketData = () => {
+    useEffect(() => {
+        async function loadMarketData() {
+            const res = await fetch('/api/liveMarketData');
+            const marketData = await res.json();
+            setLiveData(marketData || null); 
+            //console.log('Market data loaded:', marketData || null);
+        }    
+        loadMarketData()
+    },[])
+    const [liveData, setLiveData] = useState<MarketDatum[]>([])
+    const data = liveData || [];
     const spotData = data.filter((item) => !item.symbol.includes('-'))
     const sortedData = spotData.sort((a, b) => (b.latestPrice ?? 0) - (a.latestPrice ?? 0));
     const topAssets = sortedData.slice(0, 20);
+
     return (
         <div className="border-b border-[#374151] bg-[#161B22] p-5 w-[calc(100%-237px)] flex items-center gap-2.5 fixed top-0 right-0">
             <TimeFilter />
-            <Marquee>
+            <Marquee
+                gradient
+                gradientColor="#161B22"
+                gradientWidth={50}
+            >
                 {
-                    topAssets ? 
+                    topAssets.length > 0 ? 
                     topAssets.map((data, index) => (
                         <div key={index} className="flex items-center gap-1 me-5">
                             <p className="uppercase text-[14px]/[21px] text-white tracking-[-0.56px] font-bold">
@@ -50,7 +62,17 @@ const LiveMarketData: React.FC<props> = (props) => {
                         </div>
                     ))
                     : 
-                    <div className="text-white capitalize">loading data</div>
+                    <div className="flex gap-5">
+                        { 
+                            [1,2,3,4,5,6,7,8,90,2,1].map((item, index) => (
+                                <div className="flex gap-1" key={index}>
+                                    <Skeleton variant="text" width={30} height={30} sx={{bgcolor: '#374151', borderRadius: 0}} />
+                                    <Skeleton variant="text" width={80} height={30} sx={{bgcolor: '#374151', borderRadius: 0}} />
+                                    <Skeleton variant="text" width={30} height={30} sx={{bgcolor: '#374151', borderRadius: 0}} />
+                                </div>
+                            )) 
+                        }
+                    </div>
                 }
             </Marquee>
         </div>

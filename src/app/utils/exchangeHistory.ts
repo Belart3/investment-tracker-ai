@@ -13,7 +13,7 @@ export async function fetchExchangeRecords () {
         })
         const data = result.result.orderBody;
         console.log(JSON.stringify(result, null, 2));
-        //console.log('Bybit Market Data:', data);
+        console.log('Bybit Market Data:', data);
 
         const res = [];
         for (const item of data) {
@@ -26,7 +26,7 @@ export async function fetchExchangeRecords () {
                 exchangeRate: item.exchangeRate
             })
         }
-        console.log('exchange history:', res)
+        //console.log('exchange history:', res)
         return res;
     } catch (error) {
         console.error('Bybit API Error:', error);

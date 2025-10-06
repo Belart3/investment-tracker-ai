@@ -1,4 +1,4 @@
-import { fetchBybitBalance } from "@/app/lib/fetchBalance";
+import { fetchBybitBalance } from "@/app/utils/fetchBalance";
 import { NextResponse } from "next/server";
 
 export async function GET() {
@@ -11,6 +11,6 @@ export async function GET() {
         //console.log('Bybit Balance Data:', safeData);
         return NextResponse.json(safeData) 
     } catch (error: any) {
-        console.log('Bybit Balance Data fetch failed:', error);
+        //console.log('Bybit Balance Data fetch failed:', error);
     }
 }

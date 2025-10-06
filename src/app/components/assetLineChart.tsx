@@ -16,10 +16,11 @@ import {
 } from 'chart.js';
 ChartJS.register(ArcElement, LineElement, CategoryScale, LinearScale, PointElement, BarElement, LogarithmicScale, Title, Filler, Tooltip, Legend);
 import TimeFilter from './timeFilter';
+import { Skeleton } from '@mui/material';
 
 type Props = {
-    label: [];
-    labelValue: []
+    label: string[];
+    labelValue: (string | number)[]
 }
 
 const AssetLineChart = (props: Props) => {
@@ -30,49 +31,56 @@ const AssetLineChart = (props: Props) => {
                 <TimeFilter />
             </div>
             <div className="h-[300px] w-full px-4">
-                <Line
-                data={{
-                    labels: props.label,
-                    datasets: [
-                    {
-                        label: '',
-                        data: props.labelValue,
-                        fill: true,
-                        backgroundColor: "rgba(40, 199, 111, 0.2)",
-                        borderColor: "#28C76F",
-                        borderWidth: 1,
-                        tension: 0.4,
-                        pointRadius: 2,
-                        pointHoverRadius: 5,
-                    },
-                    ],
-                }}
-                options={{
-                    responsive: true,
-                    plugins: {
-                    legend: {
-                        display: false,
-                    },
-                    },
-                    scales: {
-                    x: {
-                        grid: {
-                        display: false,
-                        },
-                    },
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                        color: '#374151',
-                        },
-                        ticks: {
-                        color: '#D1D5DB',
-                        stepSize: 50,
-                        },
-                    },
-                    },        
-                }}
-                />
+                {
+                    props.label && props.labelValue && props.label.length === 0 && props.labelValue.length === 0 ? 
+                    <Line
+                        data={{
+                            labels: props.label,
+                            datasets: [
+                            {
+                                label: '',
+                                data: props.labelValue,
+                                fill: true,
+                                backgroundColor: "rgba(40, 199, 111, 0.2)",
+                                borderColor: "#28C76F",
+                                borderWidth: 1,
+                                tension: 0.4,
+                                pointRadius: 2,
+                                pointHoverRadius: 5,
+                            },
+                            ],
+                        }}
+                        options={{
+                            responsive: true,
+                            plugins: {
+                            legend: {
+                                display: false,
+                            },
+                            },
+                            scales: {
+                            x: {
+                                grid: {
+                                display: false,
+                                },
+                            },
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                color: '#374151',
+                                },
+                                ticks: {
+                                color: '#D1D5DB',
+                                stepSize: 50,
+                                },
+                            },
+                            },        
+                        }}
+                    /> :
+                    <div className='h-full w-full flex items-center justify-center p-2'>
+                        <Skeleton variant="rectangular" width={'100%'} height={'100%'} sx={{bgcolor: '#374151'}} />
+                    </div>    
+                }
+                
             </div>
         </div>
     )

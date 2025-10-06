@@ -1,4 +1,4 @@
-import { getTransactionLog } from "@/app/lib/transactionLog";
+import { getTransactionLog } from "@/app/utils/transactionLog";
 import { NextResponse } from "next/server";
 
 export async function GET() {
@@ -8,7 +8,7 @@ export async function GET() {
             return NextResponse.json({ error: 'No transaction log found' }, { status: 404 });
         }
         const data = JSON.parse(JSON.stringify(transactionLog));
-        console.log('Transaction Log Data:', data);
+        //console.log('Transaction Log Data:', data);
         return NextResponse.json(data);
     } catch (error: any) {
         console.error('Transaction Log fetch failed:', error);
