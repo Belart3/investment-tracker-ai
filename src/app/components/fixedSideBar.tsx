@@ -17,6 +17,11 @@ const routes = [
         name: "Debts",
         link: "/track-debts",
         value: "debts",
+    },
+    {
+        name: "Asset Tracker",
+        link: "/asset-tracker",
+        value: "asset-tracker",
     }
 ]
 
@@ -27,7 +32,7 @@ const FixedSideBar = (props: Props) => {
             <h1 className="text-white">Investment Tracker AI</h1>
             <div className="flex flex-col gap-2">
                 <h2 className="text-white">Menu</h2>
-                <div className="flex flex-col">
+                <div className="flex flex-col gap-1">
                     {
                         routes.map((routes, index) => {
                             const isActive = currentPath === routes.link;

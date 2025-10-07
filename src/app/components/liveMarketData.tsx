@@ -1,3 +1,4 @@
+'use client;'
 import React from "react";
 import Marquee from "react-fast-marquee";
 import { IoTriangleSharp } from "react-icons/io5";
@@ -25,7 +26,7 @@ const LiveMarketData = () => {
     },[])
     const [liveData, setLiveData] = useState<MarketDatum[]>([])
     const data = liveData || [];
-    const spotData = data.filter((item) => !item.symbol.includes('-'))
+    const spotData = data && data.length > 0 ? data.filter((item) => !item.symbol.includes('-')) : []
     const sortedData = spotData.sort((a, b) => (b.latestPrice ?? 0) - (a.latestPrice ?? 0));
     const topAssets = sortedData.slice(0, 20);
 
