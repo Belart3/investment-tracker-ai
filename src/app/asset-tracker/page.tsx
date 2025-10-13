@@ -4,7 +4,11 @@ import LiveMarketData from '../components/liveMarketData'
 import { IoBagOutline } from 'react-icons/io5';
 import { PlusIcon, RefreshCcw, TrendingDown } from 'lucide-react';
 import { useState } from 'react';
+import { CiBag1 } from 'react-icons/ci';
+import { IoTrashBinOutline } from "react-icons/io5";
+import { FaRegTrashAlt } from "react-icons/fa";
 import AddAssetModal from '../components/AddAssetModal';
+import AssetTrackerTable from '../components/AssetTrackerTable';
 
 type Props = {}
 
@@ -40,7 +44,7 @@ const page = (props: Props) => {
                     </div>
                 </div>
             </div>
-            <div className="mt-[58px] border border-[#374151] p-5 flex flex-col rounded-[16px] w-full bg-[#161B22] gap-4">
+            <div className="mt-[58px] border border-[#374151] p-5 flex flex-col rounded-sm w-full bg-[#161B22] gap-4">
                 <div className="flex flex-row items-center justify-between w-full">
                     <div className="flex flex-col">
                         <h1 className="text-[16px]/[16px] tracking-[-0.96px] font-medium text-white capitalize">
@@ -52,7 +56,7 @@ const page = (props: Props) => {
                     </button>
                 </div>
                 <div className="grid grid-cols-3 grid-rows-1 gap-5 ">
-                    <div className="flex flex-col gap-2 bg-[#0D1117] p-3 border border-[#374151] rounded-[12px]">
+                    <div className="flex flex-col gap-2 bg-[#0D1117] p-3 border border-[#374151] rounded-sm">
                         <p className="text-[14px]/[21px] tracking-[-0.56px] font-normal text-[#6B7280] capitalize">
                             value
                         </p>
@@ -60,7 +64,7 @@ const page = (props: Props) => {
                             $12,345.67
                         </h2>
                     </div>
-                    <div className="flex flex-col gap-2 bg-[#0D1117] p-3 border border-[#374151] rounded-[12px]">
+                    <div className="flex flex-col gap-2 bg-[#0D1117] p-3 border border-[#374151] rounded-sm">
                         <p className="text-[14px]/[21px] tracking-[-0.56px] font-normal text-[#6B7280] capitalize">
                             p&l
                         </p>
@@ -68,7 +72,7 @@ const page = (props: Props) => {
                             +$345K
                         </h2>
                     </div>
-                    <div className="flex flex-col gap-2 bg-[#0D1117] p-3 border border-[#374151] rounded-[12px]">
+                    <div className="flex flex-col gap-2 bg-[#0D1117] p-3 border border-[#374151] rounded-sm">
                         <p className="text-[14px]/[21px] tracking-[-0.56px] font-normal text-[#6B7280] capitalize">
                             ROI
                         </p>
@@ -79,6 +83,21 @@ const page = (props: Props) => {
                 </div>
             </div>
             <AddAssetModal addAssetModalOpen={isAddAssetModalOpen} setAddAssetModalOpen={setIsAddAssetModalOpen} />
+            <div className="flex items-center justify-center rounded-sm bg-[#9ca3b0] p-[2px] mt-8 mb-5 w-fit">
+                <button className='flex items-center justify-center outline-none border-none bg-transparent cursor-pointer text-sm text-white px-10 py-1 rounded-sm g-[#374151] capitalize hover:bg-[#0D1117] transition-colors ease-linear duration-150 font-normal tracking-[-0.56px]'>
+                    <CiBag1 className='me-2' strokeWidth={2} />
+                    live assets
+                </button>
+                <button className='flex items-center justify-center outline-none border-none bg-transparent cursor-pointer text-sm text-white px-10 py-1 rounded-sm g-[#374151] capitalize hover:bg-[#0D1117] transition-colors ease-linear duration-150 font-normal tracking-[-0.56px]'>
+                    <IoTrashBinOutline className='me-2' strokeWidth={2} />
+                    closed assets
+                </button>
+                <button className='flex items-center justify-center outline-none border-none bg-transparent cursor-pointer text-sm text-white px-10 py-1 rounded-sm g-[#374151] capitalize hover:bg-[#0D1117] transition-colors ease-linear duration-150 font-normal tracking-[-0.56px]'>
+                    <FaRegTrashAlt className='me-2' strokeWidth={2} />
+                    deleted assets
+                </button>
+            </div>
+            <AssetTrackerTable isAssetModalOpen={isAddAssetModalOpen} setIsAddAssetModalOpen={setIsAddAssetModalOpen} />
         </div>
     )
 }

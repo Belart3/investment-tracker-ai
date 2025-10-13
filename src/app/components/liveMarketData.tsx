@@ -31,7 +31,7 @@ const LiveMarketData = () => {
     const topAssets = sortedData.slice(0, 20);
 
     return (
-        <div className="border-b border-[#374151] bg-[#161B22] p-5 w-[calc(100%-237px)] flex items-center gap-2.5 fixed top-0 right-0">
+        <div className="border-b border-[#374151] bg-[#161B22] p-5 w-[calc(100%-237px)] flex items-center gap-2.5 fixed top-0 right-0 z-[9999999999]">
             <TimeFilter />
             <Marquee
                 gradient

@@ -1,3 +1,6 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -9,22 +12,30 @@ const inter = Inter({
 });
 
 
-export const metadata: Metadata = {
-  title: "Investment Tracker AI",
-  description: "Track your investments with AI",
-};
+// export const metadata: Metadata = {
+//   title: "Investment Tracker AI",
+//   description: "Track your investments with AI",
+// };
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = usePathname();
+
+  // define the routes where you DON'T want the components to appear
+  const hideSideBarRoutes = ["/login", "/signup"];
+
+  const showSideBar = !hideSideBarRoutes.includes(pathname);
   return (
     <html lang="en" className={`${inter.variable}`}>
       <body
         className={`antialiased bg-[#0D1117]`}
       >
-        <FixedSideBar />
+        {
+          showSideBar && <FixedSideBar />
+        }
         {children}
       </body>
     </html>
