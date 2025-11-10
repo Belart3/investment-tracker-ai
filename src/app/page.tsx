@@ -1,12 +1,12 @@
 "use client";
 import { useState, useEffect } from "react";
-import LiveMarketData from "./components/liveMarketData";
-import TimeFilter from "./components/timeFilter";
-import PortfolioOverview from "./components/portfolioOverview";
-import AssetBarChart from "./components/assetBarChart";
-import ConversionHistory from "./components/conversionHistory";
-import DoughnutChart from "./components/doughnutChart";
-import AssetLineChart from "./components/assetLineChart";
+import LiveMarketData from "../components/ui/liveMarketData";
+import TimeFilter from "../components/ui/timeFilter";
+import PortfolioOverview from "../components/ui/portfolioOverview";
+import AssetBarChart from "../components/ui/assetBarChart";
+import ConversionHistory from "../components/ui/conversionHistory";
+import DoughnutChart from "../components/ui/doughnutChart";
+import AssetLineChart from "../components/ui/assetLineChart";
 import { Skeleton } from "@mui/material";
 
 type Balance = {

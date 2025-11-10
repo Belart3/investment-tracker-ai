@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import FixedSideBar from "./components/fixedSideBar";
+import FixedSideBar from "../components/ui/fixedSideBar";
 
 const inter = Inter({
   variable: "--font-inter",

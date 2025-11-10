@@ -1,14 +1,14 @@
 'use client';
 import React from 'react'
-import LiveMarketData from '../components/liveMarketData'
+import LiveMarketData from '../../components/ui/liveMarketData'
 import { IoBagOutline } from 'react-icons/io5';
 import { PlusIcon, RefreshCcw, TrendingDown } from 'lucide-react';
 import { useState } from 'react';
 import { CiBag1 } from 'react-icons/ci';
 import { IoTrashBinOutline } from "react-icons/io5";
 import { FaRegTrashAlt } from "react-icons/fa";
-import AddAssetModal from '../components/AddAssetModal';
-import AssetTrackerTable from '../components/AssetTrackerTable';
+import AddAssetModal from '../../components/ui/AddAssetModal';
+import AssetTrackerTable from '../../components/ui/AssetTrackerTable';
 
 type Props = {}
 
