@@ -25,7 +25,7 @@ export default function RootLayout({
   const pathname = usePathname();
 
   // define the routes where you DON'T want the components to appear
-  const hideSideBarRoutes = ["/login", "/signup"];
+  const hideSideBarRoutes = ["/signin", "/signup", "/onboarding"];
 
   const showSideBar = !hideSideBarRoutes.includes(pathname);
   return (

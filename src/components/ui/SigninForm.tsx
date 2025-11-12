@@ -1,5 +1,5 @@
 'use client'
-import { signup } from '@/app/actions/signup'
+import { signin } from '@/app/actions/signin'
 import { useActionState } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 import { useEffect } from 'react';
@@ -13,34 +13,30 @@ type Errors = {
 };
 
 
-
-export default function SignupForm() {
-    const [state, action, pending] = useActionState(signup, { errors: {}, message: undefined, error: undefined, userId: undefined })
+export default function SigninForm() {
+    const [state, action, pending] = useActionState(signin, { errors: {}, message: undefined, error: undefined, userId: undefined })
     const router = useRouter();
+
     useEffect(() => {
         if (!state?.message) return;
 
-        if (state?.message) {
-            toast.success(state.message, { position: 'bottom-right' });
-        } else if (state?.error) {
-            toast.error(state.error, { position: 'bottom-right' });
+        toast(state.message, { position: 'bottom-right' });
+        toast(state.error, { position: 'bottom-right' });
+
+        // Redirect if login was successful
+        if (state.message.includes('Sign in successful')) {
+        setTimeout(() => router.push('/'), 1500); // delay for toast visibility
         }
-        if (state?.message.includes('Account created successfully')) {
-        setTimeout(() => router.push('/signin'), 1500); // delay for toast visibility
-        }
-    }, [state?.message]);
+    }, [state?.message, router]);
+
     return (
         <form action={action} className='flex flex-col space-y-2 border border-white p-6 rounded-md bg-gray-800'>
             <div className='flex flex-col space-y-1'>
-                <label htmlFor="name" className='text-white'>Name</label>
-                <input id="name" name="name" className='border border-white bg-white' placeholder="Name" required />
-            </div>
-            {state?.errors?.name && <p className='text-red-500'>{state.errors.name}</p>}
-            <div className='flex flex-col space-y-1'>
                 <label htmlFor="email" className='text-white'>Email</label>
-                <input id="email" name="email" className='border border-white bg-white' type="email" placeholder="Email" required />
+                <input id="email" name="email" className='border border-white bg-white' type="email" placeholder="email" required />
             </div>
             {state?.errors?.email && <p className='text-red-500'>{state.errors.email}</p>}
+            {state?.errors?.general && <p className='text-red-500'>{state.errors.email}</p>}
             <div className='flex flex-col space-y-1'>
                 <label htmlFor="password" className='text-white'>Password</label>
                 <input id="password" name="password" className='border border-white bg-white' type="password" required />
@@ -56,7 +52,7 @@ export default function SignupForm() {
                 </div>
             )}
 
-            <button type="submit" disabled={pending} className='bg-white py-2 cursor-pointer'>{pending ? 'Creating Account...' : 'Sign Up'}</button>
+            <button type="submit" disabled={pending} className='bg-white py-2 cursor-pointer'>{pending ? 'Signing in...' : 'Sign In'}</button>
             <ToastContainer />
         </form>
     )
