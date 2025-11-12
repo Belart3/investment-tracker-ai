@@ -26,7 +26,7 @@ export default function SignupForm() {
             toast.error(state.error, { position: 'bottom-right' });
         }
         if (state?.message.includes('Account created successfully')) {
-        setTimeout(() => router.push('/signin'), 1500); // delay for toast visibility
+        setTimeout(() => router.push('/onboarding'), 1500); 
         }
     }, [state?.message]);
     return (
