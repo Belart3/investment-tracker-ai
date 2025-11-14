@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import LiveMarketData from "../ui/liveMarketData";
 import TimeFilter from "../ui/timeFilter";
 import PortfolioOverview from "../ui/portfolioOverview";
@@ -8,7 +8,7 @@ import ConversionHistory from "../ui/conversionHistory";
 import DoughnutChart from "../ui/doughnutChart";
 import AssetLineChart from "../ui/assetLineChart";
 import { Skeleton } from "@mui/material";
-import { useRouter } from "next/navigation";
+import { SidebarContext } from "@/context/sidebarContext";
 
 type Balance = {
   accountType?: string;
@@ -43,16 +43,16 @@ type user = {
   email: string;
 }
 
-type Props = { user?: user | null };
+type Props = { 
+  user?: user | null 
+};
 
 export default function Home({ user }: Props) {
   const [balance, setBalance] = useState<Balance >({});
   const [liveData, setLiveData] = useState<MarketDatum[]>([]);
   const [transactionLog, setTransactionLog] = useState<any>(null);
   const [exchangeHistory, setExchangeHistory] = useState<ExchangeHistoryData[]>([]);
-  // const [selectedId, setSelectedId] = useState<number | null>(null);
-  // const [checked, setChecked] = useState(false);
-  // const [showConversionFilter, setShowConversionFilter] = useState(false);
+  const { showSidebar } = useContext(SidebarContext);
 
   useEffect(() => {
     async function loadTransactionLog() {
@@ -100,7 +100,7 @@ export default function Home({ user }: Props) {
   ) : [];
 
   return (
-    <div className="ms-[237px] mb-20">
+    <div className={`${showSidebar ? 'ms-[237px]' : 'ms-4'} transition-all duration-300`}>
       <div className="flex flex-col">
         {/* live market data marquee */}
         <LiveMarketData />
