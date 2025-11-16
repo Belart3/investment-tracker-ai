@@ -61,9 +61,7 @@ export async function signup(state: FormState, formData: FormData): Promise<Form
     } catch (error) {
         console.error('Error during user signup:', error);
         return {
-            errors: {
-                general: ['An error occurred during signup. Please try again later.'],
-            },
+            error: 'Internal server error during signup.',
         }
     }
     
