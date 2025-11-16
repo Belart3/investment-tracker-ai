@@ -21,7 +21,7 @@ export async function signin(state: FormState, formData: FormData): Promise<Form
 
     const { email, password } = validatedFields.data
 
-    //insert user into database
+    //check if user exists and password matches
     try {
         await connectDB();
         const user = await User.findOne({ email });
@@ -53,15 +53,13 @@ export async function signin(state: FormState, formData: FormData): Promise<Form
         })
 
         return { 
-            message: 'Sign in successful',
+            message: `welcome back, ${user.name}! Sign in successful.`,
             userId: user._id.toString(),
         };
     } catch (error) {
         console.error('Error during user signin:', error);
         return {
-            errors: {
-                general: ['Sign-in failed. Please try again.'],
-            },
+            error: 'server error, please try again later',
         }
     }
     

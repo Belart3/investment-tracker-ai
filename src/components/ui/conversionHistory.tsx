@@ -37,16 +37,16 @@ const ConversionHistory = (props: Props) => {
     const [filterByTransaction, setFilterByTransaction] = useState('');
     const [slice, setSlice] = useState(10);
     return (
-        <div className="col-span-6 flex flex-col justify-start row-span-2 space-y-2 order-4 bg-[#161B22] border border-[#374151] rounded-[16px]">
-            <div className="flex items-center justify-between p-5">
+        <div className="flex flex-col justify-start space-y-2 order-4 bg-[#161B22] border border-[#374151] rounded-[16px]">
+            <div className="flex flex-col gap-1 items-start md:flex-row md:items-center justify-between px-2 py-4 xl:p-5">
                 <h2 className="text-white capitalize">conversion history</h2>
-                <div className="flex items-center justify-center gap-4">
+                <div className="flex items-center md:items-center justify-end gap-4 w-full">
                     <div className="flex flex-col gap-1">
-                        <p className="text-white text-xs capitalize">asset</p>
+                        <p className="text-white text-xs capitalize hidden md:block">asset</p>
                         <Select onValueChange={(value) => {
                             setFilterByAsset(value.toUpperCase());
                         }}>
-                            <SelectTrigger className="w-[250px] border !border-[#374151] !bg-[#1F2937] !text-white !rounded-sm h-8 cursor-pointer">
+                            <SelectTrigger className="w-[250px] border !border-[#374151] !bg-[#1F2937] !text-white !rounded-sm h-8 cursor-pointer !p-1">
                                 <SelectValue placeholder="Assets" />
                             </SelectTrigger>
                             <SelectContent className='!bg-[#1F2937] !border !border-[#374151] !text-white !rounded-sm'>
@@ -67,12 +67,12 @@ const ConversionHistory = (props: Props) => {
                         </Select>
                     </div>
                     <div className="flex flex-col gap-1">
-                        <p className="text-white text-xs capitalize">transaction</p>
+                        <p className="text-white text-xs capitalize hidden md:block">transaction</p>
                         <Select onValueChange={(value) => {
                             setFilterByAsset(value.toUpperCase());
                             }}
                         >
-                            <SelectTrigger className="w-[180px] border !border-[#374151] !bg-[#1F2937] !text-white !rounded-sm h-8 cursor-pointer">
+                            <SelectTrigger className="w-[180px] border !border-[#374151] !bg-[#1F2937] !text-white !rounded-sm h-8 cursor-pointer !px-2">
                                 <SelectValue className='capitalize' placeholder='Transaction' />
                             </SelectTrigger>
                             <SelectContent className='!bg-[#1F2937] !border !border-[#374151] !text-white !rounded-sm'>
@@ -94,14 +94,14 @@ const ConversionHistory = (props: Props) => {
                     <table className="table-auto w-full">
                     <thead className="sticky top-0 bg-[#161B22] z-10">
                         <tr className={`text-[#6B7280] text-[12px]/[18px] tracking-[-0.48px] font-normal border-b border-[#374151]`}>
-                            <th className='text-start py-5 ps-5 capitalize'>Date</th>
-                            <th className='text-start py-5 capitalize'>exchange from</th>
-                            <th className='text-start py-5 capitalize'>exchange pair</th>
-                            <th className='text-start py-5 capitalize'>transaction type</th>
-                            <th className='text-start py-5 capitalize'>sell</th>
-                            <th className='text-start py-5 capitalize'>buy</th>
-                            <th className='text-start py-5 capitalize'>value @ exchange time</th>
-                            <th className='text-start py-5 capitalize'>current value of coin</th>
+                            <th className='py-2 xl:py-5 ps-2 xl:ps-5 capitalize text-end'>Date</th>
+                            <th className='py-2 xl:py-5 capitalize hidden md:flex text-end'>exchange from</th>
+                            <th className='py-2 xl:py-5 capitalize text-end'>pair</th>
+                            <th className='py-2 xl:py-5 capitalize text-end'>type</th>
+                            <th className='py-2 xl:py-5 capitalize text-end'>sell</th>
+                            <th className='py-2 xl:py-5 capitalize text-end'>buy</th>
+                            <th className='py-2 xl:py-5 capitalize text-end'>rate</th>
+                            <th className='py-2 xl:py-5 capitalize text-end hidden md:block'>current value of coin</th>
                         </tr>
                     </thead>
                     <tbody className="">
@@ -109,10 +109,10 @@ const ConversionHistory = (props: Props) => {
                             props.exchangeHistory && props.exchangeHistory.length > 0 ?
                             props.exchangeHistory.filter((exchange) => filterByAsset !== '' ? exchange.fromCoin === filterByAsset || exchange.toCoin === filterByAsset : exchange).map((exchange, index) => (
                             <tr key={index} className={`text-white text-[16px]/[24px] tracking-[-0.64px] font-normal relative border-b last-of-type:!border-0 border-[#374151] hover:bg-[#1F2937] cursor-pointer`}>
-                                <td className='py-5 capitalize ps-5'>
+                                <td className='py-1 xl:py-5 capitalize ps-2 xl:ps-5 text-sm md:text-xl text-end px-[2px]'>
                                     {new Date(Number(exchange.exchangeTime)).toDateString()}
                                 </td>
-                                <td className='py-5 flex gap-1 items-center'>
+                                <td className='py-1 xl:py-5 xl:gap-1 items-center hidden md:flex text-end px-[2px]'>
                                     <TokenIcon
                                         symbol={exchange.fromCoin.toUpperCase()}
                                         size={20}
@@ -120,17 +120,17 @@ const ConversionHistory = (props: Props) => {
                                     />
                                     <span className="uppercase">{exchange.fromCoin}</span>
                                 </td>
-                                <td className='py-5'>
+                                <td className='py-1 xl:py-5 text-sm md:text-lg text-end px-[2px]'>
                                     {exchange.fromCoin.toUpperCase()}/{exchange.toCoin.toUpperCase()}
                                 </td>
-                                <td className='py-5 uppercase'>
+                                <td className='py-1 xl:py-5 uppercase text-sm md:text-lg w-fit text-end px-[2px]'>
                                     {
                                     exchange.fromCoin === 'USDT' ? 
                                     <span className="text-[#00AC4F]">buy</span> : <span className="text-[#FBBF24]">sell</span>
                                     }
                                 </td>
-                                <td className='py-5'>
-                                    <span className="flex items-center gap-1">
+                                <td className='py-1 xl:py-5 px-[2px]'>
+                                    <span className="flex items-center xl:gap-1 text-sm md:text-lg text-end">
                                         <TokenIcon
                                             symbol={exchange.fromCoin.toUpperCase()}
                                             size={20}
@@ -143,7 +143,7 @@ const ConversionHistory = (props: Props) => {
                                         </span>
                                     </span>
                                 </td>
-                                <td className='py-5 flex gap-1 items-center '>
+                                <td className='py-1 xl:py-5 gap-1 text-sm md:text-lg text-end px-[2px] flex items-center justify-end'>
                                     <TokenIcon
                                         symbol={exchange.toCoin.toUpperCase()}
                                         size={20}
@@ -153,7 +153,7 @@ const ConversionHistory = (props: Props) => {
                                         Number(exchange.toAmount).toFixed(2) + ' ' +exchange.toCoin
                                     }
                                 </td>
-                                <td className='py-5 capitalize'>
+                                <td className='py-1 xl:py-5 capitalize text-sm md:text-lg text-end px-[2px]'>
                                     {
                                     exchange.fromCoin === 'USDT' ? 
                                     '$' + (
@@ -161,7 +161,7 @@ const ConversionHistory = (props: Props) => {
                                     ).toFixed(2) + '/' + exchange.toCoin : ''
                                     }
                                 </td>
-                                <td className='py-5 capitalize'>
+                                <td className='py-1 xl:py-5 capitalize hidden md:block text-sm md:text-lg text-end px-[2px]'>
                                     {/* Find the current value of the coin in liveData */}
                                     {
                                     (() => {

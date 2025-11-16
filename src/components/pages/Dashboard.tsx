@@ -1,11 +1,10 @@
 "use client";
 import { useState, useEffect, useContext } from "react";
 import LiveMarketData from "../ui/liveMarketData";
-import TimeFilter from "../ui/timeFilter";
 import PortfolioOverview from "../ui/portfolioOverview";
 import AssetBarChart from "../ui/assetBarChart";
 import ConversionHistory from "../ui/conversionHistory";
-import DoughnutChart from "../ui/doughnutChart";
+import PortfolioDistribution from "../ui/portfolioDistribution";
 import AssetLineChart from "../ui/assetLineChart";
 import { Skeleton } from "@mui/material";
 import { SidebarContext } from "@/context/sidebarContext";
@@ -100,36 +99,38 @@ export default function Home({ user }: Props) {
   ) : [];
 
   return (
-    <div className={`${showSidebar ? 'ms-[237px]' : 'ms-4'} transition-all duration-300`}>
+    <div className={`${showSidebar ? 'ms' : 'ms-4'} transition-all duration-300`}>
       <div className="flex flex-col">
         {/* live market data marquee */}
         <LiveMarketData />
         {/* page header */}
-        <div className="border-b border-[#374151] bg-[#161B22] p-5 w-full mt-[72px] flex items-center justify-between">
-          <h2 className="text-white font-semibold text-[27px]/[27px] tracking-[-1.62px]">Dashboard</h2>
-          <p className="text-white font-normal text-[16px]/[16px] tracking-[-1.62px]">
+        <div className="border-b border-[#374151] bg-[#161B22] p-2 xl:p-5 w-full mt-[50px] xl:mt-[72px] flex items-center justify-between">
+          <h2 className="text-white font-semibold text-sm lg:text-[27px]/[27px] tracking-[-1.62px]">Dashboard</h2>
+          <p className="text-white font-normal text-sm xl:text-[16px]/[16px] tracking-[-1.62px]">
             Hey, {user ? user.name : <Skeleton variant="text" width={100} />}
           </p>
         </div>
-        <div className="px-5 mt-[42px] gap-5">
-          <div className="grid grid-cols-6 gap-5 w-full h-fit 2xl:h-[600px]">
+        <div className="px-3 xl:px-5 mt-[42px] flex flex-col gap-4">
+          <div className="flex flex-col gap-4 xl:grid xl:grid-cols-6 xl:gap-5 w-full h-fit 2xl:h-[600px]">
             {/* Portfolio Overview */}
-            <PortfolioOverview />
+            <div className="  xl:col-span-2  xl:row-span-1">
+              <PortfolioOverview />
+            </div>
             {/* portfolio distribution doughnut chart */}
-            <div className="col-span-2 bg-[#161B22] rounded-[16px] flex flex-col justify-start border border-[#374151] row-span-3 order-2 ">
-              <div className="p-5 border-b border-[#374151] flex items-center justify-between">
-                <h3 className="text-white text-[16px]/[16px] font-medium">Portfolio Distribution</h3>
-                <TimeFilter />
-              </div>
-              <DoughnutChart label={labels} labelValue={labelValue} />
+            <div className=" xl:col-span-2   xl:row-span-3">
+              <PortfolioDistribution labels={labels} labelValue={labelValue} />
             </div>
             {/* portfolio distribution line chart */}
-            <AssetLineChart  label={labels} labelValue={labelValue} />
+            <div className="  xl:col-span-2  xl:row-span-2">
+              <AssetLineChart  label={labels} labelValue={labelValue} />
+            </div>
             {/* individual assets bar chart */}
-            <AssetBarChart labels={labels} labelValue={labelValue}/>
-            {/* Asset trade information table */}
-            <ConversionHistory filterAssets={filterAssets} liveData={liveData} exchangeHistory={exchangeHistory} />
+            <div className=" xl:col-span-2   xl:row-span-2">
+              <AssetBarChart labels={labels} labelValue={labelValue}/>
+            </div>
           </div>
+          {/* Asset trade information table */}
+          <ConversionHistory filterAssets={filterAssets} liveData={liveData} exchangeHistory={exchangeHistory} />
         </div>
       </div>
     </div>

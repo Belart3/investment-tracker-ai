@@ -25,12 +25,12 @@ type Props = {
 
 const AssetLineChart = (props: Props) => {
     return (
-        <div className="col-span-2 bg-[#161B22] rounded-[16px] flex flex-col justify-start border border-[#374151] row-span-2 space-y-2 order-3">
-            <div className="p-4 border-b border-[#374151] flex items-center justify-between">
-                <h3 className="text-white text-[16px]/[16px] font-medium">Portfolio Distribution</h3>
+        <div className="bg-[#161B22] rounded-[16px] flex flex-col justify-start border border-[#374151] space-y-2 order-3">
+            <div className="px-2 py-4 xl:p-5 border-b border-[#374151] flex items-center justify-between">
+                <h3 className="text-white text-[16px]/[16px] font-medium">Asset Value History</h3>
                 <TimeFilter />
             </div>
-            <div className="h-[300px] w-full px-4">
+            <div className="h-[250px] w-full px-4">
                 {
                     props.label && props.labelValue && props.label.length === 0 && props.labelValue.length === 0 ? 
                     <Line

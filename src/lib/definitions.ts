@@ -37,8 +37,8 @@ export type FormState = {
         password?: string[];
         general?: string[];
     };
+    error?: string;
     message?: string;
-    error?: string; 
     userId?: string;
     token?: string;
 };

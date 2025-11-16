@@ -31,7 +31,7 @@ const FixedSideBar = () => {
     const currentPath = usePathname();
     const { showSidebar, setShowSidebar } = useContext(SidebarContext);
     return (
-        <div className={`fixed left-0 top-0 h-screen w-[237px] border-r border-[#374151] flex flex-col gap-8 bg-[#161B22] transition-all ${showSidebar ? 'w-[237px] p-5' : 'w-fit p-2'}`}>
+        <div className={`fixed left-0 top-0 h-screen w-[237px] border-r border-[#374151] hidden xl:flex flex-col gap-8 bg-[#161B22] transition-all ${showSidebar ? 'w-[237px] p-5' : 'w-fit p-2'}`}>
             <div className="w-full flex items-center justify-between">
                 {
                     showSidebar && <h1 className="text-white">Investment Tracker AI</h1>

@@ -18,16 +18,20 @@ export default function SigninForm() {
     const router = useRouter();
 
     useEffect(() => {
-        if (!state?.message) return;
-
-        toast(state.message, { position: 'bottom-right' });
-        toast(state.error, { position: 'bottom-right' });
-
-        // Redirect if login was successful
-        if (state.message.includes('Sign in successful')) {
-        setTimeout(() => router.push('/'), 1500); // delay for toast visibility
+        // Handle custom error returned from server
+        if (state.error) {
+            toast.error(state.error, { position: 'bottom-right' });
         }
-    }, [state?.message, router]);
+
+        if (state.message) {
+            toast.error(state.message, { position: 'bottom-right' });
+        }
+
+        // Handle success and redirect
+        if (state.message && state.userId) {
+            setTimeout(() => router.push('/'), 1500);
+        }
+    }, [state, router]);
 
     return (
         <form action={action} className='flex flex-col space-y-2 border border-white p-6 rounded-md bg-gray-800'>
@@ -36,7 +40,6 @@ export default function SigninForm() {
                 <input id="email" name="email" className='border border-white bg-white' type="email" placeholder="email" required />
             </div>
             {state?.errors?.email && <p className='text-red-500'>{state.errors.email}</p>}
-            {state?.errors?.general && <p className='text-red-500'>{state.errors.email}</p>}
             <div className='flex flex-col space-y-1'>
                 <label htmlFor="password" className='text-white'>Password</label>
                 <input id="password" name="password" className='border border-white bg-white' type="password" required />
