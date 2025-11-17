@@ -10,15 +10,15 @@ type Props = {
 const AssetTrackerTable = (props: Props) => {
     return (
         <div className="col-span-6 flex flex-col justify-start row-span-2 space-y-2 order-4 bg-[#161B22] border border-[#374151] rounded-md">
-            <div className="flex items-center justify-between p-5">
+            <div className="flex flex-col items-start gap-2 lg:flex-row lg:items-center justify-between p-5">
                 <h2 className="text-white capitalize">Portfolio assets</h2>
                 <div className="flex items-center justify-center gap-3">
-                    <button className="bg-transparent border border-[#374151] rounded-[8px] px-4 py-2 text-[14px]/[21px] tracking-[-0.56px] font-medium text-white hover:bg-[#28C76F] hover:bg-none transition cursor-pointer flex items-center capitalize" onClick={() => props.setIsAddAssetModalOpen(true)}>
-                        <PlusIcon className="inline-block me-2" size={20} />
+                    <button className="bg-transparent border border-[#374151] rounded-[8px] px-2 lg:px-4 py-2 lg:text-[14px]/[21px] tracking-[-0.56px] font-medium text-white text-sm hover:bg-[#28C76F] hover:bg-none transition cursor-pointer flex items-center capitalize" onClick={() => props.setIsAddAssetModalOpen(true)}>
+                        <PlusIcon className="inline-block me-1 lg:me-2" size={20} />
                         Add Asset
-                    </button>
-                    <button className="bg-[#811d1d] rounded-[8px] px-4 py-2 text-[14px]/[21px] tracking-[-0.56px] font-medium text-white hover:bg-[#811d1d99] transition cursor-pointer flex items-center capitalize">
-                        <TrendingDown className="inline-block me-2" size={20} />
+                    </button> 
+                    <button className="bg-[#811d1d] rounded-[8px] text-sm  px-2 lg:px-4 py-2 lg:text-[14px]/[21px] tracking-[-0.56px] font-medium text-white hover:bg-[#811d1d99] transition cursor-pointer flex items-center capitalize">
+                        <TrendingDown className="inline-block me-1 lg:me-2" size={20} />
                         Add exit
                     </button>
                 </div>

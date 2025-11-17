@@ -99,7 +99,7 @@ export default function Home({ user }: Props) {
   ) : [];
 
   return (
-    <div className={`${showSidebar ? 'ms' : 'ms-4'} transition-all duration-300`}>
+    <div className={`lg:ms-[237px] transition-all duration-300`}>
       <div className="flex flex-col">
         {/* live market data marquee */}
         <LiveMarketData />

@@ -56,8 +56,8 @@ const FixedSideBar = () => {
                                         <span className="text-[14px]/[21px] font-semibold capitalize">{routes.name}</span>
                                     </a>
                                 )
-                        })
-                    }
+                            })
+                        }
                     </div>
                 </div> : null
             }
