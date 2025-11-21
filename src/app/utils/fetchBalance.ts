@@ -11,7 +11,11 @@ export async function fetchBybitBalance() {
         const result = await client.getWalletBalance({
             accountType: 'UNIFIED',
         })
-        const data = result.result.list;
+        const data = result?.result?.list ?? [];
+
+        if (!data.length) {
+            throw new Error('No balance data found');
+        }
         console.log('Bybit Balance Data:', data);
 
         const c = []

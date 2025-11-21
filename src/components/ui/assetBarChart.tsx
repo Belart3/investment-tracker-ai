@@ -32,7 +32,7 @@ const AssetBarChart = (props: Props) => {
                 <h3 className="text-white text-[16px]/[16px] font-medium">Individual Asset Value ($)</h3>
                 <TimeFilter/>
             </div>
-            <div className="h-fit w-full px-4">
+            <div className="h-[300px] w-full px-4">
                 {
                     props.labels && props.labelValue && props.labels.length > 0 && props.labelValue.length > 0 ? (
                         <Bar 

@@ -61,6 +61,7 @@ export default function Home({ user }: Props) {
       setTransactionLog(transactionLog || null);
       //console.log('Transaction Log:', transactionLog);
     }
+    loadTransactionLog();
 
     async function loadExchangeHistory() {
       const res = await fetch('/api/exchangeHistory');
@@ -68,30 +69,26 @@ export default function Home({ user }: Props) {
 
       setExchangeHistory(data || []);
       //console.log('exchange History Log:', data);
-    }
+    } 
+    loadExchangeHistory();
     
     async function loadBalance() {
       const res = await fetch('/api/balance');
-      const data = await res.json();
+      const balanceData = await res.json();
 
-      setBalance(data || null); 
-      console.log('Balance data set:', data );
+      setBalance(balanceData || null); 
+      console.log('Balance data set:', balanceData );
     }
-
     loadBalance()
 
-    loadTransactionLog(); 
-    loadExchangeHistory();
   }, []);
-  
-  //wallet balance variables
-  //const cumRealisedPnl = balance?.asset?.[0]?.cumRealisedPnl || 0;
-  const labels = balance && balance.asset ? balance.asset.map((item: any) => item.coin) : [];
-  const labelValue = balance && balance.asset ? balance.asset.map((item) => item.usdValue) : [];
-  //const totalBalance = balance ? balance.asset?.reduce((acc: number, item: any) => acc + parseFloat(item.usdValue || '0'), 0).toFixed(2) : 0;
-
-  //data for the liveMarket data
-  //const marketData = liveData 
+  const accountType = balance?.accountType || 'N/A';
+  const assets = balance?.asset || [];
+  const balExists = balance && Object.keys(balance).length > 0 && assets.length > 0;
+  const labels = balExists ? assets.map((item: any) => item.coin) : [];
+  const labelValue = balExists ? assets.map((item) => item.usdValue) : [];
+  const cumRealisedPnl = balExists && assets.reduce((acc, item) => acc + parseFloat(item.cumRealisedPnl || '0'), 0).toFixed(2) || '0';
+  const totalBalance = balExists ? assets.reduce((acc: number, item: any) => acc + parseFloat(item.usdValue || '0'), 0).toFixed(2) : 0;
 
   const filterAssets = exchangeHistory && exchangeHistory.length > 0 ? exchangeHistory.filter(
   (asset, index, self) =>
@@ -107,14 +104,19 @@ export default function Home({ user }: Props) {
         <div className="border-b border-[#374151] bg-[#161B22] p-2 xl:p-5 w-full mt-[50px] xl:mt-[72px] flex items-center justify-between">
           <h2 className="text-white font-semibold text-sm lg:text-[27px]/[27px] tracking-[-1.62px]">Dashboard</h2>
           <p className="text-white font-normal text-sm xl:text-[16px]/[16px] tracking-[-1.62px]">
-            Hey, {user ? user.name : <Skeleton variant="text" width={100} />}
+            Hey, {user ? user.name : <Skeleton variant="text" width={100} />} 
+            <span className="mx-2">
+              {
+                `You are viewing your ${balance.accountType} account.` 
+              }
+            </span>
           </p>
         </div>
         <div className="px-3 xl:px-5 mt-[42px] flex flex-col gap-4">
           <div className="flex flex-col gap-4 xl:grid xl:grid-cols-6 xl:gap-5 w-full h-fit 2xl:h-[600px]">
             {/* Portfolio Overview */}
             <div className="  xl:col-span-2  xl:row-span-1">
-              <PortfolioOverview />
+              <PortfolioOverview balanceValue={totalBalance} accountType={accountType} pnl={cumRealisedPnl} />
             </div>
             {/* portfolio distribution doughnut chart */}
             <div className=" xl:col-span-2   xl:row-span-3">

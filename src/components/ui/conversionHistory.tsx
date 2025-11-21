@@ -94,14 +94,14 @@ const ConversionHistory = (props: Props) => {
                     <table className="table-auto w-full">
                     <thead className="sticky top-0 bg-[#161B22] z-10">
                         <tr className={`text-[#6B7280] text-[12px]/[18px] tracking-[-0.48px] font-normal border-b border-[#374151]`}>
-                            <th className='py-2 xl:py-5 ps-2 xl:ps-5 capitalize text-end'>Date</th>
-                            <th className='py-2 xl:py-5 capitalize hidden md:flex text-end'>exchange from</th>
-                            <th className='py-2 xl:py-5 capitalize text-end'>pair</th>
-                            <th className='py-2 xl:py-5 capitalize text-end'>type</th>
-                            <th className='py-2 xl:py-5 capitalize text-end'>sell</th>
-                            <th className='py-2 xl:py-5 capitalize text-end'>buy</th>
-                            <th className='py-2 xl:py-5 capitalize text-end'>rate</th>
-                            <th className='py-2 xl:py-5 capitalize text-end hidden md:block'>current value of coin</th>
+                            <th className='py-2 xl:py-5 ps-2 xl:ps-5 capitalize text-end md:text-start'>Date</th>
+                            <th className='py-2 xl:py-5 capitalize hidden md:flex text-end md:text-start'>exchange from</th>
+                            <th className='py-2 xl:py-5 capitalize text-end md:text-start'>pair</th>
+                            <th className='py-2 xl:py-5 capitalize text-end md:text-start'>type</th>
+                            <th className='py-2 xl:py-5 capitalize text-end md:text-start'>sell</th>
+                            <th className='py-2 xl:py-5 capitalize text-end md:text-start'>buy</th>
+                            <th className='py-2 xl:py-5 capitalize text-end md:text-start'>rate</th>
+                            <th className='py-2 xl:py-5 capitalize text-end md:text-start hidden md:block'>current value of coin</th>
                         </tr>
                     </thead>
                     <tbody className="">
@@ -109,10 +109,10 @@ const ConversionHistory = (props: Props) => {
                             props.exchangeHistory && props.exchangeHistory.length > 0 ?
                             props.exchangeHistory.filter((exchange) => filterByAsset !== '' ? exchange.fromCoin === filterByAsset || exchange.toCoin === filterByAsset : exchange).map((exchange, index) => (
                             <tr key={index} className={`text-white text-[16px]/[24px] tracking-[-0.64px] font-normal relative border-b last-of-type:!border-0 border-[#374151] hover:bg-[#1F2937] cursor-pointer`}>
-                                <td className='py-1 xl:py-5 capitalize ps-2 xl:ps-5 text-sm md:text-xl text-end px-[2px]'>
+                                <td className='py-1 xl:py-5 capitalize ps-2 xl:ps-5 text-sm md:text-xl text-end md:text-start px-[2px]'>
                                     {new Date(Number(exchange.exchangeTime)).toDateString()}
                                 </td>
-                                <td className='py-1 xl:py-5 xl:gap-1 items-center hidden md:flex text-end px-[2px]'>
+                                <td className='py-1 xl:py-5 xl:gap-1 items-center hidden md:flex text-end md:text-start px-[2px]'>
                                     <TokenIcon
                                         symbol={exchange.fromCoin.toUpperCase()}
                                         size={20}
@@ -120,17 +120,17 @@ const ConversionHistory = (props: Props) => {
                                     />
                                     <span className="uppercase">{exchange.fromCoin}</span>
                                 </td>
-                                <td className='py-1 xl:py-5 text-sm md:text-lg text-end px-[2px]'>
+                                <td className='py-1 xl:py-5 text-sm md:text-lg text-end md:text-start px-[2px]'>
                                     {exchange.fromCoin.toUpperCase()}/{exchange.toCoin.toUpperCase()}
                                 </td>
-                                <td className='py-1 xl:py-5 uppercase text-sm md:text-lg w-fit text-end px-[2px]'>
+                                <td className='py-1 xl:py-5 uppercase text-sm md:text-lg w-fit text-end md:text-start px-[2px]'>
                                     {
                                     exchange.fromCoin === 'USDT' ? 
                                     <span className="text-[#00AC4F]">buy</span> : <span className="text-[#FBBF24]">sell</span>
                                     }
                                 </td>
                                 <td className='py-1 xl:py-5 px-[2px]'>
-                                    <span className="flex items-center xl:gap-1 text-sm md:text-lg text-end">
+                                    <span className="flex items-center xl:gap-1 text-sm md:text-lg text-end md:text-start">
                                         <TokenIcon
                                             symbol={exchange.fromCoin.toUpperCase()}
                                             size={20}
@@ -143,7 +143,7 @@ const ConversionHistory = (props: Props) => {
                                         </span>
                                     </span>
                                 </td>
-                                <td className='py-1 xl:py-5 gap-1 text-sm md:text-lg text-end px-[2px] flex items-center justify-end'>
+                                <td className='py-1 xl:py-5 gap-1 text-sm md:text-lg text-end md:text-start px-[2px] flex items-center  md:justify-start'>
                                     <TokenIcon
                                         symbol={exchange.toCoin.toUpperCase()}
                                         size={20}
@@ -153,15 +153,18 @@ const ConversionHistory = (props: Props) => {
                                         Number(exchange.toAmount).toFixed(2) + ' ' +exchange.toCoin
                                     }
                                 </td>
-                                <td className='py-1 xl:py-5 capitalize text-sm md:text-lg text-end px-[2px]'>
+                                <td className={`py-1 xl:py-5 capitalize text-sm md:text-lg text-end md:text-start px-[2px] ${exchange.fromCoin === 'USDT' ? 'text-[#00AC4F]' : 'text-[#FBBF24]'} `}>
                                     {
                                     exchange.fromCoin === 'USDT' ? 
                                     '$' + (
                                         Number(exchange.fromAmount)/Number(exchange.toAmount)
-                                    ).toFixed(2) + '/' + exchange.toCoin : ''
+                                    ).toFixed(2) + '/' + exchange.toCoin : 
+                                    '$' + (
+                                        Number(exchange.toAmount)/Number(exchange.fromAmount)
+                                    ).toFixed(2) + '/' + exchange.fromCoin
                                     }
                                 </td>
-                                <td className='py-1 xl:py-5 capitalize hidden md:block text-sm md:text-lg text-end px-[2px]'>
+                                <td className='py-1 xl:py-5 capitalize hidden md:block text-sm md:text-lg text-end md:text-start px-[2px]'>
                                     {/* Find the current value of the coin in liveData */}
                                     {
                                     (() => {
