@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 export async function GET() {
     try {
         const balanceData = await fetchBybitBalance();
-        if (!balanceData || balanceData.length === 0) {
+        if (!balanceData || Object.keys(balanceData).length === 0) {
             return NextResponse.json({ error: 'No balance data found' }, { status: 404 });
         }
         return NextResponse.json(balanceData) 
