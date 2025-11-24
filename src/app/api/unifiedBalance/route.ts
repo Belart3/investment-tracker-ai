@@ -1,9 +1,9 @@
-import { fetchBybitBalance } from "@/app/utils/fetchBalance";
+import { unifiedWalletBalance } from "@/app/utils/bybit/unifiedWalletBalance";
 import { NextResponse } from "next/server";
 
 export async function GET() {
     try {
-        const balanceData = await fetchBybitBalance();
+        const balanceData = await unifiedWalletBalance();
         if (!balanceData || Object.keys(balanceData).length === 0) {
             return NextResponse.json({ error: 'No balance data found' }, { status: 404 });
         }

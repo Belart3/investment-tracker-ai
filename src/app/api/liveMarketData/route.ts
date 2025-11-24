@@ -1,4 +1,4 @@
-import { fetchLiveMarketData } from "@/app/utils/liveMarketData";
+import { fetchLiveMarketData } from "@/app/utils/bybit/liveMarketData";
 import { NextResponse } from "next/server";
 
 export async function GET () {

@@ -54,14 +54,14 @@ export default function Home({ user }: Props) {
   const { showSidebar } = useContext(SidebarContext);
 
   useEffect(() => {
-    async function loadTransactionLog() {
-      const res = await fetch('/api/transactionLog');
-      const transactionLog = await res.json();
 
-      setTransactionLog(transactionLog || null);
-      //console.log('Transaction Log:', transactionLog);
-    }
-    loadTransactionLog();
+    async function loadMarketData() {
+      const res = await fetch('/api/liveMarketData');
+      const marketData = await res.json();
+      setLiveData(marketData || null); 
+      //console.log('Market data loaded:', marketData || null);
+    }    
+    loadMarketData()
 
     async function loadExchangeHistory() {
       const res = await fetch('/api/exchangeHistory');
@@ -71,15 +71,25 @@ export default function Home({ user }: Props) {
       //console.log('exchange History Log:', data);
     } 
     loadExchangeHistory();
+
+    // async function loadFundWalletBalance() {
+    //   const res = await fetch('/api/fundWalletBalance');
+    //   const balanceData = await res.json();
+
+    //   setBalance(balanceData || null); 
+    //   //console.log('Balance data set:', balanceData );
+    // }
+    // loadFundWalletBalance()
     
-    async function loadBalance() {
-      const res = await fetch('/api/balance');
+    async function loadUnifiedWalletBalance() {
+      const res = await fetch('/api/unifiedBalance');
       const balanceData = await res.json();
 
       setBalance(balanceData || null); 
       console.log('Balance data set:', balanceData );
     }
-    loadBalance()
+    loadUnifiedWalletBalance()
+    
 
   }, []);
   const accountType = balance?.accountType || 'N/A';

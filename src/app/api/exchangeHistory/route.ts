@@ -1,4 +1,4 @@
-import { fetchExchangeRecords } from "@/app/utils/exchangeHistory";
+import { fetchExchangeRecords } from "@/app/utils/bybit/exchangeHistory";
 import { NextResponse } from "next/server";
 
 export async function GET () {

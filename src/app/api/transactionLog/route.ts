@@ -1,4 +1,4 @@
-import { getTransactionLog } from "@/app/utils/transactionLog";
+import { getTransactionLog } from "@/app/utils/bybit/transactionLog";
 import { NextResponse } from "next/server";
 
 export async function GET() {

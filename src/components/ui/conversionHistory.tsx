@@ -101,7 +101,7 @@ const ConversionHistory = (props: Props) => {
                             <th className='py-2 xl:py-5 capitalize text-end md:text-start'>sell</th>
                             <th className='py-2 xl:py-5 capitalize text-end md:text-start'>buy</th>
                             <th className='py-2 xl:py-5 capitalize text-end md:text-start'>rate</th>
-                            <th className='py-2 xl:py-5 capitalize text-end md:text-start hidden md:block'>current value of coin</th>
+                            {/* <th className='py-2 xl:py-5 capitalize text-end md:text-start hidden md:block'>current value of coin</th> */}
                         </tr>
                     </thead>
                     <tbody className="">
@@ -164,19 +164,24 @@ const ConversionHistory = (props: Props) => {
                                     ).toFixed(2) + '/' + exchange.fromCoin
                                     }
                                 </td>
-                                <td className='py-1 xl:py-5 capitalize hidden md:block text-sm md:text-lg text-end md:text-start px-[2px]'>
+                                {/* <td className='py-1 xl:py-5 capitalize hidden md:block text-sm md:text-lg text-end md:text-start px-[2px]'> */}
                                     {/* Find the current value of the coin in liveData */}
-                                    {
+                                    {/* {
                                     (() => {
-                                        const market = props.liveData.find(
+                                        const livePrice = props.liveData.find(
                                         (item) => item.symbol.toUpperCase() === exchange.toCoin.toUpperCase() + "USDT"
                                         );
-                                        return market
-                                        ? (`$${Number(market.latestPrice).toFixed(2)}` + '/' + exchange.toCoin)
-                                        : 'N/A';
+                                        if (livePrice) {
+                                            const formattedPrice = `$${Number(livePrice.latestPrice).toFixed(2)}/${exchange.toCoin}`;
+                                            const formattedPerc = (livePrice.percIncr * 100).toFixed(2) + '%';
+                                            const sign = livePrice.percIncr > 0 ? ` (+${formattedPerc})` : ` (${formattedPerc})`;
+                                            return formattedPrice ;
+                                        } else {
+                                            return 'N/A';
+                                        }
                                     })()
-                                    }
-                                </td>
+                                    } */}
+                                {/* </td> */}
                             </tr> 
                             ))
                             : 

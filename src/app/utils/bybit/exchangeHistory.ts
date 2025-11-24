@@ -12,8 +12,8 @@ export async function fetchExchangeRecords () {
             
         })
         const data = result.result.orderBody;
-        console.log(JSON.stringify(result, null, 2));
-        console.log('Bybit Market Data:', data);
+        //console.log(JSON.stringify(result, null, 2));
+        //console.log('Bybit Market Data:', data);
 
         const res = [];
         for (const item of data) {
