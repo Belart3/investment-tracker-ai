@@ -47,9 +47,8 @@ type Props = {
 };
 
 export default function Home({ user }: Props) {
-  const [balance, setBalance] = useState<Balance >({});
+  const [balance, setBalance] = useState<Balance>({});
   const [liveData, setLiveData] = useState<MarketDatum[]>([]);
-  const [transactionLog, setTransactionLog] = useState<any>(null);
   const [exchangeHistory, setExchangeHistory] = useState<ExchangeHistoryData[]>([]);
   const { showSidebar } = useContext(SidebarContext);
 
@@ -58,10 +57,19 @@ export default function Home({ user }: Props) {
     async function loadMarketData() {
       const res = await fetch('/api/liveMarketData');
       const marketData = await res.json();
-      setLiveData(marketData || null); 
+      setLiveData(marketData || []); 
       //console.log('Market data loaded:', marketData || null);
     }    
     loadMarketData()
+    
+    async function loadUnifiedWalletBalance() {
+      const res = await fetch('/api/unifiedBalance');
+      const balanceData = await res.json();
+
+      setBalance(balanceData || []); 
+      console.log('Balance data set:', balanceData );
+    }
+    loadUnifiedWalletBalance()
 
     async function loadExchangeHistory() {
       const res = await fetch('/api/exchangeHistory');
@@ -80,17 +88,6 @@ export default function Home({ user }: Props) {
     //   //console.log('Balance data set:', balanceData );
     // }
     // loadFundWalletBalance()
-    
-    async function loadUnifiedWalletBalance() {
-      const res = await fetch('/api/unifiedBalance');
-      const balanceData = await res.json();
-
-      setBalance(balanceData || null); 
-      console.log('Balance data set:', balanceData );
-    }
-    loadUnifiedWalletBalance()
-    
-
   }, []);
   const accountType = balance?.accountType || 'N/A';
   const assets = balance?.asset || [];
