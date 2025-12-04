@@ -1,7 +1,7 @@
 'use client'
 import { signup } from '@/app/actions/signup'
 import { useActionState, useState } from 'react'
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Eye, EyeClosed } from 'lucide-react';
@@ -71,15 +71,6 @@ export default function SignupForm() {
             )}
 
             <button type="submit" disabled={pending} className='bg-white py-2 cursor-pointer'>{pending ? 'Creating Account...' : 'Sign Up'}</button>
-            <ToastContainer icon={({ type, theme }) => {
-                // theme is not used in this example but you could
-                switch (type) {
-                    case 'error':
-                    return <AiOutlineDisconnect className="stroke-white" />;
-                    default:
-                    return null;
-                }
-            }}  />
         </form>
     )
 }

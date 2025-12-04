@@ -51,7 +51,7 @@ export async function signup(state: FormState, formData: FormData): Promise<Form
             httpOnly: true,
             value: token,
             path: '/',
-            maxAge: 60 * 60,
+            maxAge: 60 * 120,
         })
         
         return { 

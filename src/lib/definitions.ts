@@ -30,12 +30,24 @@ export const SigninFormSchema = z.object({
     .trim(),
 })
 
+export const DebtFormSchema = z.object({
+    name: z.string()
+    .min(2, { error: 'Name must be at least 2 characters long.' })
+    .trim(),
+    item: z.string()
+    .min(2, {error: 'Item must be at least 2 characters long.' })
+    .trim(),
+    amount: z.number({ message: 'Amount must be a number.' })
+})
+
 export type FormState = {
     errors?: {
         name?: string[];
         email?: string[];
         password?: string[];
         general?: string[];
+        item?: string[];
+        amount?: string[];
     };
     error?: string;
     message?: string;

@@ -21,14 +21,14 @@ interface ExchangeHistoryData  {
     toCoin: string,
     fromAmount: string,
     toAmount: string,
-    exchangeTime: string,
+    exchangeTime: string, 
     exchangeRate: string,
 }
 
 const AssetTrackerTable = (props: Props) => {
     const [assets, setAssets] = useState<Asset>({accountType: '', asset: []});
     const accountType = assets.accountType;
-    const assetHoldings = assets.asset.filter(item => Number(item.walletBalance) > 0);
+    const assetHoldings = assets.asset.length > 0 ? assets.asset.filter(item => Number(item.walletBalance) > 0) : [];
     const portfolioValue = assetHoldings.reduce((total, item) => Number(total) + Number(item.usdValue),0);      
     const [exchangeHistory, setExchangeHistory] = useState<ExchangeHistoryData[]>([]);
     const totAssetQty = exchangeHistory.reduce((total, item) => Number(total) + Number(item.toCoin),0)
