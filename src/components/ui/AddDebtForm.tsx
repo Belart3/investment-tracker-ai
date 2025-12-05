@@ -1,11 +1,11 @@
-import React, { useState, useActionState, useEffect } from 'react'
+import React, { useActionState, useEffect } from 'react'
 import { addDebtAction } from '@/app/actions/debts/addDebt';
 import { toast } from 'react-toastify';
 import { AiOutlineDisconnect } from 'react-icons/ai';
 
 type Props = {
-    setShowAddDebtModal: React.Dispatch<React.SetStateAction<boolean>>;
-    showAddDebtModal: boolean;
+    setDisplayModal: React.Dispatch<React.SetStateAction<boolean>>;
+    displayModal: boolean;
     onActionResponse?: (type: string, message: string) => void;
 }
 
@@ -56,7 +56,7 @@ const AddDebtForm = (props: Props) => {
                         type="number" 
                         id="amount" 
                         name="amount"
-                        className="shadow appearance-none border border-[#374151] rounded-[8px] h-12 w-full py-2 px-4 text-white tracking-[-0.56px] focus:border-[2px] focus:outline-none focus:border-[#28C76F] focus:shadow-outline text-[14px]/[21px] placeholder-shown:text-[#6B7280] " 
+                        className="shadow appearance-none border border-[#374151] rounded-[8px] h-12 w-full py-2 px-4 text-white tracking-[-0.56px] focus:border-[2px] focus:outline-none focus:border-[#28C76F] focus:shadow-outline text-[14px]/[21px] placeholder-shown:text-[#193b7d] " 
                         placeholder="Enter monetary value for what is owed" 
                         required 
                     />  
@@ -69,7 +69,7 @@ const AddDebtForm = (props: Props) => {
                 onClick={
                     (e) => {
                         e.preventDefault();
-                        props.setShowAddDebtModal(false);
+                        props.setDisplayModal(false);
                     }
                 }
                 >

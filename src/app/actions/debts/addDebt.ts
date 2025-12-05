@@ -1,7 +1,7 @@
 "use server"
 import { connectDB } from "@/lib/mongodb";
 import { DebtFormSchema, FormState } from "@/lib/definitions";
-import { addDebt } from "@/lib/debts/debts";
+import { addDebt } from "@/lib/debts";
 
 export async function addDebtAction(state: FormState, formData: FormData): Promise<FormState> {
 
