@@ -46,7 +46,7 @@ const AssetBarChart = (props: Props) => {
                                 hoverBackgroundColor: ['#FF638480','#36A2EB80','#FFCE5680','#4BC0C080','#9966FF80','#FF9F4080','#C9CBCE80','#00CD5680','#7848D480','#EC706380'],
                                 borderColor: ['#FF6384','#36A2EB','#FFCE56','#4BC0C0','#9966FF','#FF9F40','#C9CBCE','#00CD56','#7848D4','#EC7063'],
                                 borderWidth: 1,
-                                borderRadius: 100,
+                                borderRadius: 0,
                                 borderSkipped: false,
                                 },
                             ],

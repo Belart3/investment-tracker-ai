@@ -75,51 +75,44 @@ const DebtTracker = ({ user, debts }: DebtTrackerProps) => {
                         </div>
                     </div>
                     <div className="flex flex-col">
-                        <div className="mt-[42px] grid grid-rows-2 grid-cols-1 md:grid-cols-2 gap-5 px-5">
+                        <div className="mt-[42px] flex flex-row gap-5 px-5 h-[500px]">
                             {/* debts overview */}
-                            <div className=" bg-[#161B22] rounded-[16px] flex flex-col justify-center col-span-1 row-span-1 border border-[#374151] ">
-                                <div className="flex items-center justify-between p-5">
-                                    <h3 className="text-white text-[16px]/[16px] font-medium capitalize">
-                                        debts Overview
-                                    </h3>
+                            <div className="grid grid-cols-2 gap-4 w-3/7">
+                                <div className="flex flex-col justify-center items-center gap-2 bg-[#161B22] rounded-[16px] border border-[#374151]">
+                                    <h4 className="text-[12px]/[18px] text-[#D1D5DB] capitalize">
+                                        total amount owed
+                                    </h4>
+                                    <p className="text-[27px]/[27px] tracking-[-1.62px] text-[#FBBF24] font-semibold flex">
+                                        <TbCurrencyNaira size={27} /> {debts?.reduce((total, debt) => total + debt.amount, 0) ?? 0}
+                                    </p>
                                 </div>
-                                <div className="flex items-center justify-between p-5 border-t border-[#374151]">
-                                    <div className="flex flex-col gap-2">
-                                        <h4 className="text-[12px]/[18px] text-[#D1D5DB] capitalize">
-                                            total amount owed
-                                        </h4>
-                                        <p className="text-[27px]/[27px] tracking-[-1.62px] text-[#FBBF24] font-semibold flex">
-                                            <TbCurrencyNaira size={27} /> {debts?.reduce((total, debt) => total + debt.amount, 0) ?? 0}
-                                        </p>
-                                    </div>
-                                    <div className="flex flex-col gap-2">
-                                        <h4 className="text-[12px]/[18px] text-[#D1D5DB] capitalize">
-                                            no of people owed
-                                        </h4>
-                                        <p className="text-[27px]/[27px] tracking-[-1.62px] text-white font-semibold flex">
-                                            <MdOutlinePersonOutline size={27} />  {debts?.length}
-                                        </p>
-                                    </div>
-                                    <div className="flex flex-col gap-2">
-                                        <h4 className="text-[12px]/[18px] text-[#D1D5DB] capitalize">
-                                            biggest debt
-                                        </h4>
-                                        <p className="text-[27px]/[27px] tracking-[-1.62px] text-[#E60000] font-semibold flex">
-                                            <TbCurrencyNaira size={27} /> {debts?.reduce((prev, current) => (prev.amount > current.amount) ? prev : current)?.amount ?? 0}
-                                        </p>
-                                    </div>
-                                    <div className="flex flex-col gap-2">
-                                        <h4 className="text-[12px]/[18px] text-[#D1D5DB] capitalize">
-                                            smallest debt
-                                        </h4>
-                                        <p className="text-[27px]/[27px] tracking-[-1.62px] text-[#00AC4F] font-semibold flex">
-                                            <TbCurrencyNaira size={27} /> {debts?.reduce((prev, current) => (prev.amount < current.amount) ? prev : current)?.amount ?? 0}
-                                        </p>
-                                    </div>
+                                <div className="flex flex-col justify-center items-center gap-2 bg-[#161B22] rounded-[16px] border border-[#374151]">
+                                    <h4 className="text-[12px]/[18px] text-[#D1D5DB] capitalize">
+                                        no of people owed
+                                    </h4>
+                                    <p className="text-[27px]/[27px] tracking-[-1.62px] text-white font-semibold flex">
+                                        <MdOutlinePersonOutline size={27} />  {debts?.length}
+                                    </p>
+                                </div>
+                                <div className="flex flex-col justify-center items-center gap-2 bg-[#161B22] rounded-[16px] border border-[#374151]">
+                                    <h4 className="text-[12px]/[18px] text-[#D1D5DB] capitalize">
+                                        biggest debt
+                                    </h4>
+                                    <p className="text-[27px]/[27px] tracking-[-1.62px] text-[#E60000] font-semibold flex">
+                                        <TbCurrencyNaira size={27} /> {debts?.reduce((prev, current) => (prev.amount > current.amount) ? prev : current)?.amount ?? 0}
+                                    </p>
+                                </div>
+                                <div className="flex flex-col justify-center items-center gap-2 bg-[#161B22] rounded-[16px] border border-[#374151]">
+                                    <h4 className="text-[12px]/[18px] text-[#D1D5DB] capitalize">
+                                        smallest debt
+                                    </h4>
+                                    <p className="text-[27px]/[27px] tracking-[-1.62px] text-[#00AC4F] font-semibold flex">
+                                        <TbCurrencyNaira size={27} /> {debts?.reduce((prev, current) => (prev.amount < current.amount) ? prev : current)?.amount ?? 0}
+                                    </p>
                                 </div>
                             </div>
                             {/* debtee bar chart */}
-                            <div className="bg-[#161B22] rounded-[16px] flex flex-col justify-items-start col-span-1 row-span-2 border border-[#374151] ">
+                            <div className="bg-[#161B22] rounded-[16px] flex flex-col justify-items-start col-span-1 row-span-2 border border-[#374151] w-4/7">
                                 <div className="flex items-center justify-between p-5 border-b border-[#374151]">
                                     <h3 className="text-white text-[16px]/[16px] font-medium capitalize">
                                         debts Overview
@@ -287,7 +280,7 @@ const DebtTracker = ({ user, debts }: DebtTrackerProps) => {
                                                                                     setOpenMenu(isActive ? null : subIndex)
                                                                                     console.log(subIndex)
                                                                                 }} />
-                                                                                <div className={` ${isActive  ? 'absolute' : 'hidden'} bg-white z-50 rounded-md shadow-lg mt-2`}>
+                                                                                <div className={` ${isActive  ? 'absolute' : 'hidden'} bg-white z-[999999] rounded-md shadow-lg mt-2`}>
                                                                                     <div className="py-1 w-full">
                                                                                         <button className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full cursor-pointer transition-all duration-200 ease-in-out">
                                                                                             <PencilIcon size={16} className="inline mr-2 mb-1" />

@@ -130,9 +130,9 @@ export default function Home({ user }: Props) {
               <PortfolioDistribution labels={labels} labelValue={labelValue} />
             </div>
             {/* portfolio distribution line chart */}
-            <div className="  xl:col-span-2  xl:row-span-2">
+            {/* <div className="  xl:col-span-2  xl:row-span-2">
               <AssetLineChart  label={labels} labelValue={labelValue} />
-            </div>
+            </div> */}
             {/* individual assets bar chart */}
             <div className=" xl:col-span-2   xl:row-span-2">
               <AssetBarChart labels={labels} labelValue={labelValue}/>
