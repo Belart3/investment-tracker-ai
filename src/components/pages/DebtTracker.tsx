@@ -3,7 +3,7 @@ import React from 'react'
 import { Bar } from 'react-chartjs-2'
 import { AiOutlineEdit } from 'react-icons/ai'
 import { GoPlus } from 'react-icons/go'
-import { MdOutlinePersonOutline } from 'react-icons/md'
+import { MdDelete, MdOutlinePersonOutline } from 'react-icons/md'
 import { RiDeleteBinLine } from 'react-icons/ri'
 import { TbCurrencyNaira } from 'react-icons/tb'
 import { AiOutlineDisconnect } from 'react-icons/ai';
@@ -26,7 +26,7 @@ ChartJS.register(ArcElement, LineElement, CategoryScale, LinearScale, PointEleme
 import AddDebtModal from '../ui/AddDebtModal'
 import { toast, ToastContainer } from 'react-toastify';
 import { useState } from 'react';
-import { ChevronRight, MoreHorizontal } from 'lucide-react'
+import { ChevronRight, MoreHorizontal, PencilIcon } from 'lucide-react'
 
 
 interface DebtTrackerProps {
@@ -48,9 +48,9 @@ interface DebtTrackerProps {
 
 const DebtTracker = ({ user, debts }: DebtTrackerProps) => {
     const [showAddDebtModal, setShowAddDebtModal] = useState(false);
-    const [selectedId, setSelectedId] = useState<string | number | null>(null);
     const [showActionMenu, setShowActionMenu] = useState<boolean>(false);
-    const [expandRow, setExpandRow] = useState<boolean>(false);
+    const [openRow, setOpenRow] = useState<number | null>(null);
+    const [openMenu, setOpenMenu] = useState<number | null>(null);
     const [checked, setChecked] = useState(false);
     const name = user ? user.name : 'User';
 
@@ -219,14 +219,14 @@ const DebtTracker = ({ user, debts }: DebtTrackerProps) => {
                                         <tbody>
                                             {
                                                 debts.length > 0 ?
-                                                debts.map((data, index) => (
-                                                    <React.Fragment key={index}>
-                                                        <tr className={`text-white text-[16px]/[24px] tracking-[-0.64px] font-normal relative border-b last-of-type:!border-0 cursor-pointer border-[#374151] select-none ${expandRow && selectedId === index ? 'bg-[#1F2937]' : ''}`} onClick={() => {
-                                                            setSelectedId(index);
-                                                            setExpandRow(!expandRow)
+                                                debts.map((data, index) => {
+                                                    const isOpen = openRow === index;
+                                                    return(<React.Fragment key={index}>
+                                                        <tr className={`text-white text-[16px]/[24px] tracking-[-0.64px] font-normal relative border-b last-of-type:!border-0 cursor-pointer border-[#374151] select-none ${isOpen ? 'bg-[#1F2937]' : ''}`} onClick={() => {
+                                                            setOpenRow(isOpen ? null : index)
                                                         }}>
                                                         <td className='w-[100px] px-5'>
-                                                            <ChevronRight size={24} className={`transition-transform duration-200 ease-in-out text-[#9d9d9d] ${expandRow && selectedId == index ? 'rotate-90' : ''}`} />
+                                                            <ChevronRight size={24} className={`transition-transform duration-200 ease-in-out text-[#9d9d9d] ${isOpen ? 'rotate-90' : ''}`} />
                                                             {/* <input type="checkbox" id={`check-${index}`} checked={selectedId === index} className='size-[16px] appearance-none checked:bg-[#28C76F] border border-[#374151] rounded-[4px]' /> */}
                                                         </td>
                                                         <td className='py-5 capitalize'>{data.name}</td>
@@ -256,47 +256,57 @@ const DebtTracker = ({ user, debts }: DebtTrackerProps) => {
                                                         </td>
                                                         </tr> 
                                                         {
-                                                            expandRow && selectedId === index ? (
-                                                                debts?.filter(debt => debt.name === data.name).map((debtItem, subIndex) => (
-                                                                    <tr key={subIndex} className={`text-white text-[16px]/[24px] tracking-[-0.64px] font-normal relative border-b last-of-type:!border-0 border-[#374151] bg-[#111827]`}>
-                                                                        <td className='w-[100px] px-5'></td>
-                                                                        <td className='py-5 capitalize'>- {debtItem.item}</td>
-                                                                        <td className='py-5'>
-                                                                            {
-                                                                                new Date(debtItem.createdAt).toLocaleDateString('en-US', {
-                                                                                    year: 'numeric',
-                                                                                    month: 'short',
-                                                                                    day: 'numeric',
-                                                                                })
-                                                                            }
-                                                                        </td>
-                                                                        <td className='py-5'>
-                                                                            {
-                                                                                debtItem.amount
-                                                                            }
-                                                                        </td>
-                                                                        <td className='py-5'>
-                                                                            {
-                                                                                debtItem.amount
-                                                                            }
-                                                                        </td>
-                                                                        <td className='py-5 cursor-pointer relative'>
-                                                                            <MoreHorizontal size={24} className='text-[#9d9d9d] hover:bg-[#28C76F] hover:text-white transition-colors duration-200 ease-in-out rounded-sm' onClick={() => {
-                                                                                setShowActionMenu(!showActionMenu);
-                                                                            }} />
-                                                                            <div className={` ${showActionMenu  ? 'absolute' : 'hidden'} bg-white z-50 rounded-md shadow-lg mt-2`}>
-                                                                                <div className="py-1 w-full">
-                                                                                    <button className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full cursor-pointer transition-all duration-200 ease-in-out">Edit</button>
-                                                                                    <button className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full cursor-pointer transition-all duration-200 ease-in-out">Delete</button>
+                                                            isOpen  ? (
+                                                                debts?.filter(debt => debt.name === data.name).map((debtItem, subIndex) => {
+                                                                    const isActive = subIndex === openMenu;
+                                                                    return (
+                                                                        <tr key={subIndex} className={`text-white text-[16px]/[24px] tracking-[-0.64px] font-normal relative border-b last-of-type:!border-0 border-[#374151] bg-[#111827]`}>
+                                                                            <td className='w-[100px] px-5'></td>
+                                                                            <td className='py-5 capitalize'>- {debtItem.item}</td>
+                                                                            <td className='py-5'>
+                                                                                {
+                                                                                    new Date(debtItem.createdAt).toLocaleDateString('en-US', {
+                                                                                        year: 'numeric',
+                                                                                        month: 'short',
+                                                                                        day: 'numeric',
+                                                                                    })
+                                                                                }
+                                                                            </td>
+                                                                            <td className='py-5'>
+                                                                                {
+                                                                                    debtItem.amount
+                                                                                }
+                                                                            </td>
+                                                                            <td className='py-5'>
+                                                                                {
+                                                                                    debtItem.amount
+                                                                                }
+                                                                            </td>
+                                                                            <td className='py-5 cursor-pointer relative'>
+                                                                                <MoreHorizontal size={24} className='text-[#9d9d9d] hover:bg-[#28C76F] hover:text-white transition-colors duration-200 ease-in-out rounded-sm' onClick={() => {
+                                                                                    setOpenMenu(isActive ? null : subIndex)
+                                                                                    console.log(subIndex)
+                                                                                }} />
+                                                                                <div className={` ${isActive  ? 'absolute' : 'hidden'} bg-white z-50 rounded-md shadow-lg mt-2`}>
+                                                                                    <div className="py-1 w-full">
+                                                                                        <button className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full cursor-pointer transition-all duration-200 ease-in-out">
+                                                                                            <PencilIcon size={16} className="inline mr-2 mb-1" />
+                                                                                            Edit
+                                                                                        </button>
+                                                                                        <button className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full cursor-pointer transition-all duration-200 ease-in-out">
+                                                                                            <MdDelete size={16} className="inline mr-2 mb-1" />
+                                                                                            Delete
+                                                                                        </button>
+                                                                                    </div>
                                                                                 </div>
-                                                                            </div>
-                                                                        </td>
-                                                                    </tr>
-                                                                ))
+                                                                            </td>
+                                                                        </tr>
+                                                                    )
+                                                                })
                                                             ) : null
                                                         }
-                                                    </React.Fragment>
-                                                ))
+                                                    </React.Fragment>)
+                                                })
                                                 : 
                                                 <tr className={`text-white text-[16px]/[24px] tracking-[-0.64px] font-normal relative border-b last-of-type:!border-0 border-[#374151]`}>
                                                     <td className='w-[200px] px-5' colSpan={6}>
