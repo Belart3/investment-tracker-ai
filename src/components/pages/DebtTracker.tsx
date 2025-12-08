@@ -120,14 +120,14 @@ const DebtTracker = ({ user, debts }: DebtTrackerProps) => {
                                 </div>
                                 <div className=" h-full w-full px-4">
                                     {
-                                        debts.length > 0 ? 
+                                        (debts ?? []).length > 0 ? 
                                         <Bar 
                                         data={{
-                                        labels: debts.map((debt) => debt.name),
+                                        labels: (debts ?? []).map((debt) => debt.name),
                                         datasets: [
                                         {
                                             label: 'Amt Owed',
-                                            data: debts.map((debt) => debt.amount),
+                                            data: (debts ?? []).map((debt) => debt.amount),
                                             backgroundColor: ['#FF638420','#36A2EB20','#FFCE5620','#4BC0C020','#9966FF20','#FF9F4020','#C9CBCE20','#00CD5620','#7848D420','#EC706320'],
                                             hoverBackgroundColor: ['#FF638480','#36A2EB80','#FFCE5680','#4BC0C080','#9966FF80','#FF9F4080','#C9CBCE80','#00CD5680','#7848D480','#EC706380'],
                                             borderColor: ['#FF6384','#36A2EB','#FFCE56','#4BC0C0','#9966FF','#FF9F40','#C9CBCE','#00CD56','#7848D4','#EC7063'],
@@ -211,8 +211,8 @@ const DebtTracker = ({ user, debts }: DebtTrackerProps) => {
                                         </thead>
                                         <tbody>
                                             {
-                                                debts.length > 0 ?
-                                                debts.map((data, index) => {
+                                                (debts ?? []).length > 0 ?
+                                                (debts ?? []).map((data, index:number) => {
                                                     const isOpen = openRow === index;
                                                     return(<React.Fragment key={index}>
                                                         <tr className={`text-white text-[16px]/[24px] tracking-[-0.64px] font-normal relative border-b last-of-type:!border-0 cursor-pointer border-[#374151] select-none ${isOpen ? 'bg-[#1F2937]' : ''}`} onClick={() => {
