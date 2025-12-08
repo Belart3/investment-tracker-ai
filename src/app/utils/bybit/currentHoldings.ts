@@ -21,9 +21,9 @@ export async function fetchCurrentHoldings() {
         const c = []
         for (const item of data) {
             c.push({
-                asset: item.coin,
-                balance: item.totalWalletBalance,
-                accountType: item.accountType,
+                asset: item.symbol,
+                balance: item.cashBalance,
+                accountType: item.type,
             })
         }
         //console.log('Processed Bybit Balance Data:', c[0]);
