@@ -61,7 +61,7 @@ const DebtTracker = ({ user, debts }: DebtTrackerProps) => {
 
 
     return (
-        debts.length > 0 ? (
+        (debts ?? []).length > 0 ? (
                 <div className='ms-[237px] bg-[#0D1117] relative pb-15 mt-20'>
                     <div className="border-b border-[#374151] bg-[#161B22] p-5 w-full flex items-center justify-between">
                         <h2 className="text-white font-semibold text-[27px]/[27px] tracking-[-1.62px] capitalize">
