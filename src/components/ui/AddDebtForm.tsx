@@ -15,10 +15,13 @@ const AddDebtForm = (props: Props) => {
     useEffect(() => {
         if (state.error) {
             toast.error(state.error, { position: 'bottom-right' });
+            return;
         }
 
         if (state.message) {
             toast.info(state.message, { position: 'bottom-right' });
+            props.setDisplayModal(false);
+            return;
         }
     }, [state]);
     return (

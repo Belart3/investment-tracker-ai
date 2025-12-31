@@ -75,7 +75,7 @@ const DebtTracker = ({ user, debts }: DebtTrackerProps) => {
                         </div>
                     </div>
                     <div className="flex flex-col">
-                        <div className="mt-[42px] flex flex-row gap-5 px-5 h-[500px]">
+                        <div className="mt-[42px] flex flex-row gap-5 px-5 h-fit 2xl:">
                             {/* debts overview */}
                             <div className="grid grid-cols-2 gap-4 w-3/7">
                                 <div className="flex flex-col justify-center items-center gap-2 bg-[#161B22] rounded-[16px] border border-[#374151]">
@@ -112,13 +112,13 @@ const DebtTracker = ({ user, debts }: DebtTrackerProps) => {
                                 </div>
                             </div>
                             {/* debtee bar chart */}
-                            <div className="bg-[#161B22] rounded-[16px] flex flex-col justify-items-start col-span-1 row-span-2 border border-[#374151] w-4/7">
+                            <div className="bg-[#161B22] rounded-[16px] flex flex-col justify-items-start col-span-1 row-span-2 border border-[#374151] w-4/7 h-fit">
                                 <div className="flex items-center justify-between p-5 border-b border-[#374151]">
                                     <h3 className="text-white text-[16px]/[16px] font-medium capitalize">
                                         debts Overview
                                     </h3>
                                 </div>
-                                <div className=" h-full w-full px-4">
+                                <div className=" !h-full !w-full px-4">
                                     {
                                         (debts ?? []).length > 0 ? 
                                         <Bar 
@@ -222,7 +222,7 @@ const DebtTracker = ({ user, debts }: DebtTrackerProps) => {
                                                             <ChevronRight size={24} className={`transition-transform duration-200 ease-in-out text-[#9d9d9d] ${isOpen ? 'rotate-90' : ''}`} />
                                                             {/* <input type="checkbox" id={`check-${index}`} checked={selectedId === index} className='size-[16px] appearance-none checked:bg-[#28C76F] border border-[#374151] rounded-[4px]' /> */}
                                                         </td>
-                                                        <td className='py-5 capitalize'>{data.name}</td>
+                                                        <td className='py-5'>{data.name}</td>
                                                         <td className='py-5'>
                                                             {
                                                                 new Date(data.createdAt).toLocaleDateString('en-US', {

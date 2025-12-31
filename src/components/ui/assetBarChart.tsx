@@ -1,5 +1,5 @@
 import React from 'react'
-import TimeFilter from './timeFilter'
+import TimeFilter from './liveMarketTimeFilter'
 import { Bar } from "react-chartjs-2";
 import Skeleton from '@mui/material/Skeleton';
 import { Box } from '@mui/material';

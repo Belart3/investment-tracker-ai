@@ -15,7 +15,7 @@ import {
     LogarithmicScale,
 } from 'chart.js';
 ChartJS.register(ArcElement, LineElement, CategoryScale, LinearScale, PointElement, BarElement, LogarithmicScale, Title, Filler, Tooltip, Legend);
-import TimeFilter from './timeFilter';
+import TimeFilter from './liveMarketTimeFilter';
 import { Skeleton } from '@mui/material';
 
 type Props = {

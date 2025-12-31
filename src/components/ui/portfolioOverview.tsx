@@ -1,5 +1,5 @@
 import React from 'react'
-import TimeFilter from './timeFilter'
+import TimeFilter from './liveMarketTimeFilter'
 import Skeleton from '@mui/material/Skeleton';
 
 type Props = {

@@ -21,7 +21,6 @@ const page = async (props: Props) => {
     }
 
     const debts = await getDebtsByUserId(decoded.userId);
-    console.log('Debts for user:', debts);
     const user = await validateUser();
     return (
         <div>
