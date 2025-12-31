@@ -14,7 +14,7 @@ const PortfolioOverview = (props: Props) => {
         <div className=" bg-[#161B22] overflow-scroll xl:overflow-hidden rounded-[16px] flex flex-col justify-center border border-[#374151] w-full">
             <div className="flex items-center justify-between px-2 py-4 xl:p-5">
                 <h3 className="text-white text-[16px]/[16px] font-medium">Portfolio Overview</h3>
-                <TimeFilter />
+                {/* <TimeFilter /> */}
             </div>
             {
                 props.balanceValue ? (

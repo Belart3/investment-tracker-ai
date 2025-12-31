@@ -2,13 +2,14 @@
 import React from "react";
 import Marquee from "react-fast-marquee";
 import { IoTriangleSharp } from "react-icons/io5";
-import TimeFilter from "./liveMarketTimeFilter";
+import LiveMarketTimeFilter from "./liveMarketTimeFilter";
 import { useEffect, useState } from "react";
 import Skeleton from "@mui/material/Skeleton";
 
 type MarketDatum = {
     symbol: string;
     name: string;
+    last_updated: string;
     quote: {
         USD: {
             price: number;
@@ -23,9 +24,6 @@ type MarketDatum = {
         percIncr: number;
         volume?: number; 
     },
-    status: {
-        timestamp: string;
-    }
 }
 
 
@@ -43,11 +41,12 @@ const LiveMarketData = () => {
     const marketData = liveData.length > 0 ? liveData : [];
     const [timeFilter, setTimeFilter] = useState<string>('1h');
     const timeKey = `percent_change_${timeFilter}` as keyof typeof marketData[0]['quote']['USD'];
+    const lastUpdated = marketData.length > 0 ? marketData[0].last_updated : '';
     console.log('Market Data in LiveMarketData component:', marketData);
 
     return (
-        <div className="border-b border-[#374151] bg-[#161B22] p-2 lg:p-5 flex items-center gap-2.5 fixed top-0 right-0 z-[9999999999] lg:ms-[237px] lg:w-[calc(100%-237px)]">
-            <TimeFilter setTimeFilter={setTimeFilter} timefilter={timeFilter} />
+        <div className="border-b border-[#374151] bg-[#161B22] p-2 lg:p-5 flex items-center gap-2.5 fixed top-0 right-0  lg:ms-[237px] lg:w-[calc(100%-237px)]">
+            <LiveMarketTimeFilter setTimeFilter={setTimeFilter} timefilter={timeFilter} lastUpdated={lastUpdated} />
             <Marquee
                 gradient
                 gradientColor="#161B22"
