@@ -1,25 +1,29 @@
-import { useState, useEffect } from "react";
-import { getMarketData } from "@/lib/getMarketData";
+'use client';
+
+import useSWR from 'swr';
+import {getMarketData} from '@/lib/getMarketData';
+
+// SWR fetcher
+const fetcher = async () => {
+    const res = await getMarketData();
+    return res;
+};
 
 export function useMarketData() {
-    const [data, setData] = useState<any[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<Error | null>(null);
+    const { data, error, isLoading, mutate } = useSWR(
+        '/api/liveMarketData', // key for SWR cache
+        fetcher,
+        {
+        refreshInterval: 120000, // 2 minutes
+        revalidateOnFocus: false, // don't refetch on window focus
+        dedupingInterval: 120000, // prevent duplicate fetches
+        }
+    );
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const marketData = await getMarketData();
-                setData(marketData);
-            } catch (err) {
-                setError(err as Error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchData();
-    }, []);
-
-    return { data, loading, error };
+    return {
+        data: data ?? [],
+        loading: isLoading,
+        error,
+        refresh: mutate, // manual refresh if needed
+    };
 }

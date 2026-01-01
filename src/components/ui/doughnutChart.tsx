@@ -40,6 +40,7 @@ const DoughnutChart = (props: Props) => {
                     }}
                     options={{
                         responsive: true,
+                        maintainAspectRatio: false,
                     }}
                 />
                 ) : 

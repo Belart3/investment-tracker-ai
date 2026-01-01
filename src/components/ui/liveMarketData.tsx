@@ -32,12 +32,12 @@ const LiveMarketData = () => {
     const { data: liveData, loading, error } = useMarketData();
     const marketData = liveData.length > 0 ? liveData : [];
     const [timeFilter, setTimeFilter] = useState<string>('1h');
-    const timeKey = `percent_change_${timeFilter}` as keyof typeof marketData[0]['quote']['USD'];
+    const timeKey = `percent_change_${timeFilter}` as const;
     const lastUpdated = marketData.length > 0 ? marketData[0].last_updated : '';
     console.log('Market Data in LiveMarketData component:', marketData);
 
     return (
-        <div className="w-full border-b border-[#374151] bg-[#161B22] p-2 lg:p-5 flex items-center gap-2.5 fixed top-0 right-0  lg:ms-[237px] lg:w-[calc(100%-237px)]">
+        <div className="w-full border-b border-[#374151] bg-[#161B22] p-2 lg:p-5 flex items-center gap-2.5 fixed top-0 right-0  xl:ms-[237px] xl:w-[calc(100%-237px)] z-50">
             <LiveMarketTimeFilter setTimeFilter={setTimeFilter} timefilter={timeFilter} lastUpdated={lastUpdated} />
             <Marquee 
                 gradient
@@ -46,7 +46,7 @@ const LiveMarketData = () => {
             >
                 {
                     !loading ? 
-                    marketData.map((data, index) => (
+                    marketData.map((data: MarketDatum, index: number) => (
                         <div key={index} className="flex items-center gap-1 me-5">
                             <p className="uppercase text-[14px]/[21px] text-white tracking-[-0.56px] font-bold">
                                 {data.symbol}
@@ -63,7 +63,7 @@ const LiveMarketData = () => {
                                     )
                                 }
                                 <p className={`uppercase text-[14px]/[21px] text-[#22C55E] tracking-[-0.56px] font-normal ${data.quote.USD.percent_change_1h > 0 ? 'text-[#22C55E]' : 'text-[#B91C1C]'}`}>
-                                    {data.quote.USD[timeKey].toFixed(2)}%
+                                    {(data.quote.USD[timeKey as keyof typeof data.quote.USD] as number).toFixed(2)}%
                                 </p>
                             </div>
                         </div>
@@ -71,7 +71,7 @@ const LiveMarketData = () => {
                     : 
                     <div className="flex gap-5">
                         { 
-                            [1,2,3,4,5,6,7,8,90,2,1].map((item, index) => (
+                            [1,2,3,4,5,6,7,8,90,2,1].map((item: number, index: number) => (
                                 <div className="flex gap-1" key={index}>
                                     <Skeleton variant="text" width={30} height={30} sx={{bgcolor: '#374151', borderRadius: 0}} />
                                     <Skeleton variant="text" width={80} height={30} sx={{bgcolor: '#374151', borderRadius: 0}} />

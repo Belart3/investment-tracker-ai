@@ -28,8 +28,8 @@ const liveMarketTimeFilter = (props: Props) => {
                     <Select value={props.timefilter} onValueChange={(value) => {
                         props.setTimeFilter(value);
                     }}>
-                        <SelectTrigger className="w-[180px] text-[#6B7280] border-none">
-                            <SelectValue className='p-1.5 rouned-[4px] text-[12px]/[18px] tracking-[-0.48px] !text-[#6B7280] cursor-pointer' />
+                        <SelectTrigger className="w-[180px] text-[#6B7280] border-none p-[2px] md:p-1.5 ">
+                            <SelectValue className='rouned-[4px] text-[12px]/[18px] tracking-[-0.48px] !text-[#6B7280] cursor-pointer' />
                         </SelectTrigger>
                         <SelectContent className='z-[99999]'>
                             <SelectGroup>
