@@ -157,8 +157,6 @@ const DebtTracker = ({ user, debts }: DebtTrackerProps) => {
                                                     size: 12,
                                                 }
                                                 },
-                                                barPercentage: 0.5,
-                                                categoryPercentage: 0.5,
                                             },
                                             y: {
                                                 type: 'logarithmic',
