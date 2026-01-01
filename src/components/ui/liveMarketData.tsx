@@ -5,6 +5,7 @@ import { IoTriangleSharp } from "react-icons/io5";
 import LiveMarketTimeFilter from "./liveMarketTimeFilter";
 import { useEffect, useState } from "react";
 import Skeleton from "@mui/material/Skeleton";
+import { useMarketData } from "@/hooks/useMarketData";
 
 type MarketDatum = {
     symbol: string;
@@ -28,16 +29,7 @@ type MarketDatum = {
 
 
 const LiveMarketData = () => {
-    useEffect(() => {
-        async function loadMarketData() {
-            const res = await fetch('/api/liveMarketData');
-            const data = await res.json();
-            setLiveData(data || null); 
-            console.log('Market data loaded:', data || null);
-        }    
-        loadMarketData()
-    },[])
-    const [liveData, setLiveData] = useState<MarketDatum[]>([])
+    const { data: liveData, loading, error } = useMarketData();
     const marketData = liveData.length > 0 ? liveData : [];
     const [timeFilter, setTimeFilter] = useState<string>('1h');
     const timeKey = `percent_change_${timeFilter}` as keyof typeof marketData[0]['quote']['USD'];
@@ -45,15 +37,15 @@ const LiveMarketData = () => {
     console.log('Market Data in LiveMarketData component:', marketData);
 
     return (
-        <div className="border-b border-[#374151] bg-[#161B22] p-2 lg:p-5 flex items-center gap-2.5 fixed top-0 right-0  lg:ms-[237px] lg:w-[calc(100%-237px)]">
+        <div className="w-full border-b border-[#374151] bg-[#161B22] p-2 lg:p-5 flex items-center gap-2.5 fixed top-0 right-0  lg:ms-[237px] lg:w-[calc(100%-237px)]">
             <LiveMarketTimeFilter setTimeFilter={setTimeFilter} timefilter={timeFilter} lastUpdated={lastUpdated} />
-            <Marquee
+            <Marquee 
                 gradient
                 gradientColor="#161B22"
                 gradientWidth={50}
             >
                 {
-                    marketData.length > 0 ? 
+                    !loading ? 
                     marketData.map((data, index) => (
                         <div key={index} className="flex items-center gap-1 me-5">
                             <p className="uppercase text-[14px]/[21px] text-white tracking-[-0.56px] font-bold">

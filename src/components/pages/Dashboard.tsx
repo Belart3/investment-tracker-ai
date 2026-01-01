@@ -8,6 +8,8 @@ import PortfolioDistribution from "../ui/portfolioDistribution";
 import AssetLineChart from "../ui/assetLineChart";
 import { Skeleton } from "@mui/material";
 import { SidebarContext } from "@/context/sidebarContext";
+import { useWalletBalance } from "@/hooks/useWalletBalance";
+import { useExchangeHistory } from "@/hooks/useExchangeHistory";
 
 type Balance = {
   accountType?: string;
@@ -47,59 +49,59 @@ type Props = {
 };
 
 export default function Home({ user }: Props) {
-  const [balance, setBalance] = useState<Balance>({});
-  const [liveData, setLiveData] = useState<MarketDatum[]>([]);
-  const [exchangeHistory, setExchangeHistory] = useState<ExchangeHistoryData[]>([]);
   const { showSidebar } = useContext(SidebarContext);
+  const {balance:balance, loading, error} = useWalletBalance();
+  const {exchangeHistory: exchangeHistoryData, loading: exchangeHistoryLoading, error: exchangeHistoryError} = useExchangeHistory();
 
-  useEffect(() => {
-
-    async function loadMarketData() {
-      const res = await fetch('/api/liveMarketData');
-      const marketData = await res.json();
-      setLiveData(marketData || []); 
-      //console.log('Market data loaded:', marketData || null);
-    }    
-    loadMarketData()
-    
-    async function loadUnifiedWalletBalance() {
-      const res = await fetch('/api/unifiedBalance');
-      const balanceData = await res.json();
-
-      setBalance(balanceData || []); 
-      console.log('Balance data set:', balanceData );
-    }
-    loadUnifiedWalletBalance()
-
-    async function loadExchangeHistory() {
-      const res = await fetch('/api/exchangeHistory');
-      const data = await res.json();
-
-      setExchangeHistory(data || []);
-      //console.log('exchange History Log:', data);
-    } 
-    loadExchangeHistory();
-
-    // async function loadFundWalletBalance() {
-    //   const res = await fetch('/api/fundWalletBalance');
-    //   const balanceData = await res.json();
-
-    //   setBalance(balanceData || null); 
-    //   //console.log('Balance data set:', balanceData );
-    // }
-    // loadFundWalletBalance()
-  }, []);
   const accountType = balance?.accountType || 'N/A';
   const assets = balance?.asset || [];
   const balExists = balance && Object.keys(balance).length > 0 && assets.length > 0;
   const labels = balExists ? assets.map((item: any) => item.coin) : [];
-  const labelValue = balExists ? assets.map((item) => item.usdValue) : [];
-  const cumRealisedPnl = balExists && assets.reduce((acc, item) => acc + parseFloat(item.cumRealisedPnl || '0'), 0).toFixed(2) || '0';
+  const labelValue: string[] = balExists ? assets.map((item: typeof assets[number]) => item.usdValue) : [];
+  const cumRealisedPnl: string = balExists && assets.reduce((acc: number, item: Asset) => acc + parseFloat(item.cumRealisedPnl || '0'), 0).toFixed(2) || '0';
+  interface Asset {
+    coin: string;
+    usdValue: string;
+    walletBalance: string;
+    cumRealisedPnl: string;
+  }
+
+  interface Balance {
+    accountType?: string;
+    balance?: string;
+    totalAssets?: number | string;
+    asset?: Asset[];
+  }
+
+  interface MarketDatum {
+    symbol: string;
+    latestPrice: number;
+    percIncr: number;
+    volume?: number;
+  }
+
+  interface ExchangeHistoryData {
+    fromCoin: string;
+    toCoin: string;
+    fromAmount: string;
+    toAmount: string;
+    exchangeTime: string;
+    exchangeRate: string;
+  }
+
+  interface User {
+    name: string;
+    email: string;
+  }
+
+  interface DashboardProps {
+    user?: User | null;
+  }
   const totalBalance = balExists ? assets.reduce((acc: number, item: any) => acc + parseFloat(item.usdValue || '0'), 0).toFixed(2) : 0;
 
-  const filterAssets = exchangeHistory && exchangeHistory.length > 0 ? exchangeHistory.filter(
-  (asset, index, self) =>
-    index === self.findIndex((t) => t.fromCoin === asset.fromCoin)
+  const filterAssets: ExchangeHistoryData[] = exchangeHistoryData && exchangeHistoryData.length > 0 ? exchangeHistoryData.filter(
+  (asset: ExchangeHistoryData, index: number, self: ExchangeHistoryData[]) =>
+    index === self.findIndex((t: ExchangeHistoryData) => t.fromCoin === asset.fromCoin)
   ) : [];
 
   return (
@@ -151,7 +153,7 @@ export default function Home({ user }: Props) {
               </div>
             </div>
             {/* Asset trade information table */}
-            <ConversionHistory filterAssets={filterAssets} liveData={liveData} exchangeHistory={exchangeHistory} />
+            <ConversionHistory filterAssets={filterAssets} exchangeHistory={exchangeHistoryData} loading={exchangeHistoryLoading} error={exchangeHistoryError} />
           </div>
         }
       </div>
