@@ -333,8 +333,8 @@ const DebtTracker = ({ user, debts }: DebtTrackerProps) => {
                 </div>
             </div>
             )
-            : 
-            <div className='ms-[237px] bg-[#0D1117] relative pb-15 mt-20 flex flex-col items-center justify-center h-[80vh]'>
+            :   
+            <div className='xl:ms-[237px] bg-[#0D1117] relative pb-15 mt-20 flex flex-col items-center justify-center h-[80vh]'>
                 <h2 className="text-white font-semibold text-[27px]/[27px] tracking-[-1.62px] capitalize mb-5">
                     no outstanding balances
                 </h2>

@@ -12,6 +12,7 @@ import {
     TooltipContent,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { Clock } from 'lucide-react';
 
 type Props = {
     setTimeFilter: (value: string) => void;
@@ -28,7 +29,8 @@ const liveMarketTimeFilter = (props: Props) => {
                     <Select value={props.timefilter} onValueChange={(value) => {
                         props.setTimeFilter(value);
                     }}>
-                        <SelectTrigger className="w-[180px] text-[#6B7280] border-none p-[2px] md:p-1.5 ">
+                        <SelectTrigger className="w-[180px] text-[#6B7280] border-none !px-1 md:p-1.5 !gap-1 lg:gap-2">
+                            <Clock className='w-4 h-4! text-[#6B7280]' />
                             <SelectValue className='rouned-[4px] text-[12px]/[18px] tracking-[-0.48px] !text-[#6B7280] cursor-pointer' />
                         </SelectTrigger>
                         <SelectContent className='z-[99999]'>

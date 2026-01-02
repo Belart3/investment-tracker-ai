@@ -37,7 +37,7 @@ const LiveMarketData = () => {
     console.log('Market Data in LiveMarketData component:', marketData);
 
     return (
-        <div className="w-full border-b border-[#374151] bg-[#161B22] p-2 lg:p-5 flex items-center gap-2.5 sticky top-0 right-0  xl:ms-[237px] xl:w-[calc(100%-237px)] z-50">
+        <div className="w-full border-b border-[#374151] bg-[#161B22] p-2 lg:p-5 flex items-center gap-1 lg:gap-2.5 sticky top-0 right-0  xl:ms-[237px] xl:w-[calc(100%-237px)] z-50">
             <LiveMarketTimeFilter setTimeFilter={setTimeFilter} timefilter={timeFilter} lastUpdated={lastUpdated} />
             <Marquee 
                 gradient
@@ -47,11 +47,11 @@ const LiveMarketData = () => {
                 {
                     !loading ? 
                     marketData.map((data: MarketDatum, index: number) => (
-                        <div key={index} className="flex items-center gap-1 me-5">
-                            <p className="uppercase text-[14px]/[21px] text-white tracking-[-0.56px] font-bold">
+                        <div key={index} className="flex items-center gap-[2px] lg:gap-1 me-5">
+                            <p className="uppercase text-xs lg:text-[14px]/[21px] text-white tracking-[-0.56px] font-bold">
                                 {data.symbol}
                             </p>
-                            <p className={`uppercase text-[14px]/[21px] tracking-[-0.56px] font-normal ${data.quote.USD.percent_change_1h > 0 ? 'text-[#22C55E]' : 'text-[#B91C1C]'}`}>
+                            <p className={`uppercase text-xs lg:text-[14px]/[21px] tracking-[-0.56px] font-normal ${data.quote.USD.percent_change_1h > 0 ? 'text-[#22C55E]' : 'text-[#B91C1C]'}`}>
                                 ${data.quote.USD.price.toFixed(2)}
                             </p>
                             <div className="flex gap-1 items-center">
@@ -62,7 +62,7 @@ const LiveMarketData = () => {
                                         <IoTriangleSharp size={6} color="#B91C1C" className="translate-y-[0%] rotate-180" />
                                     )
                                 }
-                                <p className={`uppercase text-[14px]/[21px] text-[#22C55E] tracking-[-0.56px] font-normal ${data.quote.USD.percent_change_1h > 0 ? 'text-[#22C55E]' : 'text-[#B91C1C]'}`}>
+                                <p className={`uppercase text-xs lg:text-[14px]/[21px] text-[#22C55E] tracking-[-0.56px] font-normal ${data.quote.USD.percent_change_1h > 0 ? 'text-[#22C55E]' : 'text-[#B91C1C]'}`}>
                                     {(data.quote.USD[timeKey as keyof typeof data.quote.USD] as number).toFixed(2)}%
                                 </p>
                             </div>
