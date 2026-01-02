@@ -37,7 +37,7 @@ const LiveMarketData = () => {
     console.log('Market Data in LiveMarketData component:', marketData);
 
     return (
-        <div className="w-full border-b border-[#374151] bg-[#161B22] p-2 lg:p-5 flex items-center gap-2.5 fixed top-0 right-0  xl:ms-[237px] xl:w-[calc(100%-237px)] z-50">
+        <div className="w-full border-b border-[#374151] bg-[#161B22] p-2 lg:p-5 flex items-center gap-2.5 sticky top-0 right-0  xl:ms-[237px] xl:w-[calc(100%-237px)] z-50">
             <LiveMarketTimeFilter setTimeFilter={setTimeFilter} timefilter={timeFilter} lastUpdated={lastUpdated} />
             <Marquee 
                 gradient

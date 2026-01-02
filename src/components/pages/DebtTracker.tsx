@@ -62,9 +62,10 @@ const DebtTracker = ({ user, debts }: DebtTrackerProps) => {
 
     return (
         (debts ?? []).length > 0 ? (
-                <div className='xl:ms-[237px] bg-[#0D1117] relative pb-15 mt-20'>
-                    <div className="border-b border-[#374151] bg-[#161B22] p-5 w-full flex items-center justify-between">
-                        <h2 className="text-white font-semibold text-[27px]/[27px] tracking-[-1.62px] capitalize">
+            <div className="xl:ms-[237px] bg-[#0D1117] relative pb-15 flex flex-col items-center justify-center">
+                <div className="border-b border-[#374151] bg-[#161B22] w-full p-5">
+                    <div className="flex items-center justify-between w-full max-w-[1440px] mx-auto">
+                        <h2 className="text-white font-semibold text-lg lg:text-[27px]/[27px] tracking-[-1.62px] capitalize">
                             outstanding balances
                         </h2>
                         <div className="flex items-center justify-between">
@@ -74,8 +75,10 @@ const DebtTracker = ({ user, debts }: DebtTrackerProps) => {
                             </button>
                         </div>
                     </div>
+                </div>
+                <div className='w-full max-w-[1440px] xl:mx-auto min-h-[80vh] px-5'>
                     <div className="flex flex-col">
-                        <div className="mt-[42px] flex flex-col lg:flex-row gap-5 px-5 h-fit 2xl:">
+                        <div className="mt-[42px] flex flex-col lg:flex-row gap-5 h-fit">
                             {/* debts overview */}
                             <div className="grid grid-cols-2 gap-4 h-[300px] w-full lg:w-3/7">
                                 <div className="flex flex-col justify-center items-center gap-2 bg-[#161B22] rounded-[16px] border border-[#374151]">
@@ -177,7 +180,7 @@ const DebtTracker = ({ user, debts }: DebtTrackerProps) => {
                                 </div>
                             </div>
                         </div>
-                        <div className="flex flex-col justify-center col-span-2 gap-5 mt-10 px-5 mb-10">
+                        <div className="flex flex-col justify-center col-span-2 gap-5 mt-10 mb-10">
                             {/* action buttons */}
                             <div className="flex items-center justify-end gap-8">
                                 {/* add debt button */}
@@ -202,12 +205,11 @@ const DebtTracker = ({ user, debts }: DebtTrackerProps) => {
                                     <table className="table-auto w-full">
                                         <thead>
                                             <tr className={`text-[#6B7280] text-[12px]/[18px] tracking-[-0.48px] font-normal border-b border-[#374151]`}>
-                                                <th className='w-[200px]'></th>
-                                                <th className='text-start py-5 capitalize'>Date</th>
-                                                <th className='text-start py-5 capitalize'>Name</th>
-                                                <th className='text-start py-5 capitalize'>min amt. owed</th>
-                                                <th className='text-start py-5 capitalize'>max amt. owed</th>
-                                                <th className='text-start py-5 capitalize'>no. of items owed</th>
+                                                <th className='max-w-12 lg:w-[200px]'></th>
+                                                <th className='py-2 md:py-4 xl:py-5 ps-2 text-sm md:text-md font-medium xl:ps-5 capitalize text-start md:text-start'>Name</th>
+                                                <th className='py-2 md:py-4 xl:py-5 ps-2 text-sm md:text-md font-medium xl:ps-5 capitalize text-start md:text-start'>Date</th>
+                                                <th className='py-2 md:py-4 xl:py-5 ps-2 text-sm md:text-md font-medium xl:ps-5 capitalize text-start md:text-start'>min amt.</th>
+                                                <th className='py-2 md:py-4 xl:py-5 ps-2 text-sm md:text-md font-medium xl:ps-5 capitalize text-start md:text-start'>max amt.</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -216,15 +218,15 @@ const DebtTracker = ({ user, debts }: DebtTrackerProps) => {
                                                 (debts ?? []).map((data, index:number) => {
                                                     const isOpen = openRow === index;
                                                     return(<React.Fragment key={index}>
-                                                        <tr className={`text-white text-[16px]/[24px] tracking-[-0.64px] font-normal relative border-b last-of-type:!border-0 cursor-pointer border-[#374151] select-none ${isOpen ? 'bg-[#1F2937]' : ''}`} onClick={() => {
+                                                        <tr className={`text-white text-[16px]/[24px] tracking-[-0.64px] font-normal relative border-b last-of-type:!border-0 border-[#374151] hover:bg-[#1F2937] cursor-pointer select-none ${isOpen ? 'bg-[#1F2937]' : ''}`} onClick={() => {
                                                             setOpenRow(isOpen ? null : index)
                                                         }}>
-                                                        <td className='w-[100px] px-5'>
-                                                            <ChevronRight size={24} className={`transition-transform duration-200 ease-in-out text-[#9d9d9d] ${isOpen ? 'rotate-90' : ''}`} />
+                                                        <td className='max-w-12 lg:w-[100px] px-2 lg:px-5'>
+                                                            <ChevronRight className={`transition-transform duration-200 ease-in-out text-[#9d9d9d] size-4 lg:size-6 ${isOpen ? 'rotate-90' : ''}`} />
                                                             {/* <input type="checkbox" id={`check-${index}`} checked={selectedId === index} className='size-[16px] appearance-none checked:bg-[#28C76F] border border-[#374151] rounded-[4px]' /> */}
                                                         </td>
-                                                        <td className='py-5'>{data.name}</td>
-                                                        <td className='py-5'>
+                                                        <td className='py-4 lg:py-5 text-sm lg:text-lg'>{data.name}</td>
+                                                        <td className='py-4 lg:py-5 text-sm lg:text-lg'>
                                                             {
                                                                 new Date(data.createdAt).toLocaleDateString('en-US', {
                                                                     year: 'numeric',
@@ -233,17 +235,17 @@ const DebtTracker = ({ user, debts }: DebtTrackerProps) => {
                                                                 })
                                                             }
                                                         </td>
-                                                        <td className='py-5'>
+                                                        <td className='py-4 lg:py-5 text-sm lg:text-lg'>
                                                             {
                                                                 data.name
                                                             }
                                                         </td>
-                                                        <td className='py-5'>
+                                                        <td className='py-4 lg:py-5 text-sm lg:text-lg'>
                                                             {
                                                                 data.amount
                                                             }
                                                         </td>
-                                                        <td className='py-5'>
+                                                        <td className='py-4 lg:py-5 text-sm lg:text-lg'>
                                                             {
 
                                                             }
@@ -255,9 +257,9 @@ const DebtTracker = ({ user, debts }: DebtTrackerProps) => {
                                                                     const isActive = subIndex === openMenu;
                                                                     return (
                                                                         <tr key={subIndex} className={`text-white text-[16px]/[24px] tracking-[-0.64px] font-normal relative border-b last-of-type:!border-0 border-[#374151] bg-[#111827]`}>
-                                                                            <td className='w-[100px] px-5'></td>
-                                                                            <td className='py-5 capitalize'>- {debtItem.item}</td>
-                                                                            <td className='py-5'>
+                                                                            <td className='max-w-12 lg:w-[200px]'></td>
+                                                                            <td className='py-2 lg:py-5 text-sm lg:text-lg capitalize'>- {debtItem.item}</td>
+                                                                            <td className='py-2 lg:py-5 text-sm lg:text-lg'>
                                                                                 {
                                                                                     new Date(debtItem.createdAt).toLocaleDateString('en-US', {
                                                                                         year: 'numeric',
@@ -266,29 +268,29 @@ const DebtTracker = ({ user, debts }: DebtTrackerProps) => {
                                                                                     })
                                                                                 }
                                                                             </td>
-                                                                            <td className='py-5'>
+                                                                            <td className='py-2 lg:py-5 text-sm lg:text-lg'>
                                                                                 {
                                                                                     debtItem.amount
                                                                                 }
                                                                             </td>
-                                                                            <td className='py-5'>
+                                                                            <td className='py-2 lg:py-5 text-sm lg:text-lg'>
                                                                                 {
                                                                                     debtItem.amount
                                                                                 }
                                                                             </td>
-                                                                            <td className='py-5 cursor-pointer relative'>
-                                                                                <MoreHorizontal size={24} className='text-[#9d9d9d] hover:bg-[#28C76F] hover:text-white transition-colors duration-200 ease-in-out rounded-sm' onClick={() => {
+                                                                            <td className='py-2 lg:py-5 cursor-pointer relative'>
+                                                                                <MoreHorizontal className='text-[#9d9d9d] hover:bg-[#28C76F] hover:text-white transition-colors duration-200 ease-in-out rounded-xs size-5 lg:size-6' onClick={() => {
                                                                                     setOpenMenu(isActive ? null : subIndex)
                                                                                     console.log(subIndex)
                                                                                 }} />
                                                                                 <div className={` ${isActive  ? 'absolute' : 'hidden'} bg-white z-[999999] rounded-md shadow-lg mt-2`}>
                                                                                     <div className="py-1 w-full">
-                                                                                        <button className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full cursor-pointer transition-all duration-200 ease-in-out">
-                                                                                            <PencilIcon size={16} className="inline mr-2 mb-1" />
+                                                                                        <button className="block px-2 py-1 lg:px-4 lg:py-2 text-xs md:text-sm text-gray-700 hover:bg-gray-100 w-full cursor-pointer transition-all duration-200 ease-in-out">
+                                                                                            <PencilIcon size={16}  className="inline mr-2 mb-1 " />
                                                                                             Edit
                                                                                         </button>
-                                                                                        <button className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full cursor-pointer transition-all duration-200 ease-in-out">
-                                                                                            <MdDelete size={16} className="inline mr-2 mb-1" />
+                                                                                        <button className="block px-2 py-1 lg:px-4 lg:py-2 text-xs md:text-sm text-gray-700 hover:bg-gray-100 w-full cursor-pointer transition-all duration-200 ease-in-out">
+                                                                                            <MdDelete size={16}  className="inline mr-2 mb--4" />
                                                                                             Delete
                                                                                         </button>
                                                                                     </div>
@@ -329,6 +331,7 @@ const DebtTracker = ({ user, debts }: DebtTrackerProps) => {
                         }
                     }}  />
                 </div>
+            </div>
             )
             : 
             <div className='ms-[237px] bg-[#0D1117] relative pb-15 mt-20 flex flex-col items-center justify-center h-[80vh]'>

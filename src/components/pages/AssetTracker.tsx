@@ -14,7 +14,7 @@ type Props = {}
 const AssetTracker = (props: Props) => {
     const [isAddAssetModalOpen, setIsAddAssetModalOpen] = useState(false);
     return (
-        <div className='lg:ms-[237px] mt-[50px] lg:mt-[100px] mb-25 lg:mb-10 p-5 lg:w-[calc(100%-237px)]'>
+        <div className='lg:ms-[237px] mb-25 lg:mb-10 p-5 lg:w-[calc(100%-237px)]'>
             <div className="flex flex-row justify-between items-center">
                 <div className="flex flex-col gap-4 items-start lg:flex-row justify-between lg:items-center w-full">
                     <div className="flex flex-row justify-between items-center gap-4">

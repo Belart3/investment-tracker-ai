@@ -23,7 +23,7 @@ const MobileNavbar = (props: Props) => {
     }, [pathname]);
 
     return (
-        <nav className='fixed bottom-[10px] left-1/2 -translate-1/2 rounded-full w-fit backdrop-blur-xs bg-black/10 border border-gray-700 flex lg:hidden z-50 justify-start items-center p-[2px]'>
+        <nav className='fixed bottom-[10px] left-1/2 -translate-1/2 rounded-full w-fit backdrop-blur-xs bg-black/10 border border-gray-700 flex xl:hidden z-50 justify-start items-center p-[2px]'>
             <a href="/" className="">
                 <div className={`flex flex-col justify-center items-center py-1 w-fit rounded-full transition-all ease-in duration-200 hover:border hover:border-white/20 hover:bg-black/10 hover:backdrop-blur-xl shadow-xl hover:px-5 hover:py-1 ${active === "dashboard" ? 'border border-white/20 bg-black/10 backdrop-blur-xl shadow-xl px-5 py-1' : ' px-4'}`} onClick={() => setActive("dashboard")}>
                     <MdDashboard size={30} className={`${active === 'dashboard' ? 'text-[#22C55E]' : 'text-gray-300'}`}/>

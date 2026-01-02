@@ -24,7 +24,7 @@ type Props = {
 
 const DoughnutChart = (props: Props) => {
     return (
-        <div className="h-[300px] xl:h-[500px] flex items-center justify-center p-5">
+        <div className="h-[300px] md:h-100 xl:h-[500px] flex items-center justify-center p-5">
             {
                 props.label && props.labelValue && props.label.length > 0 && props.labelValue.length > 0 ? (
                 <Doughnut

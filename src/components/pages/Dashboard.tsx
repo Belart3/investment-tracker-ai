@@ -105,12 +105,10 @@ export default function Home({ user }: Props) {
   ) : [];
 
   return (
-    <div className={`lg:ms-[237px] transition-all duration-300`}>
-      <div className="flex flex-col">
-        {/* live market data marquee */}
-        <LiveMarketData />
-        {/* page header */}
-        <div className="border-b border-[#374151] bg-[#161B22] p-2 xl:p-5 w-full mt-[50px] xl:mt-[72px] flex items-center justify-between">
+    <div className={`xl:ms-[237px] transition-all duration-300`}>
+      {/* page header */}
+      <div className="border-b border-[#374151] bg-[#161B22] p-2 xl:p-5 w-full ">
+        <div className="flex items-center justify-between w-full max-w-[1440px] mx-auto px-3 xl:px-5">
           <h2 className="text-white font-semibold text-sm lg:text-[27px]/[27px] tracking-[-1.62px]">Dashboard</h2>
           {
             balExists &&
@@ -124,32 +122,32 @@ export default function Home({ user }: Props) {
             </p>
           }
         </div>
+      </div>
+      <div className="flex flex-col w-full max-w-[1440px] mx-auto px-3 xl:px-5">
         {/* check if there is data from the api first */}
         {
           !balExists ? (
-            <div className="px-3 xl:px-5 mt-[42px] flex flex-col gap-4 w-full h-full items-center justify-center">
+            <div className=" mt-[42px] flex flex-col gap-4 w-full h-full items-center justify-center">
               <h1 className="text-white text-[16px]/[16px] font-medium">
                 Loading your dashboard...  
               </h1>
             </div>
           ) : 
-          <div className="px-3 xl:px-5 mt-[42px] flex flex-col gap-4">
-            <div className="flex flex-col gap-4 xl:grid xl:grid-cols-6 xl:gap-5 w-full h-fit 2xl:h-[600px]">
-              {/* Portfolio Overview */}
-              <div className="  xl:col-span-2  xl:row-span-1">
-                <PortfolioOverview balanceValue={totalBalance} accountType={accountType} pnl={cumRealisedPnl} />
+          <div className="mt-[42px] flex flex-col gap-4">
+            <div className="gap-4 grid md:grid-cols-2 xl:gap-5 w-full h-fit 2xl:h-fit">
+              <div className="flex flex-col gap-4">
+                {/* Portfolio Overview */}
+                <div className="col-span-1  xl:row-span-1">
+                  <PortfolioOverview balanceValue={totalBalance} accountType={accountType} pnl={cumRealisedPnl} />
+                </div>
+                {/* individual assets bar chart */}
+                <div className="col-span-1 row-span-2 grow">
+                  <AssetBarChart labels={labels} labelValue={labelValue}/>
+                </div>
               </div>
               {/* portfolio distribution doughnut chart */}
-              <div className=" xl:col-span-2   xl:row-span-3">
+              <div className="col-span-1">
                 <PortfolioDistribution labels={labels} labelValue={labelValue} />
-              </div>
-              {/* portfolio distribution line chart */}
-              {/* <div className="  xl:col-span-2  xl:row-span-2">
-                <AssetLineChart  label={labels} labelValue={labelValue} />
-              </div> */}
-              {/* individual assets bar chart */}
-              <div className=" xl:col-span-2   xl:row-span-2">
-                <AssetBarChart labels={labels} labelValue={labelValue}/>
               </div>
             </div>
             {/* Asset trade information table */}

@@ -39,7 +39,7 @@ const ConversionHistory = (props: Props) => {
     const [filterByTransaction, setFilterByTransaction] = useState('');
     const [slice, setSlice] = useState(10);
     return (
-        <div className="flex flex-col justify-start space-y-2 order-4 bg-[#161B22] border border-[#374151] rounded-[16px]">
+        <div className="flex flex-col justify-start space-y-2 order-4 bg-[#161B22] border border-[#374151] rounded-[16px] mb-10 lg:mb-20">
             {
                 props.loading ? (
                     <div className="p-5 w-full flex items-center justify-center h-[200px]">
@@ -50,7 +50,7 @@ const ConversionHistory = (props: Props) => {
                 ) : 
                 <>
                     <div className="flex flex-col gap-1 items-start md:flex-row md:items-center justify-between px-2 py-4 xl:p-5">
-                        <h2 className="text-white capitalize">conversion history</h2>
+                        <h2 className="text-white capitalize text-lg">conversion history</h2>
                         <div className="flex items-center md:items-center justify-end gap-4 w-full">
                             <div className="flex flex-col gap-1">
                                 <p className="text-white text-xs capitalize hidden md:block">asset</p>
