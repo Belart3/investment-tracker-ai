@@ -11,10 +11,11 @@ export async function fetchLiveMarketData () {
     try {
         const result = await client.getTickers({
             category: 'spot',
+            symbol: '',
         })
-        const data = result.result.list;
-        //console.log('Bybit Market Data:', data);
-
+        const list = result?.result?.list ?? [];
+        const data = list.filter((item) => item.symbol.endsWith('USDT'));
+        
         const res = [];
         for (const item of data) {
             res.push({
@@ -28,5 +29,6 @@ export async function fetchLiveMarketData () {
         return res;
     } catch (error) {
         console.error('Bybit API Error:', error);
+        throw error;
     }
 }

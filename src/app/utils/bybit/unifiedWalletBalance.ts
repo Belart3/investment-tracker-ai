@@ -1,4 +1,3 @@
-// src/app/lib/bybit.ts
 import { RestClientV5 } from 'bybit-api';
 
 const client = new RestClientV5({
@@ -7,12 +6,16 @@ const client = new RestClientV5({
     testnet: false,
 });
 
-export async function fetchBybitBalance() {
+export async function unifiedWalletBalance() {
     try {
         const result = await client.getWalletBalance({
-            accountType: 'UNIFIED',
+            accountType: 'UNIFIED'
         })
-        const data = result.result.list;
+        const data = result?.result?.list ?? [];
+
+        if (!data.length) {
+            throw new Error('No UNIFIED balance data found');
+        }
         //console.log('Bybit Balance Data:', data);
 
         const c = []
@@ -27,6 +30,6 @@ export async function fetchBybitBalance() {
         return c[0];
     } catch (error) {
         console.error('Bybit API Error:', error);
-        throw new Error('Failed to fetch balance data from Bybit');
+        throw new Error('Failed to fetch UNIFIED balance data from Bybit');
     }
 }

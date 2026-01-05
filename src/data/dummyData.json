@@ -1,3 +1,12 @@
 [
-    
+    {
+        "name": "enoch",
+        "id": 0,
+        "items": [
+            {
+                "itemName": "first item",
+                "itemAmount": 3000
+            }
+        ]
+    }
 ]

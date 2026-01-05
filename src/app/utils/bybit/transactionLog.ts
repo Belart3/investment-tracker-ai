@@ -10,10 +10,10 @@ export async function getTransactionLog () {
     try {
         const result = await client.getTransactionLog({
             accountType: 'UNIFIED',
-            startTime: Date.now() - 30 * 24 * 60 * 60 * 1000, // Last 30 days
+            currency: 'USDT',
         })
-        const data = result.result.list;
-        //console.log('Bybit Transaction Log Data:', data);
+        const data = result.result.list ?? [];
+        console.log('Bybit Transaction Log Data:', data);
         return data
     } catch (error: any) {
         console.error('Bybit API Error:', error);
