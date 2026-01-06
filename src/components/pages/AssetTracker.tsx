@@ -8,6 +8,8 @@ import { IoTrashBinOutline } from "react-icons/io5";
 import { FaRegTrashAlt } from "react-icons/fa";
 import AddAssetModal from '../../components/ui/AddAssetModal';
 import AssetTrackerTable from '../../components/ui/AssetTrackerTable';
+import { useRouter } from 'next/navigation';
+import { useTransition } from 'react';
 
 type Props = {
     assets: {
@@ -38,6 +40,13 @@ const AssetTracker = (props: Props) => {
     const assets = props.assets;
     const totalAssets = assets.length;
     const assetValue = assets.reduce((total, asset) => total + (asset.purchasePrice * asset.quantity), 0);
+    const router = useRouter();
+    const [isPending, startTransition] = useTransition();
+    const handleRefresh = () => {
+        startTransition(() => {
+            router.refresh();
+        });
+    }
     return (
         <div className='lg:ms-[237px] mb-25 lg:mb-10 p-5 lg:w-[calc(100%-237px)]'>
             <div className="flex flex-row justify-between items-center">
@@ -52,9 +61,11 @@ const AssetTracker = (props: Props) => {
                         </div>
                     </div>
                     <div className="flex items-center justify-center gap-3">
-                        <button className="bg-transparent border border-[#374151] rounded-[8px] px-2 lg:px-4 py-2 text-[14px]/[21px] tracking-[-0.56px] font-medium text-white hover:bg-[#28C76F] hover:bg-none transition cursor-pointer flex items-center capitalize">
-                            <RefreshCcw className="inline-block me-2" size={20} />
-                            refresh all
+                        <button className="bg-transparent border border-[#374151] rounded-[8px] px-2 lg:px-4 py-2 text-[14px]/[21px] tracking-[-0.56px] font-medium text-white hover:bg-[#28C76F] hover:bg-none transition cursor-pointer flex items-center capitalize" onClick={() => handleRefresh()} disabled={isPending}>
+                            <RefreshCcw className={`inline-block me-2 ${isPending ? 'animate-spin' : ''}`} size={20} />
+                            {
+                                isPending ? 'refreshing...' : 'refresh'
+                            }
                         </button>
                         <button className="bg-transparent border border-[#374151] rounded-[8px] px-2 lg:px-4 py-2 text-[14px]/[21px] tracking-[-0.56px] font-medium text-white hover:bg-[#28C76F] hover:bg-none transition cursor-pointer flex items-center capitalize" onClick={() => setIsAddAssetModalOpen(true)}>
                             <PlusIcon className="inline-block me-2" size={20} />
@@ -105,7 +116,7 @@ const AssetTracker = (props: Props) => {
                     </div>
                 </div>
             </div>
-            <AddAssetModal addAssetModalOpen={isAddAssetModalOpen} setAddAssetModalOpen={setIsAddAssetModalOpen} />
+            <AddAssetModal addAssetModalOpen={isAddAssetModalOpen} setAddAssetModalOpen={setIsAddAssetModalOpen} handleRefresh={handleRefresh} />
             <div className="flex items-center justify-center rounded-sm bg-[#374151] p-[2px] mt-8 mb-5 w-fit">
                 <button className='flex items-center justify-center outline-none border-none bg-transparent cursor-pointer text-sm text-white px-3 lg:px-10 py-1 rounded-sm g-[#374151] capitalize hover:bg-[#0D1117] transition-colors ease-linear duration-150 font-normal tracking-[-0.56px]'>
                     <CiBag1 className='me-2' strokeWidth={2} />

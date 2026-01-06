@@ -29,6 +29,7 @@ type MarketDatum = {
 type Props = {
     addAssetModalOpen: boolean;
     setAddAssetModalOpen: (isOpen: boolean) => void;
+    handleRefresh?: () => void;
 }
 
 const AddAssetModal = (props: Props) => {
@@ -140,7 +141,7 @@ const AddAssetModal = (props: Props) => {
                         <button type='button' className="capitalize cursor-pointer border border-[#374151] bg-[#0D1117] text-sm text-[#6B7280] hover:text-white rounded-sm py-2 px-4 hover:bg-[#21262D] hover:border-transparent transition-colors ease-linear duration-150" onClick={() => props.setAddAssetModalOpen(false)}>
                             cancel
                         </button>
-                        <button type='submit' className="capitalize cursor-pointer bg-[#28C76F] text-sm text-white rounded-sm py-2 px-4 hover:bg-[#21262D] transition-colors ease-linear duration-150">
+                        <button type='submit' className="capitalize cursor-pointer bg-[#28C76F] text-sm text-white rounded-sm py-2 px-4 hover:bg-[#21262D] transition-colors ease-linear duration-150" onClick={() => !pending && props.handleRefresh?.()}>
                             {
                                 pending ? 'adding asset...' : 'add asset'
                             }
