@@ -1,5 +1,4 @@
 "use server"
-import { connectDB } from "@/lib/mongodb";
 import { DebtFormSchema, FormState } from "@/lib/definitions";
 import { addDebt } from "@/lib/debts";
 
@@ -20,9 +19,7 @@ export async function addDebtAction(state: FormState, formData: FormData): Promi
     const {name, item, amount} = validatedFields.data;
 
     try {
-        await connectDB();
         const newDebt = await addDebt(name, item, amount);
-        console.log('Saved debt:', newDebt);
         if (!newDebt) {
             return {
                 error: 'Failed to add debt. Please try again.',

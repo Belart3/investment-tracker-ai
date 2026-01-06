@@ -9,10 +9,35 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import AddAssetModal from '../../components/ui/AddAssetModal';
 import AssetTrackerTable from '../../components/ui/AssetTrackerTable';
 
-type Props = {}
+type Props = {
+    assets: {
+        assetSymbol: string;
+        quantity: number;
+        purchasePrice: number;
+        transactionDate: string;
+        notes?: string;
+        createdAt: string;
+        updatedAt: string;
+    }[]
+}
+
+export interface AssetTrackerProps {
+    assets: {
+        assetSymbol: string;
+        quantity: number;
+        purchasePrice: number;
+        transactionDate: string;
+        notes?: string;
+        createdAt: string;
+        updatedAt: string;
+    }[]
+}
 
 const AssetTracker = (props: Props) => {
     const [isAddAssetModalOpen, setIsAddAssetModalOpen] = useState(false);
+    const assets = props.assets;
+    const totalAssets = assets.length;
+    const assetValue = assets.reduce((total, asset) => total + (asset.purchasePrice * asset.quantity), 0);
     return (
         <div className='lg:ms-[237px] mb-25 lg:mb-10 p-5 lg:w-[calc(100%-237px)]'>
             <div className="flex flex-row justify-between items-center">
@@ -59,7 +84,7 @@ const AssetTracker = (props: Props) => {
                             value
                         </p>
                         <h2 className="text-[18px]/[28px] tracking-[-0.96px] font-semibold text-white">
-                            $12,345.67
+                            ${assetValue.toFixed(2)}
                         </h2>
                     </div>
                     <div className="flex flex-col gap-2 bg-[#0D1117] py-1 px-2 lg:p-3 border border-[#374151] rounded-sm">
@@ -95,7 +120,7 @@ const AssetTracker = (props: Props) => {
                     deleted assets
                 </button>
             </div>
-            <AssetTrackerTable isAssetModalOpen={isAddAssetModalOpen} setIsAddAssetModalOpen={setIsAddAssetModalOpen} />
+            <AssetTrackerTable isAssetModalOpen={isAddAssetModalOpen} assets={assets} setIsAddAssetModalOpen={setIsAddAssetModalOpen} />
         </div>
     )
 }

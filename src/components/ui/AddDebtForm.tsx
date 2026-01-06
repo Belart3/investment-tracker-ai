@@ -1,7 +1,6 @@
 import React, { useActionState, useEffect } from 'react'
 import { addDebtAction } from '@/app/actions/debts/addDebt';
 import { toast } from 'react-toastify';
-import { AiOutlineDisconnect } from 'react-icons/ai';
 
 type Props = {
     setDisplayModal: React.Dispatch<React.SetStateAction<boolean>>;

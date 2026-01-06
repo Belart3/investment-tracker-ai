@@ -40,6 +40,18 @@ export const DebtFormSchema = z.object({
     amount: z.number({ message: 'Amount must be a number.' })
 })
 
+export const AssetFormSchema = z.object({
+    assetSymbol: z.string()
+    .min(2, {error: 'Item must be at least 2 characters long.' })
+    .trim(),
+    quantity: z.number({ message: 'Quantity must be a number.' }),
+    purchasePrice: z.number({ message: 'Purchase Price must be a number.' }),
+    transactionDate: z.string()
+    .min(1, { error: 'Transaction Date is required.' })
+    .trim(),
+    notes: z.string().optional(),
+})
+
 export type FormState = {
     errors?: {
         name?: string[];
@@ -48,6 +60,10 @@ export type FormState = {
         general?: string[];
         item?: string[];
         amount?: string[];
+        assetSymbol?: string[];
+        quantity?: string[];
+        purchasePrice?: string[];
+        transactionDate?: string[];
     };
     error?: string;
     message?: string;

@@ -16,9 +16,6 @@ export async function addDebt (name: string, item: string, amount: number) {
     if (!decoded) {
         return null;
     }
-    if (decoded) {
-    console.log('user id ' + decoded.userId); 
-    }
 
     const newDebt = new Debts({
         userId: new mongoose.Types.ObjectId(decoded.userId),

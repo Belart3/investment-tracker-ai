@@ -1,10 +1,13 @@
-import React, { useState, useEffect, use } from 'react'
+import React, { useState } from 'react'
 import { ChevronRight, PlusIcon, RefreshCcw, TrendingDown } from 'lucide-react';
 import { TokenIcon } from '@web3icons/react'
+import { useExchangeHistory } from '@/hooks/useExchangeHistory';
+import { AssetTrackerProps } from '../pages/AssetTracker';
 
 type Props = {
     setIsAddAssetModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
     isAssetModalOpen: boolean;
+    assets: AssetTrackerProps['assets'];
 }
 
 interface Asset {
@@ -26,34 +29,12 @@ interface ExchangeHistoryData  {
 }
 
 const AssetTrackerTable = (props: Props) => {
-    const [assets, setAssets] = useState<Asset>({accountType: '', asset: []});
-    const accountType = assets.accountType;
-    const assetHoldings = assets.asset.length > 0 ? assets.asset.filter(item => Number(item.walletBalance) > 0) : [];
-    const portfolioValue = assetHoldings.reduce((total, item) => Number(total) + Number(item.usdValue),0);      
-    const [exchangeHistory, setExchangeHistory] = useState<ExchangeHistoryData[]>([]);
-    const totAssetQty = exchangeHistory.reduce((total, item) => Number(total) + Number(item.toCoin),0)
+    const {exchangeHistory, loading: exchangeHistoryLoading, error: exchangeError} = useExchangeHistory();
+    const assets = props.assets;
+    const [exchangeHistoryData, setExchangeHistoryData] = useState<ExchangeHistoryData[]>([]);
     const [openRow, setOpenRow] = useState<number | null>(null);
 
-    useEffect(() => {
-        async function loadUnifiedWalletBalance() {
-        const res = await fetch('/api/unifiedBalance');
-        const assetList = await res.json();
-
-        setAssets(assetList || []); 
-        console.log('Asset data set:', assetList );
-        }
-
-        loadUnifiedWalletBalance()
-
-        async function loadExchangeHistory() {
-            const res = await fetch('/api/exchangeHistory');
-            const data = await res.json();
-
-            setExchangeHistory(data || []);
-            //console.log('exchange History Log:', data);
-        } 
-        loadExchangeHistory();
-    }, [])
+    
 
     return (
         <div className="col-span-6 flex flex-col justify-start row-span-2 space-y-2 order-4 bg-[#161B22] border border-[#374151] rounded-md">
@@ -78,14 +59,14 @@ const AssetTrackerTable = (props: Props) => {
                                 <th className='text-start py-5 ps-5 capitalize'></th>
                                 <th className='text-start py-5 ps-5 capitalize'>Asset</th>
                                 <th className='text-start py-5 capitalize'>total qty</th>
-                                <th className='text-start py-5 capitalize'>value</th>
                                 <th className='text-start py-5 capitalize'>price</th>
+                                <th className='text-start py-5 capitalize'>value</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            {assetHoldings?.length > 0 &&
-                                assetHoldings.map((item, index) => {
+                            {assets?.length > 0 &&
+                                assets.map((item, index) => {
                                     const isOpen = openRow === index;
                                     return (
                                         <React.Fragment key={index}>
@@ -102,24 +83,24 @@ const AssetTrackerTable = (props: Props) => {
                                                 </td>
                                                 <td className='py-5 capitalize ps-5 flex items-center justify-start gap-2'>
                                                     <TokenIcon
-                                                        symbol={item.coin.toUpperCase()}
+                                                        symbol={item.assetSymbol.toUpperCase()}
                                                         size={20}
-                                                        variant='mono'
+                                                        variant='branded'
                                                     />
                                                     <span className="uppercase">
-                                                        {item.coin}
+                                                        {item.assetSymbol}
                                                     </span>
                                                 </td>
-                                                <td className='py-5 capitalize ps-5'>{Number(item.walletBalance).toFixed(2)}</td>
-                                                <td className='py-5 capitalize ps-5'>{Number(item.usdValue).toFixed(2)}</td>
-                                                <td className='py-5 capitalize ps-5'>{Number(item.walletBalance).toFixed(2)}</td>
+                                                <td className='py-5 capitalize text-start'>{Number(item.quantity).toFixed(2)}</td>
+                                                <td className='py-5 capitalize text-start'>${Number(item.purchasePrice).toFixed(2)}</td>
+                                                <td className='py-5 capitalize text-start'>${(Number(item.purchasePrice) * Number(item.quantity)).toFixed(2)}</td>
                                             </tr>
                                             {/* COLLAPSIBLE ROW */}
-                                            {isOpen && (
+                                            {/* {isOpen && (
                                                 <tr className="bg-[#111827] border-b border-[#374151]">
                                                     <td colSpan={8} className="p-5 text-sm text-gray-300">
                                                         <div className="">
-                                                            <h3 className="text-white font-semibold mb-3">Exchange History for {item.coin}</h3>
+                                                            <h3 className="text-white font-semibold mb-3">Exchange History for {item.assetSymbol}</h3>
                                                         </div>
                                                         <table className='table-auto w-full'>
                                                             <thead>
@@ -133,8 +114,8 @@ const AssetTrackerTable = (props: Props) => {
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                {exchangeHistory.map((exchange, exIndex) => (
-                                                                    exchange.toCoin === item.coin && (
+                                                                {exchangeHistoryData.map((exchange, exIndex) => (
+                                                                    exchange.toCoin === item.assetSymbol && (
                                                                         <tr key={exIndex} className="border-t border-[#374151]">
                                                                             <td className="py-1 xl:py-5 xl:gap-1 items-center hidden md:flex text-end md:text-start px-[2px]">
                                                                                 <TokenIcon
@@ -187,7 +168,7 @@ const AssetTrackerTable = (props: Props) => {
                                                         </table>
                                                     </td>
                                                 </tr>
-                                            )}
+                                            )} */}
 
                                         </React.Fragment>
                                     );
