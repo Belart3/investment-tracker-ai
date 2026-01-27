@@ -6,31 +6,11 @@ import LiveMarketTimeFilter from "./liveMarketTimeFilter";
 import { useEffect, useState } from "react";
 import Skeleton from "@mui/material/Skeleton";
 import { useMarketData } from "@/hooks/useMarketData";
-
-type MarketDatum = {
-    symbol: string;
-    name: string;
-    last_updated: string;
-    quote: {
-        USD: {
-            price: number;
-            percent_change_1h: number;
-            percent_change_7d: number;
-            percent_change_24h: number;
-            percent_change_30d: number;
-            percent_change_60d: number;
-            percent_change_90d: number;
-        };
-        latestPrice: number;
-        percIncr: number;
-        volume?: number; 
-    },
-}
-
+import { MarketDatum } from "@/types/marketData";
 
 const LiveMarketData = () => {
     const { data: liveData, loading, error } = useMarketData();
-    const marketData = liveData.length > 0 ? liveData : [];
+    const marketData : MarketDatum[] = liveData.length > 0 ? liveData : [];
     const [timeFilter, setTimeFilter] = useState<string>('1h');
     const timeKey = `percent_change_${timeFilter}` as const;
     const lastUpdated = marketData.length > 0 ? marketData[0].last_updated : '';

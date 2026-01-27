@@ -1,43 +1,14 @@
 "use client";
-import { useState, useEffect, useContext } from "react";
-import LiveMarketData from "../ui/liveMarketData";
+import { useContext } from "react";
 import PortfolioOverview from "../ui/portfolioOverview";
 import AssetBarChart from "../ui/assetBarChart";
 import ConversionHistory from "../ui/conversionHistory";
 import PortfolioDistribution from "../ui/portfolioDistribution";
-import AssetLineChart from "../ui/assetLineChart";
 import { Skeleton } from "@mui/material";
 import { SidebarContext } from "@/context/sidebarContext";
 import { useWalletBalance } from "@/hooks/useWalletBalance";
 import { useExchangeHistory } from "@/hooks/useExchangeHistory";
-
-type Balance = {
-  accountType?: string;
-  balance?: string ;
-  totalAssets?: number | string;
-  asset?: {
-    coin: string;
-    usdValue: string;
-    walletBalance: string;
-    cumRealisedPnl: string ;
-  }[];
-};
-
-type MarketDatum = {
-  symbol: string;
-  latestPrice: number;
-  percIncr: number;
-  volume?: number; 
-};
-
-type ExchangeHistoryData = {
-  fromCoin: string,
-  toCoin: string,
-  fromAmount: string,
-  toAmount: string,
-  exchangeTime: string,
-  exchangeRate: string,
-}
+import { ExchangeHistory } from "@/types/exchangeHistory";
 
 type user = {
   name: string;
@@ -49,7 +20,6 @@ type Props = {
 };
 
 export default function Home({ user }: Props) {
-  const { showSidebar } = useContext(SidebarContext);
   const {balance:balance, loading, error} = useWalletBalance();
   const {exchangeHistory: exchangeHistoryData, loading: exchangeHistoryLoading, error: exchangeHistoryError} = useExchangeHistory();
 
@@ -59,6 +29,7 @@ export default function Home({ user }: Props) {
   const labels = balExists ? assets.map((item: any) => item.coin) : [];
   const labelValue: string[] = balExists ? assets.map((item: typeof assets[number]) => item.usdValue) : [];
   const cumRealisedPnl: string = balExists && assets.reduce((acc: number, item: Asset) => acc + parseFloat(item.cumRealisedPnl || '0'), 0).toFixed(2) || '0';
+
   interface Asset {
     coin: string;
     usdValue: string;
@@ -66,42 +37,16 @@ export default function Home({ user }: Props) {
     cumRealisedPnl: string;
   }
 
-  interface Balance {
-    accountType?: string;
-    balance?: string;
-    totalAssets?: number | string;
-    asset?: Asset[];
-  }
-
-  interface MarketDatum {
-    symbol: string;
-    latestPrice: number;
-    percIncr: number;
-    volume?: number;
-  }
-
-  interface ExchangeHistoryData {
-    fromCoin: string;
-    toCoin: string;
-    fromAmount: string;
-    toAmount: string;
-    exchangeTime: string;
-    exchangeRate: string;
-  }
-
   interface User {
     name: string;
     email: string;
   }
 
-  interface DashboardProps {
-    user?: User | null;
-  }
   const totalBalance = balExists ? assets.reduce((acc: number, item: any) => acc + parseFloat(item.usdValue || '0'), 0).toFixed(2) : 0;
 
-  const filterAssets: ExchangeHistoryData[] = exchangeHistoryData && exchangeHistoryData.length > 0 ? exchangeHistoryData.filter(
-  (asset: ExchangeHistoryData, index: number, self: ExchangeHistoryData[]) =>
-    index === self.findIndex((t: ExchangeHistoryData) => t.fromCoin === asset.fromCoin)
+  const filterAssets: ExchangeHistory[] = exchangeHistoryData && exchangeHistoryData.length > 0 ? exchangeHistoryData.filter(
+  (asset: ExchangeHistory, index: number, self: ExchangeHistory[]) =>
+    index === self.findIndex((t: ExchangeHistory) => t.fromCoin === asset.fromCoin)
   ) : [];
 
   return (
