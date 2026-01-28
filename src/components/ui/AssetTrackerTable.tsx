@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import { ChevronRight, PlusIcon, RefreshCcw, TrendingDown } from 'lucide-react';
+import { ChevronRight, Clock, Ellipsis, PlusIcon, RefreshCcw, TrendingDown } from 'lucide-react';
 import { TokenIcon } from '@web3icons/react'
 import { useExchangeHistory } from '@/hooks/useExchangeHistory';
 import { AssetTrackerProps } from '../pages/AssetTracker';
 import { useMarketData } from '@/hooks/useMarketData';
 import { MarketDatum} from '@/types/marketData';
 import { IoTriangleSharp } from 'react-icons/io5';
+import { GoDash } from 'react-icons/go';
 
 type Props = {
     setIsAddAssetModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -53,10 +54,12 @@ const AssetTrackerTable = (props: Props) => {
                                 <th className='text-left py-5 ps-5 capitalize w-fit'>Asset</th>
                                 <th className='text-right py-5 capitalize'>live qty</th>
                                 <th className='text-right py-5 capitalize'>avg cost</th>
-                                <th className='text-right py-5 capitalize'>price</th>
+                                <th className='text-center py-5 capitalize'>price</th>
                                 <th className='text-right py-5 capitalize'>invested</th>
                                 <th className='text-right py-5 capitalize'>value</th>
                                 <th className='text-right pe-5 py-5 capitalize'>PnL</th>
+                                <th className='text-right pe-5 py-5 capitalize'>updated</th>
+                                <th className='text-right pe-5 py-5 capitalize'>actions</th>
                             </tr>
                         </thead>
 
@@ -74,8 +77,8 @@ const AssetTrackerTable = (props: Props) => {
                                             >
                                                 <td className='py-6 capitalize ps-5'>
                                                     <div className="flex items-center justify-start gap-2">
-                                                        <button className='transition-transform duration-200 hover:bg-[#535353] rounded-sm flex items-center justify-center cursor-pointer p-[2px]'>
-                                                            <ChevronRight className={`inline-block transition-all duration-200 text-[#374151] group-hover:text-white rounded-sm ${isOpen ? 'rotate-90 text-white' : ''}`} size={20} />
+                                                        <button className='flex items-center justify-center cursor-pointer p-[2px]'>
+                                                            <ChevronRight className={`inline-block me-2 mb-1 hover:text-[#28C76F] transition cursor-pointer ${isOpen ? 'rotate-90 text-[#28C76F]' : ''}`} size={20} />
                                                         </button>
                                                         <TokenIcon
                                                             symbol={item.assetSymbol.toUpperCase()}
@@ -98,11 +101,13 @@ const AssetTrackerTable = (props: Props) => {
                                                             {
                                                                 item.purchasePrice < Number(getAssetPrice(item.assetSymbol).toFixed(2)) ? (
                                                                     <IoTriangleSharp size={6} color="#22C55E" className="translate-y-[-25%]" />
-                                                                ) : (
+                                                                ) : item.purchasePrice > Number(getAssetPrice(item.assetSymbol).toFixed(2)) ? (
                                                                     <IoTriangleSharp size={6} color="#B91C1C" className="translate-y-[0%] rotate-180" />
+                                                                ) : (
+                                                                    <GoDash size={12} color="#919191" className="translate-y-[-12.5%]" />
                                                                 )
                                                             }
-                                                            <p className={`uppercase text-[11px]  tracking-[-0.56px] font-normal ${item.purchasePrice < Number(getAssetPrice(item.assetSymbol).toFixed(2)) ? 'text-[#22C55E]' : 'text-[#B91C1C]'}`}>
+                                                            <p className={`uppercase text-[11px]  tracking-[-0.56px] font-normal ${item.purchasePrice < Number(getAssetPrice(item.assetSymbol).toFixed(2)) ? 'text-[#22C55E]' : item.purchasePrice > Number(getAssetPrice(item.assetSymbol).toFixed(2)) ? 'text-[#B91C1C]' : 'text-[#919191]'}`}>
 
                                                                 {((Number(getAssetPrice(item.assetSymbol).toFixed(2)) - Number(item.purchasePrice)) / Number(item.purchasePrice) * 100).toFixed(2)}%
 
@@ -115,8 +120,17 @@ const AssetTrackerTable = (props: Props) => {
 
                                                 <td className='py-6 capitalize text-right text-sm'>${(getAssetPrice(item.assetSymbol) * Number(item.quantity)).toFixed(2)}</td>
 
-                                                <td className={`py-6 pe-5 capitalize text-right text-sm ${item.purchasePrice < Number(getAssetPrice(item.assetSymbol).toFixed(2)) ? 'text-[#22C55E]' : 'text-[#B91C1C]'}`}>
+                                                <td className={`py-6 pe-5 capitalize text-right text-sm ${item.purchasePrice < Number(getAssetPrice(item.assetSymbol).toFixed(2)) ? 'text-[#22C55E]' : item.purchasePrice > Number(getAssetPrice(item.assetSymbol).toFixed(2)) ? 'text-[#B91C1C]' : 'text-[#919191]'}`}>
                                                     ${(Number(getAssetPrice(item.assetSymbol).toFixed(2)) - Number(item.purchasePrice)).toFixed(2)}
+                                                </td>
+                                                <td className={`py-6 pe-5 capitalize text-right text-sm`}>
+                                                    <Clock className="inline-block me-2 mb-1" size={14} />
+                                                    {marketData.length > 0 ? new Date(marketData[0].last_updated).toLocaleTimeString(
+                                                        [], { hour: '2-digit', minute: '2-digit', hour12: true }
+                                                    ) : 'N/A'}
+                                                </td>
+                                                <td className={`py-6 pe-5 capitalize text-right text-sm`}>
+                                                    <Ellipsis className="inline-block me-2 mb-1 hover:text-[#28C76F] transition cursor-pointer" size={16} />
                                                 </td>
                                             </tr>
                                             {/* COLLAPSIBLE ROW */}

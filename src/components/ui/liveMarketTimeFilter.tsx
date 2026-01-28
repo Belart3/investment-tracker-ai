@@ -21,7 +21,9 @@ type Props = {
 }
 
 const liveMarketTimeFilter = (props: Props) => {
-    const formatedLastUpdated = props.lastUpdated ? new Date(props.lastUpdated).toLocaleString() : '';
+    const formatedLastUpdated = props.lastUpdated ? new Date(props.lastUpdated).toLocaleTimeString(
+        [], { hour: '2-digit', minute: '2-digit', hour12: true }
+    ) : '';
     return (
         <Tooltip>
             <TooltipTrigger asChild>
