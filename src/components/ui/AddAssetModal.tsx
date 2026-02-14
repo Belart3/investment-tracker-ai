@@ -1,7 +1,7 @@
 import { useMarketData } from '@/hooks/useMarketData';
 import { Search } from 'lucide-react';
 import { useActionState, useEffect, useState } from 'react'
-import { addAssetAction } from '@/app/actions/addAsset';
+import { addAssetAction } from '@/app/actions/assetActions';
 import { MdCancel, MdClose } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
@@ -113,12 +113,12 @@ const AddAssetModal = (props: Props) => {
                     <div className="flex flex-row gap-4">
                         <div className="flex flex-col w-1/2 gap-2">
                             <label htmlFor="assetQuantity" className="text-sm text-white capitalize">quantity*</label>
-                            <input type="number" id="assetQuantity" name='assetQuantity' className="bg-[#0D1117] border border-[#374151] text-white text-sm rounded-md focus:ring-[#28C76F] focus:border-[#28C76F] block w-full p-3 outline-none" required placeholder="0.00" />
+                            <input type="number" id="assetQuantity" name='assetQuantity' className="bg-[#0D1117] border border-[#374151] text-white text-sm rounded-md focus:ring-[#28C76F] focus:border-[#28C76F] block w-full p-3 outline-none" required placeholder="0.00" step={0.01} />
                             {state?.errors?.quantity && <p className='text-red-500'>{state.errors.quantity}</p>}
                         </div>
                         <div className="flex flex-col w-1/2 gap-2">
                             <label htmlFor="purchasePrice" className="text-sm text-white capitalize">purchase price (USD)*</label>
-                            <input type="number" id="purchasePrice" name='purchasePrice' className="bg-[#0D1117] border border-[#374151] text-white text-sm rounded-md focus:ring-[#28C76F] focus:border-[#28C76F] block w-full p-3 outline-none" required placeholder="0.00" value={Number(assetPrice).toFixed(2)} />
+                            <input type="number" id="purchasePrice" name='purchasePrice' className="bg-[#0D1117] border border-[#374151] text-white text-sm rounded-md focus:ring-[#28C76F] focus:border-[#28C76F] block w-full p-3 outline-none" required placeholder="0.00" defaultValue={Number(assetPrice).toFixed(2)} step={0.01} />
                             {state?.errors?.purchasePrice && <p className='text-red-500'>{state.errors.purchasePrice}</p>}
                         </div>
                     </div>

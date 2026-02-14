@@ -1,6 +1,8 @@
 "use server"
 import { AssetFormSchema, FormState } from "@/lib/definitions";
 import { addAsset } from "@/lib/asset";
+import { deleteAssetById } from "@/lib/asset";
+
 
 export async function addAssetAction(state: FormState, formData: FormData): Promise<FormState> {
 
@@ -38,4 +40,22 @@ export async function addAssetAction(state: FormState, formData: FormData): Prom
             error: 'An unexpected error occurred. Please try again later.',
         };
     }
+}
+
+export async function deleteAssetAction(assetId: string) {
+    try {
+        const deleted = await deleteAssetById(assetId);
+        if (!deleted) {
+            return {
+                error: 'Failed to delete asset. Please try again.',
+            }
+        }           
+        return {
+            message: 'Asset deleted successfully',
+        };
+    } catch (error) {
+        return {
+            error: 'An unexpected error occurred. Please try again later.',
+        };
+    }    
 }

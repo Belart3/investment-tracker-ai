@@ -1,6 +1,5 @@
 'use client';
-import React from 'react'
-import { IoBagOutline } from 'react-icons/io5';
+import { IoBagOutline, IoTriangleSharp } from 'react-icons/io5';
 import { PlusIcon, RefreshCcw, TrendingDown } from 'lucide-react';
 import { useState } from 'react';
 import { CiBag1 } from 'react-icons/ci';
@@ -10,9 +9,14 @@ import AddAssetModal from '../../components/ui/AddAssetModal';
 import AssetTrackerTable from '../../components/ui/AssetTrackerTable';
 import { useRouter } from 'next/navigation';
 import { useTransition } from 'react';
+import { getAssetPrice } from '@/lib/getAssetPrice';
+import { formatCurrency } from '@/lib/formatCurrency';
+import React from 'react';
+import { GoDash } from 'react-icons/go';
 
 type Props = {
     assets: {
+        id: string;
         assetSymbol: string;
         quantity: number;
         purchasePrice: number;
@@ -25,6 +29,7 @@ type Props = {
 
 export interface AssetTrackerProps {
     assets: {
+        id: string;
         assetSymbol: string;
         quantity: number;
         purchasePrice: number;
@@ -36,12 +41,19 @@ export interface AssetTrackerProps {
 }
 
 const AssetTracker = (props: Props) => {
+    // All hooks declared first
     const [isAddAssetModalOpen, setIsAddAssetModalOpen] = useState(false);
+    const [isPending, startTransition] = useTransition();
+    const router = useRouter();
+
+    // Then other logic
     const assets = props.assets;
     const totalAssets = assets.length;
-    const assetValue = assets.reduce((total, asset) => total + (asset.purchasePrice * asset.quantity), 0);
-    const router = useRouter();
-    const [isPending, startTransition] = useTransition();
+    const investedValue = assets.reduce((total, asset) => total + (asset.purchasePrice * asset.quantity), 0);
+    const currentValue = assets.reduce((total, asset) => total + ((getAssetPrice(asset.assetSymbol) * asset.quantity) ), 0);
+    const pnl = currentValue - investedValue;
+    const roi = investedValue > 0 ? (pnl / investedValue) * 100 : 0;
+    
     const handleRefresh = () => {
         startTransition(() => {
             router.refresh();
@@ -52,7 +64,7 @@ const AssetTracker = (props: Props) => {
             <div className="flex flex-row justify-between items-center">
                 <div className="flex flex-col gap-4 items-start lg:flex-row justify-between lg:items-center w-full">
                     <div className="flex flex-row justify-between items-center gap-4">
-                        <IoBagOutline color="#21c45d" className="bg-[#0d241f] lg:p-3 rounded-[8px] h-full !size-[20px] lg:!size-[50px]" />
+                        <IoBagOutline color="#21c45d" className="bg-[#0d241f] lg:p-3 rounded-[8px] p-2 h-full !size-[40px] lg:!size-[50px]" />
                         <div className="flex flex-col gap-1">
                             <h2 className="text-white font-semibold text-xl lg:text-[27px]/[27px] tracking-[-1.62px]">Asset Tracker</h2>
                             <p className="text-[14px]/[21px] tracking-[-0.48px] font-normal text-[#6B7280]">
@@ -85,33 +97,58 @@ const AssetTracker = (props: Props) => {
                             portfolio
                         </h1>
                     </div>
-                    <button className='outline-none border-none bg-transparent cursor-pointer'>
-                        <RefreshCcw className="inline-block me-2" size={20} color='white' />
+                    <button className="bg-transparent border border-[#374151] rounded-[8px] px-2 lg:px-4 py-2 text-[14px]/[21px] tracking-[-0.56px] font-medium text-white hover:bg-[#28C76F] hover:bg-none transition cursor-pointer flex items-center capitalize" onClick={() => handleRefresh()} disabled={isPending}>
+                        <RefreshCcw className={`inline-block ${isPending ? 'animate-spin' : ''}`} size={20} />
                     </button>
                 </div>
-                <div className="grid grid-cols-3 grid-rows-1 gap-5 ">
+                <div className="grid grid-cols-2 grid-rows-2 md:grid-cols-4 md:grid-rows-1 gap-5 ">
                     <div className="flex flex-col gap-2 bg-[#0D1117] py-1 px-2 lg:p-3 border border-[#374151] rounded-sm">
                         <p className="text-[14px]/[21px] tracking-[-0.56px] font-normal text-[#6B7280] capitalize">
                             value
                         </p>
                         <h2 className="text-[18px]/[28px] tracking-[-0.96px] font-semibold text-white">
-                            ${assetValue.toFixed(2)}
+                            ${formatCurrency(investedValue)}
                         </h2>
                     </div>
                     <div className="flex flex-col gap-2 bg-[#0D1117] py-1 px-2 lg:p-3 border border-[#374151] rounded-sm">
                         <p className="text-[14px]/[21px] tracking-[-0.56px] font-normal text-[#6B7280] capitalize">
                             p&l
                         </p>
-                        <h2 className="text-[18px]/[28px] tracking-[-0.96px] font-semibold text-[#22C55E]">
-                            +$345K
+                        <h2 className={`text-[18px]/[28px] tracking-[-0.96px] font-semibold ${pnl >= 0 ? 'text-[#22C55E]' : 'text-[#B91C1C]'}`}>
+                            ${formatCurrency(pnl)}
                         </h2>
                     </div>
                     <div className="flex flex-col gap-2 bg-[#0D1117] py-1 px-2 lg:p-3 border border-[#374151] rounded-sm">
                         <p className="text-[14px]/[21px] tracking-[-0.56px] font-normal text-[#6B7280] capitalize">
                             ROI
                         </p>
-                        <h2 className="text-[18px]/[28px] tracking-[-0.96px] font-semibold text-[#22C55E]">
-                            +$34%
+                        <div className="flex items-center gap-1">
+                            <span>
+                                {
+                                    roi > 0 ? (
+                                        <IoTriangleSharp size={6} color="#22C55E" className="translate-y-[-25%]" />
+                                    ) : roi < 0 ? (
+                                        <IoTriangleSharp size={6} color="#B91C1C" className="translate-y-[0%] rotate-180" />
+                                    ) : (
+                                        <GoDash size={12} color="#919191" className="translate-y-[-12.5%]" />
+                                    )
+                                }
+                            </span>
+                            <h2 className={`text-[18px]/[28px] tracking-[-0.96px] font-semibold ${roi >= 0 ? 'text-[#22C55E]' : 'text-[#B91C1C]'}`}>
+                                {
+                                    roi.toFixed(2)
+                                }%
+                            </h2>
+                        </div>
+                    </div>
+                    <div className="flex flex-col gap-2 bg-[#0D1117] py-1 px-2 lg:p-3 border border-[#374151] rounded-sm">
+                        <p className="text-[14px]/[21px] tracking-[-0.56px] font-normal text-[#6B7280] capitalize">
+                            No of assets
+                        </p>
+                        <h2 className="text-[18px]/[28px] tracking-[-0.96px] font-semibold text-white">
+                            {
+                                totalAssets
+                            }
                         </h2>
                     </div>
                 </div>

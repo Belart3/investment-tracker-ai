@@ -3,7 +3,7 @@ import React from "react";
 import Marquee from "react-fast-marquee";
 import { IoTriangleSharp } from "react-icons/io5";
 import LiveMarketTimeFilter from "./liveMarketTimeFilter";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Skeleton from "@mui/material/Skeleton";
 import { useMarketData } from "@/hooks/useMarketData";
 import { MarketDatum } from "@/types/marketData";
@@ -14,7 +14,6 @@ const LiveMarketData = () => {
     const [timeFilter, setTimeFilter] = useState<string>('1h');
     const timeKey = `percent_change_${timeFilter}` as const;
     const lastUpdated = marketData.length > 0 ? marketData[0].last_updated : '';
-    console.log('Market Data in LiveMarketData component:', marketData);
 
     return (
         <div className="w-full border-b border-[#374151] bg-[#161B22] p-2 lg:p-5 flex items-center gap-1 lg:gap-2.5 sticky top-0 right-0  xl:ms-[237px] xl:w-[calc(100%-237px)] z-50">

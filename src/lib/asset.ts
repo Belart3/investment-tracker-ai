@@ -31,6 +31,21 @@ export async function addAsset (assetSymbol: string, quantity: number, purchaseP
 
 export async function getAssetsByUserId (userId: string) {
     await connectDB();
-    const assets = await Asset.find({ userId: new mongoose.Types.ObjectId(userId) }).sort({ createdAt: -1 });
-    return assets;
+    const assets = await Asset.find({ userId: new mongoose.Types.ObjectId(userId) }).sort({ createdAt: -1 }).lean();
+    return assets.map((asset: any) => ({
+        id: asset._id.toString(),
+        assetSymbol: asset.assetSymbol,
+        quantity: asset.quantity,
+        purchasePrice: asset.purchasePrice,
+        transactionDate: asset.transactionDate,
+        notes: asset.notes,
+        createdAt: asset.createdAt,
+        updatedAt: asset.updatedAt,
+    }));
+}
+
+export async function deleteAssetById (assetId: string) {
+    await connectDB();
+    const result = await Asset.deleteOne({ _id: new mongoose.Types.ObjectId(assetId) });
+    return result.deletedCount === 1;
 }
