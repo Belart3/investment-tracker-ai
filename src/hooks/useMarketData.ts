@@ -3,10 +3,7 @@ import useSWR from 'swr';
 import {getMarketData} from '@/lib/getMarketData';
 
 // SWR fetcher
-const fetcher = async () => {
-    const res = await getMarketData();
-    return res;
-};
+const fetcher = getMarketData;
 
 export function useMarketData() {
     const { data, error, isLoading, mutate } = useSWR(
@@ -20,7 +17,7 @@ export function useMarketData() {
     );
 
     return {
-        data: data ?? [],
+        data: data || [],
         loading: isLoading,
         error,
         refresh: mutate, // manual refresh if needed

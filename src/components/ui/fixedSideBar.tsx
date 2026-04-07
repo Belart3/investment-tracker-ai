@@ -36,7 +36,7 @@ const FixedSideBar = () => {
                 {
                     showSidebar && <h1 className="text-white">Investment Tracker AI</h1>
                 }
-                <button className='rounded-sm p-1 hover:bg-[#374151] transition-colors cursor-pointer' onClick={() => setShowSidebar(!showSidebar)} >
+                <button className='rounded-0-sm p-1 hover:bg-[#374151] transition-colors cursor-pointer' onClick={() => setShowSidebar(!showSidebar)} >
                     {
                         showSidebar ? <GoSidebarCollapse size={20} color='white' /> : <GoSidebarExpand size={20} color='white' />
                     }
@@ -51,7 +51,7 @@ const FixedSideBar = () => {
                             routes.map((routes, index) => {
                                 const isActive = currentPath === routes.link;
                                 return (
-                                    <a key={index} href={routes.link} className={`flex items-center gap-2 rounded px-2 py-1 ${isActive ? 'bg-[#28C76F] text-white hover:bg-[#22A85C]' : 'text-[#9CA3AF] hover:bg-[#374151]'} transition-colors`}>
+                                    <a key={index} href={routes.link} className={`flex items-center gap-2 rounded-0 px-2 py-1 ${isActive ? 'bg-[#28C76F] text-white hover:bg-[#22A85C]' : 'text-[#9CA3AF] hover:bg-[#374151]'} transition-colors`}>
                                         {routes.value === "dashboard" ? <LuLayoutDashboard size={24} className={`${routes.value === "dashboard" ? 'text-white' : 'text-[#6b7280]'}`} /> :  <IoReceiptOutline size={24} color='#fff' />}
                                         <span className="text-[14px]/[21px] font-semibold capitalize">{routes.name}</span>
                                     </a>

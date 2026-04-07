@@ -31,7 +31,7 @@ const AddDebtForm = (props: Props) => {
                     type="text" 
                     id="name" 
                     name="name"
-                    className="shadow appearance-none border border-[#374151] rounded-[8px] h-12 w-full py-2 px-4 text-white tracking-[-0.56px] focus:border-[2px] focus:outline-none focus:border-[#28C76F] focus:shadow-outline text-[14px]/[21px] placeholder-shown:text-[#6B7280] " 
+                    className="shadow appearance-none border border-[#374151] rounded-0-[8px] h-12 w-full py-2 px-4 text-white tracking-[-0.56px] focus:border-[2px] focus:outline-none focus:border-[#28C76F] focus:shadow-outline text-[14px]/[21px] placeholder-shown:text-[#6B7280] " 
                     placeholder="Enter name or description of who you owe" 
                     required
                 /> 
@@ -45,7 +45,7 @@ const AddDebtForm = (props: Props) => {
                         type="text" 
                         id="item" 
                         name="item"
-                        className="shadow appearance-none border border-[#374151] rounded-[8px] h-12 w-full py-2 px-4 text-white tracking-[-0.56px] focus:border-[2px] focus:outline-none focus:border-[#28C76F] focus:shadow-outline text-[14px]/[21px] placeholder-shown:text-[#6B7280]" 
+                        className="shadow appearance-none border border-[#374151] rounded-0-[8px] h-12 w-full py-2 px-4 text-white tracking-[-0.56px] focus:border-[2px] focus:outline-none focus:border-[#28C76F] focus:shadow-outline text-[14px]/[21px] placeholder-shown:text-[#6B7280]" 
                         placeholder="Enter a name for what is owed" 
                         required 
                     />
@@ -58,7 +58,7 @@ const AddDebtForm = (props: Props) => {
                         type="number" 
                         id="amount" 
                         name="amount"
-                        className="shadow appearance-none border border-[#374151] rounded-[8px] h-12 w-full py-2 px-4 text-white tracking-[-0.56px] focus:border-[2px] focus:outline-none focus:border-[#28C76F] focus:shadow-outline text-[14px]/[21px] placeholder-shown:text-[#193b7d] " 
+                        className="shadow appearance-none border border-[#374151] rounded-0-[8px] h-12 w-full py-2 px-4 text-white tracking-[-0.56px] focus:border-[2px] focus:outline-none focus:border-[#28C76F] focus:shadow-outline text-[14px]/[21px] placeholder-shown:text-[#193b7d] " 
                         placeholder="Enter monetary value for what is owed" 
                         required 
                     />  
@@ -67,7 +67,7 @@ const AddDebtForm = (props: Props) => {
             </div>
             <div className="flex items-center justify-end gap-3">
                 {/* cancel debt addition */}
-                <button type="button" className="bg-[#161B22] hover:bg-[#28C76F] transition-colors ease-linear duration-100 text-white font-semibold py-3 px-6 rounded-[12px] text-[14px]/[14px] tracking-[-0.56px] capitalize focus:shadow-outline cursor-pointer" 
+                <button type="button" className="bg-[#161B22] hover:bg-[#28C76F] transition-colors ease-linear duration-100 text-white font-semibold py-3 px-6 rounded-0-[12px] text-[14px]/[14px] tracking-[-0.56px] capitalize focus:shadow-outline cursor-pointer" 
                 onClick={
                     (e) => {
                         e.preventDefault();
@@ -78,7 +78,7 @@ const AddDebtForm = (props: Props) => {
                     Cancel
                 </button>
                 {/* submit new debt */}
-                <button type='submit' className="bg-[#28C76F] text-white font-semibold py-3 px-6 rounded-[12px] text-[14px]/[14px] tracking-[-0.56px] capitalize focus:shadow-outline cursor-pointer">
+                <button type='submit' className="bg-[#28C76F] text-white font-semibold py-3 px-6 rounded-0-[12px] text-[14px]/[14px] tracking-[-0.56px] capitalize focus:shadow-outline cursor-pointer">
                     {pending ? 'Adding Debt...' : 'Add Debt'}
                 </button>
             </div> 

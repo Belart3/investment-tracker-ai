@@ -35,7 +35,7 @@ export default function SignupForm() {
     }, [state, router]);
     const [showPassword, setShowPassword] = useState(false);
     return (
-        <form action={action} className='flex flex-col space-y-2 border border-white p-6 rounded-md bg-gray-800'>
+        <form action={action} className='flex flex-col space-y-2 border border-white p-6 rounded-0-md bg-gray-800'>
             <div className='flex flex-col space-y-1'>
                 <label htmlFor="name" className='text-white'>Name</label>
                 <input id="name" name="name" className='border border-white bg-white' placeholder="Name" required />

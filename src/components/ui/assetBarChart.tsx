@@ -27,7 +27,7 @@ type Props = {
 
 const AssetBarChart = (props: Props) => {
     return (
-        <div className="bg-[#161B22] rounded-[16px] flex flex-col justify-start border border-[#374151]  space-y-2 order-4 w-full">
+        <div className="bg-[#161B22] rounded-0-[16px] flex flex-col justify-start border border-[#374151]  space-y-2 order-4 w-full">
             <div className="px-2 py-4 xl:p-5 border-b border-[#374151] flex items-center justify-between">
                 <h3 className="text-white text-[16px]/[16px] font-medium">Individual Asset Value ($)</h3>
                 {/* <TimeFilter/> */}

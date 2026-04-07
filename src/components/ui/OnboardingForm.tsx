@@ -11,7 +11,7 @@ const OnboardingForm = (props: Props) => {
         apiSecret: '',
     });
     return (
-        <form className='flex flex-col space-y-2 border border-white p-6 rounded-md bg-gray-800'>
+        <form className='flex flex-col space-y-2 border border-white p-6 rounded-0-md bg-gray-800'>
             <div className='flex flex-col space-y-1'>
                 <label htmlFor="exchangeName" className='text-white capitalize'>exchange name</label>
                 <input id="exchangeName" name="exchangeName" className='border border-white bg-white' placeholder="Exchange Name (e.g. bybit)" required />

@@ -39,7 +39,7 @@ const ConversionHistory = (props: Props) => {
     const [filterByTransaction, setFilterByTransaction] = useState('');
     const [slice, setSlice] = useState(10);
     return (
-        <div className="flex flex-col justify-start space-y-2 order-4 bg-[#161B22] border border-[#374151] rounded-[16px] mb-10 lg:mb-20">
+        <div className="flex flex-col justify-start space-y-2 order-4 bg-[#161B22] border border-[#374151] rounded-0-[16px] mb-10 lg:mb-20">
             {
                 props.loading ? (
                     <div className="p-5 w-full flex items-center justify-center h-[200px]">
@@ -57,14 +57,14 @@ const ConversionHistory = (props: Props) => {
                                 <Select onValueChange={(value) => {
                                     setFilterByAsset(value.toUpperCase());
                                 }}>
-                                    <SelectTrigger className="w-[250px] border !border-[#374151] !bg-[#1F2937] !text-white !rounded-sm h-8 cursor-pointer !p-1">
+                                    <SelectTrigger className="w-[250px] border !border-[#374151] !bg-[#1F2937] !text-white !rounded-0-sm h-8 cursor-pointer !p-1">
                                         <SelectValue placeholder="Assets" />
                                     </SelectTrigger>
-                                    <SelectContent className='!bg-[#1F2937] !border !border-[#374151] !text-white !rounded-sm'>
+                                    <SelectContent className='!bg-[#1F2937] !border !border-[#374151] !text-white !rounded-0-sm'>
                                         {
                                             props.filterAssets && props.filterAssets.length > 0 ?
                                             props.filterAssets.map((asset, index) => (
-                                                <SelectItem value={asset.fromCoin } className='!rounded-sm cursor-pointer capitalize flex items-center gap-1' key={index}>
+                                                <SelectItem value={asset.fromCoin } className='!rounded-0-sm cursor-pointer capitalize flex items-center gap-1' key={index}>
                                                     <TokenIcon
                                                     symbol={asset.fromCoin.toUpperCase()}
                                                     size={20}
@@ -83,14 +83,14 @@ const ConversionHistory = (props: Props) => {
                                     setFilterByTransaction(value.toUpperCase());
                                     }}
                                 >
-                                    <SelectTrigger className="w-[180px] border !border-[#374151] !bg-[#1F2937] !text-white !rounded-sm h-8 cursor-pointer !px-2">
+                                    <SelectTrigger className="w-[180px] border !border-[#374151] !bg-[#1F2937] !text-white !rounded-0-sm h-8 cursor-pointer !px-2">
                                         <SelectValue className='capitalize' placeholder='Transaction' />
                                     </SelectTrigger>
-                                    <SelectContent className='!bg-[#1F2937] !border !border-[#374151] !text-white !rounded-sm'>
+                                    <SelectContent className='!bg-[#1F2937] !border !border-[#374151] !text-white !rounded-0-sm'>
                                         {
                                             props.filterAssets && props.filterAssets.length > 0 ?
                                             ['Buy', 'Sell'].map((transaction, index) => (
-                                                <SelectItem value={transaction} className='!rounded-sm cursor-pointer capitalize' key={index}>
+                                                <SelectItem value={transaction} className='!rounded-0-sm cursor-pointer capitalize' key={index}>
                                                     {transaction}
                                                 </SelectItem>
                                             )) : 'no data'
@@ -100,7 +100,7 @@ const ConversionHistory = (props: Props) => {
                             </div>
                         </div>
                     </div>
-                    <div className="rounded-[16px] rounded-t-none border border-[#374151] !overflow-hidden bg-[#161B22]">
+                    <div className="rounded-0-[16px] rounded-0-t-none border border-[#374151] !overflow-hidden bg-[#161B22]">
                         <div className="max-h-[600px] overflow-y-scroll">
                             <table className="table-auto w-full">
                             <thead className="sticky top-0 bg-[#161B22] z-10">

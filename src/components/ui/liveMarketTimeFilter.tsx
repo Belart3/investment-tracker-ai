@@ -27,7 +27,7 @@ const liveMarketTimeFilter = (props: Props) => {
     return (
         <Tooltip>
             <TooltipTrigger asChild>
-                <div className="flex rounded-[8px] bg-[#161B22] border border-[#374151]">
+                <div className="flex rounded-0-[8px] bg-[#161B22] border border-[#374151]">
                     <Select value={props.timefilter} onValueChange={(value) => {
                         props.setTimeFilter(value);
                     }}>

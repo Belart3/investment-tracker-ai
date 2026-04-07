@@ -69,7 +69,7 @@ const DebtTracker = ({ user, debts }: DebtTrackerProps) => {
                             outstanding balances
                         </h2>
                         <div className="flex items-center justify-between">
-                            <button className="bg-transparent text-[#28C76F] text-[14px]/[14px] font-semibold tracking-[-0.56px] capitalize text-center px-6 py-2 transition-colors rounded-[12px] flex items-center gap-2 border !border-[#28C76F] cursor-pointer" onClick={() => setShowAddDebtModal(true)}>
+                            <button className="bg-transparent text-[#28C76F] text-[14px]/[14px] font-semibold tracking-[-0.56px] capitalize text-center px-6 py-2 transition-colors rounded-0-[12px] flex items-center gap-2 border !border-[#28C76F] cursor-pointer" onClick={() => setShowAddDebtModal(true)}>
                                 <GoPlus size={24} />
                                 log my debt
                             </button>
@@ -81,7 +81,7 @@ const DebtTracker = ({ user, debts }: DebtTrackerProps) => {
                         <div className="mt-[42px] flex flex-col lg:flex-row gap-5 h-fit">
                             {/* debts overview */}
                             <div className="grid grid-cols-2 gap-4 h-[300px] w-full lg:w-3/7">
-                                <div className="flex flex-col justify-center items-center gap-2 bg-[#161B22] rounded-[16px] border border-[#374151]">
+                                <div className="flex flex-col justify-center items-center gap-2 bg-[#161B22] rounded-0-[16px] border border-[#374151]">
                                     <h4 className="text-[12px]/[18px] text-[#D1D5DB] capitalize">
                                         total amount owed
                                     </h4>
@@ -89,7 +89,7 @@ const DebtTracker = ({ user, debts }: DebtTrackerProps) => {
                                         <TbCurrencyNaira size={27} /> {debts?.reduce((total, debt) => total + debt.amount, 0) ?? 0}
                                     </p>
                                 </div>
-                                <div className="flex flex-col justify-center items-center gap-2 bg-[#161B22] rounded-[16px] border border-[#374151]">
+                                <div className="flex flex-col justify-center items-center gap-2 bg-[#161B22] rounded-0-[16px] border border-[#374151]">
                                     <h4 className="text-[12px]/[18px] text-[#D1D5DB] capitalize">
                                         no of people owed
                                     </h4>
@@ -97,7 +97,7 @@ const DebtTracker = ({ user, debts }: DebtTrackerProps) => {
                                         <MdOutlinePersonOutline size={27} />  {debts?.length}
                                     </p>
                                 </div>
-                                <div className="flex flex-col justify-center items-center gap-2 bg-[#161B22] rounded-[16px] border border-[#374151]">
+                                <div className="flex flex-col justify-center items-center gap-2 bg-[#161B22] rounded-0-[16px] border border-[#374151]">
                                     <h4 className="text-[12px]/[18px] text-[#D1D5DB] capitalize">
                                         biggest debt
                                     </h4>
@@ -105,7 +105,7 @@ const DebtTracker = ({ user, debts }: DebtTrackerProps) => {
                                         <TbCurrencyNaira size={27} /> {debts?.reduce((prev, current) => (prev.amount > current.amount) ? prev : current)?.amount ?? 0}
                                     </p>
                                 </div>
-                                <div className="flex flex-col justify-center items-center gap-2 bg-[#161B22] rounded-[16px] border border-[#374151]">
+                                <div className="flex flex-col justify-center items-center gap-2 bg-[#161B22] rounded-0-[16px] border border-[#374151]">
                                     <h4 className="text-[12px]/[18px] text-[#D1D5DB] capitalize">
                                         smallest debt
                                     </h4>
@@ -115,7 +115,7 @@ const DebtTracker = ({ user, debts }: DebtTrackerProps) => {
                                 </div>
                             </div>
                             {/* debtee bar chart */}
-                            <div className="bg-[#161B22] rounded-[16px] flex flex-col justify-items-start col-span-1 row-span-2 border border-[#374151] w-full lg:w-4/7 max-h-[400px]">
+                            <div className="bg-[#161B22] rounded-0-[16px] flex flex-col justify-items-start col-span-1 row-span-2 border border-[#374151] w-full lg:w-4/7 max-h-[400px]">
                                 <div className="flex items-center justify-between p-5 border-b border-[#374151]">
                                     <h3 className="text-white text-[16px]/[16px] font-medium capitalize">
                                         debts Overview
@@ -201,7 +201,7 @@ const DebtTracker = ({ user, debts }: DebtTrackerProps) => {
                             </div>
                             {/* table container */}
                             <div className=" bg-[#161B22] flex flex-col justify-center">
-                                <div className="rounded-[16px] border border-[#374151] !overflow-hidden">
+                                <div className="rounded-0-[16px] border border-[#374151] !overflow-hidden">
                                     <table className="table-auto w-full">
                                         <thead>
                                             <tr className={`text-[#6B7280] text-[12px]/[18px] tracking-[-0.48px] font-normal border-b border-[#374151]`}>
@@ -223,7 +223,7 @@ const DebtTracker = ({ user, debts }: DebtTrackerProps) => {
                                                         }}>
                                                         <td className='max-w-12 lg:w-[100px] px-2 lg:px-5'>
                                                             <ChevronRight className={`transition-transform duration-200 ease-in-out text-[#9d9d9d] size-4 lg:size-6 ${isOpen ? 'rotate-90' : ''}`} />
-                                                            {/* <input type="checkbox" id={`check-${index}`} checked={selectedId === index} className='size-[16px] appearance-none checked:bg-[#28C76F] border border-[#374151] rounded-[4px]' /> */}
+                                                            {/* <input type="checkbox" id={`check-${index}`} checked={selectedId === index} className='size-[16px] appearance-none checked:bg-[#28C76F] border border-[#374151] rounded-0-[4px]' /> */}
                                                         </td>
                                                         <td className='py-4 lg:py-5 text-sm lg:text-lg'>{data.name}</td>
                                                         <td className='py-4 lg:py-5 text-sm lg:text-lg'>
@@ -279,11 +279,11 @@ const DebtTracker = ({ user, debts }: DebtTrackerProps) => {
                                                                                 }
                                                                             </td>
                                                                             <td className='py-2 lg:py-5 cursor-pointer relative'>
-                                                                                <MoreHorizontal className='text-[#9d9d9d] hover:bg-[#28C76F] hover:text-white transition-colors duration-200 ease-in-out rounded-xs size-5 lg:size-6' onClick={() => {
+                                                                                <MoreHorizontal className='text-[#9d9d9d] hover:bg-[#28C76F] hover:text-white transition-colors duration-200 ease-in-out rounded-0-xs size-5 lg:size-6' onClick={() => {
                                                                                     setOpenMenu(isActive ? null : subIndex)
                                                                                     console.log(subIndex)
                                                                                 }} />
-                                                                                <div className={` ${isActive  ? 'absolute' : 'hidden'} bg-white z-[999999] rounded-md shadow-lg mt-2`}>
+                                                                                <div className={` ${isActive  ? 'absolute' : 'hidden'} bg-white z-[999999] rounded-0-md shadow-lg mt-2`}>
                                                                                     <div className="py-1 w-full">
                                                                                         <button className="block px-2 py-1 lg:px-4 lg:py-2 text-xs md:text-sm text-gray-700 hover:bg-gray-100 w-full cursor-pointer transition-all duration-200 ease-in-out">
                                                                                             <PencilIcon size={16}  className="inline mr-2 mb-1 " />
@@ -338,7 +338,7 @@ const DebtTracker = ({ user, debts }: DebtTrackerProps) => {
                 <h2 className="text-white font-semibold text-[27px]/[27px] tracking-[-1.62px] capitalize mb-5">
                     no outstanding balances
                 </h2>
-                <button className="bg-transparent text-[#28C76F] text-[14px]/[14px] font-semibold tracking-[-0.56px] capitalize text-center px-6 py-2 transition-colors rounded-[12px] flex items-center gap-2 border !border-[#28C76F] cursor-pointer" onClick={() => setShowAddDebtModal(true)}>
+                <button className="bg-transparent text-[#28C76F] text-[14px]/[14px] font-semibold tracking-[-0.56px] capitalize text-center px-6 py-2 transition-colors rounded-0-[12px] flex items-center gap-2 border !border-[#28C76F] cursor-pointer" onClick={() => setShowAddDebtModal(true)}>
                     <GoPlus size={24} />
                     log my debt
                 </button>

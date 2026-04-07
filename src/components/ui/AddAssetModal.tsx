@@ -54,7 +54,7 @@ const AddAssetModal = (props: Props) => {
     const assetPrice = assets.find((asset: MarketDatum) => asset.symbol === selectedAsset)?.quote.USD.price || 0;
     return (
         <div className={`fixed top-0 left-0 h-screen w-full inset-0 bg-black/50 bg-opacity-50 items-center justify-center z-[99999999] backdrop-blur-xs ${props.addAssetModalOpen ? 'flex' : 'hidden'}`} onClick={() => props.setAddAssetModalOpen(false)}>
-            <div className="w-[550px] h-fit border border-[#374151] p-5 flex flex-col rounded-[16px] bg-[#161B22]" onClick={(e) => e.stopPropagation()}>
+            <div className="w-[550px] h-fit border border-[#374151] p-5 flex flex-col rounded-0-[16px] bg-[#161B22]" onClick={(e) => e.stopPropagation()}>
                 <div className='flex items-center justify-between w-full'>
                     <h2 className='capitalize text-white'>
                         Add Portfolio Asset
@@ -69,7 +69,7 @@ const AddAssetModal = (props: Props) => {
                         <div className="flex flex-col gap-2">
                             <label htmlFor="assetSymbol" className="text-sm text-white capitalize">Asset symbol*</label>
                             <div className="relative">
-                                <input type="text" id="assetSymbol" name='assetSymbol' className="bg-[#0D1117] border border-[#374151] text-white text-sm rounded-sm ps-10 focus:ring-[#28C76F] focus:border-[#28C76F] block w-full p-3 outline-none" placeholder="Search for any cryptocurrency (BTC, ETH, SUI, etc.)" autoComplete='off' autoCorrect='off' value={isControlled ? selectedAsset : SearchQuery}
+                                <input type="text" id="assetSymbol" name='assetSymbol' className="bg-[#0D1117] border border-[#374151] text-white text-sm rounded-0-sm ps-10 focus:ring-[#28C76F] focus:border-[#28C76F] block w-full p-3 outline-none" placeholder="Search for any cryptocurrency (BTC, ETH, SUI, etc.)" autoComplete='off' autoCorrect='off' value={isControlled ? selectedAsset : SearchQuery}
                                 onChange={
                                 (e) => {
                                     setSearchQuery(e.target.value);
@@ -87,7 +87,7 @@ const AddAssetModal = (props: Props) => {
                         <div className="flex flex-col w-full h-fit">
                             {
                                 assets && assets.length > 0 && SearchQuery !== '' ? (
-                                    <div className="absolute top-[105%] left-0 w-full max-h-40 scroll- overflow-y-scroll bg-[#0D1117] border border-t-0 border-[#374151] rounded-sm z-10">
+                                    <div className="absolute top-[105%] left-0 w-full max-h-40 scroll- overflow-y-scroll bg-[#0D1117] border border-t-0 border-[#374151] rounded-0-sm z-10">
                                         {assets.filter((asset: MarketDatum) => asset.symbol.toLowerCase().includes(SearchQuery.toLowerCase()) || asset.name.toLowerCase().includes(SearchQuery.toLowerCase())).map((asset: MarketDatum) => (
                                             <button type='button' key={asset.symbol} className={`px-3 py-2 hover:bg-[#28C76F] transition-all duration-150 cursor-pointer items-center gap-3 w-full text-left group ${selectedAsset === asset.symbol ? 'bg-[#28C76F]' : ''}`} onClick={()=> {
                                                 setSelectedAsset(asset.symbol);
@@ -113,12 +113,12 @@ const AddAssetModal = (props: Props) => {
                     <div className="flex flex-row gap-4">
                         <div className="flex flex-col w-1/2 gap-2">
                             <label htmlFor="assetQuantity" className="text-sm text-white capitalize">quantity*</label>
-                            <input type="number" id="assetQuantity" name='assetQuantity' className="bg-[#0D1117] border border-[#374151] text-white text-sm rounded-md focus:ring-[#28C76F] focus:border-[#28C76F] block w-full p-3 outline-none" required placeholder="0.00" step={0.01} />
+                            <input type="number" id="assetQuantity" name='assetQuantity' className="bg-[#0D1117] border border-[#374151] text-white text-sm rounded-0-md focus:ring-[#28C76F] focus:border-[#28C76F] block w-full p-3 outline-none" required placeholder="0.00" step={0.01} />
                             {state?.errors?.quantity && <p className='text-red-500'>{state.errors.quantity}</p>}
                         </div>
                         <div className="flex flex-col w-1/2 gap-2">
                             <label htmlFor="purchasePrice" className="text-sm text-white capitalize">purchase price (USD)*</label>
-                            <input type="number" id="purchasePrice" name='purchasePrice' className="bg-[#0D1117] border border-[#374151] text-white text-sm rounded-md focus:ring-[#28C76F] focus:border-[#28C76F] block w-full p-3 outline-none" required placeholder="0.00" defaultValue={Number(assetPrice).toFixed(2)} step={0.01} />
+                            <input type="number" id="purchasePrice" name='purchasePrice' className="bg-[#0D1117] border border-[#374151] text-white text-sm rounded-0-md focus:ring-[#28C76F] focus:border-[#28C76F] block w-full p-3 outline-none" required placeholder="0.00" defaultValue={Number(assetPrice).toFixed(2)} step={0.01} />
                             {state?.errors?.purchasePrice && <p className='text-red-500'>{state.errors.purchasePrice}</p>}
                         </div>
                     </div>
@@ -126,22 +126,22 @@ const AddAssetModal = (props: Props) => {
                     <div className="flex flex-row gap-4">
                         <div className="flex flex-col w-1/2 gap-2">
                             <label htmlFor="transactionDate" className="text-sm text-white capitalize">Transaction Date & Time*</label>
-                            <input type="date" id="transactionDate" name='transactionDate' className="bg-[#0D1117] border border-[#374151] text-white text-sm rounded-md focus:ring-[#28C76F] focus:border-[#28C76F] block w-full p-3 outline-none" required placeholder="0.00" />
+                            <input type="date" id="transactionDate" name='transactionDate' className="bg-[#0D1117] border border-[#374151] text-white text-sm rounded-0-md focus:ring-[#28C76F] focus:border-[#28C76F] block w-full p-3 outline-none" required placeholder="0.00" />
                             {state?.errors?.transactionDate && <p className='text-red-500'>{state.errors.transactionDate}</p>}
                         </div>
                         <div className="flex flex-col w-1/2 gap-2">
                             <label htmlFor="notes" className="text-sm text-white capitalize">Notes</label>
-                            <textarea id="notes" name='notes' className="bg-[#0D1117] border !border-[#374151] text-white text-sm rounded-md focus:!ring-[#28C76F] focus:!border-[#28C76F] block w-full p-3 outline-none" placeholder="Optional notes about this transaction" />
+                            <textarea id="notes" name='notes' className="bg-[#0D1117] border !border-[#374151] text-white text-sm rounded-0-md focus:!ring-[#28C76F] focus:!border-[#28C76F] block w-full p-3 outline-none" placeholder="Optional notes about this transaction" />
                         </div>
                     </div>
                     {/* divider line */}
                     <div className='bg-[#374151] h-px w-full'></div>
                     {/* submit and cancel button */}
                     <div className="flex flex-row items-center justify-end gap-2">
-                        <button type='button' className="capitalize cursor-pointer border border-[#374151] bg-[#0D1117] text-sm text-[#6B7280] hover:text-white rounded-sm py-2 px-4 hover:bg-[#21262D] hover:border-transparent transition-colors ease-linear duration-150" onClick={() => props.setAddAssetModalOpen(false)}>
+                        <button type='button' className="capitalize cursor-pointer border border-[#374151] bg-[#0D1117] text-sm text-[#6B7280] hover:text-white rounded-0-sm py-2 px-4 hover:bg-[#21262D] hover:border-transparent transition-colors ease-linear duration-150" onClick={() => props.setAddAssetModalOpen(false)}>
                             cancel
                         </button>
-                        <button type='submit' className="capitalize cursor-pointer bg-[#28C76F] text-sm text-white rounded-sm py-2 px-4 hover:bg-[#21262D] transition-colors ease-linear duration-150" onClick={() => !pending && props.handleRefresh?.()}>
+                        <button type='submit' className="capitalize cursor-pointer bg-[#28C76F] text-sm text-white rounded-0-sm py-2 px-4 hover:bg-[#21262D] transition-colors ease-linear duration-150" onClick={() => !pending && props.handleRefresh?.()}>
                             {
                                 pending ? 'adding asset...' : 'add asset'
                             }

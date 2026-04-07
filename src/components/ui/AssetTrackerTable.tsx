@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ChevronRight, Clock, DollarSignIcon, Ellipsis, PlusIcon, TrendingDown } from 'lucide-react';
+import { ChevronRight, Clock, DollarSignIcon, Ellipsis, PlusIcon, Trash2, TrendingDown } from 'lucide-react';
 import { FiPercent } from "react-icons/fi";
 import { IoMdTrendingUp } from "react-icons/io";
 import { RiDeleteBin5Line } from "react-icons/ri";
@@ -21,16 +21,20 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from 'next/navigation';
 import { CiCalendarDate } from 'react-icons/ci';
 import { formatCurrency } from '@/lib/formatCurrency';
+import ConfirmDeleteAssetModal from './ConfirmDeleteAssetModal';
 
 type Props = {
     setIsAddAssetModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
     isAssetModalOpen: boolean;
+    showDeleteAssetModal: boolean;
+    setShowDeleteAssetModal: React.Dispatch<React.SetStateAction<boolean>>;
     assets: AssetTrackerProps['assets'];
 }
 
 const AssetTrackerTable = (props: Props) => {
     // All hooks must be declared first
     const [openRow, setOpenRow] = useState<number | null>(null);
+    const [openPopover, setOpenPopover] = useState(false);
     const [isPending, startTransition] = useTransition();
     const router = useRouter();
     const {data:liveData, loading, error} = useMarketData();
@@ -74,34 +78,34 @@ const AssetTrackerTable = (props: Props) => {
     };
 
     return (
-        <div className="col-span-6 flex flex-col justify-start row-span-2 order-4 bg-[#161B22] border border-[#374151] rounded-md">
+        <div className="col-span-6 flex flex-col justify-start row-span-2 order-4 bg-[#161B22] border border-[#374151] rounded-0-md">
             <div className="flex flex-col items-start gap-2 lg:flex-row lg:items-center justify-between p-5">
                 <h2 className="text-white capitalize">Portfolio assets</h2>
                 <div className="flex items-center justify-center gap-3">
-                    <button className="bg-transparent border border-[#374151] rounded-[8px] px-2 lg:px-4 py-2 lg:text-[14px]/[21px] tracking-[-0.56px] font-medium text-white text-sm hover:bg-[#28C76F] hover:bg-none transition cursor-pointer flex items-center capitalize" onClick={() => props.setIsAddAssetModalOpen(true)}>
+                    <button className="bg-transparent border border-[#374151] rounded-0-[8px] px-2 lg:px-4 py-2 lg:text-[14px]/[21px] tracking-[-0.56px] font-medium text-white text-sm hover:bg-[#28C76F] hover:bg-none transition cursor-pointer flex items-center capitalize" onClick={() => props.setIsAddAssetModalOpen(true)}>
                         <PlusIcon className="inline-block me-1 lg:me-2" size={20} />
                         Add Asset
                     </button> 
-                    <button className="bg-[#811d1d] rounded-[8px] text-sm  px-2 lg:px-4 py-2 lg:text-[14px]/[21px] tracking-[-0.56px] font-medium text-white hover:bg-[#811d1d99] transition cursor-pointer flex items-center capitalize">
+                    <button className="bg-[#811d1d] rounded-0-[8px] text-sm  px-2 lg:px-4 py-2 lg:text-[14px]/[21px] tracking-[-0.56px] font-medium text-white hover:bg-[#811d1d99] transition cursor-pointer flex items-center capitalize">
                         <TrendingDown className="inline-block me-1 lg:me-2" size={20} />
                         Add exit
                     </button>
                 </div>
             </div>
-            <div className="rounded-md rounded-t-none border-t border-[#374151] !overflow-hidden bg-[#161B22]">
+            <div className="rounded-0-md rounded-0-t-none border-t border-[#374151] !overflow-hidden bg-[#161B22]">
                 <div className="max-h-[600px] overflow-y-scroll">
                     <table className="table-fixed w-full border-collapse">
                         <thead className="sticky top-0 bg-[#161B22] z-10">
                             <tr className="text-[#6B7280] text-[12px]/[18px] tracking-[-0.48px] font-normal border-b border-[#374151]">
-                                <th className='text-left py-5 ps-5 capitalize w-fit'>Asset</th>
-                                <th className='text-right py-5 capitalize'>live qty</th>
-                                <th className='text-right py-5 capitalize'>avg cost</th>
+                                <th className='text-center py-5 ps-5 capitalize w-fit'>Asset</th>
+                                <th className='text-center py-5 capitalize'>live qty</th>
+                                <th className='text-center py-5 capitalize'>avg cost</th>
                                 <th className='text-center py-5 capitalize'>price</th>
-                                <th className='text-right py-5 capitalize'>invested</th>
-                                <th className='text-right py-5 capitalize'>value</th>
-                                <th className='text-right pe-5 py-5 capitalize'>PnL</th>
-                                <th className='text-right pe-5 py-5 capitalize'>updated</th>
-                                <th className='text-right pe-5 py-5 capitalize'>actions</th>
+                                <th className='text-center py-5 capitalize'>invested</th>
+                                <th className='text-center py-5 capitalize'>value</th>
+                                <th className='text-center pe-5 py-5 capitalize'>PnL</th>
+                                <th className='text-center pe-5 py-5 capitalize'>updated</th>
+                                <th className='text-center pe-5 py-5 capitalize'>actions</th>
                             </tr>
                         </thead>
 
@@ -132,11 +136,11 @@ const AssetTrackerTable = (props: Props) => {
                                                         </span>
                                                     </div>
                                                 </td>
-                                                <td className='py-6 capitalize text-right text-sm'>{formatCurrency(item.quantity)}</td>
+                                                <td className='py-6 capitalize text-center text-sm'>{formatCurrency(item.quantity)}</td>
 
-                                                <td className='py-6 capitalize text-right text-sm text-[#919191]'>${formatCurrency(item.purchasePrice)}</td>
+                                                <td className='py-6 capitalize text-center text-sm text-[#919191]'>${formatCurrency(item.purchasePrice)}</td>
 
-                                                <td className='py-6 capitalize text-right text-sm'>
+                                                <td className='py-6 capitalize text-center text-sm'>
                                                     <div className="flex items-center justify-end gap-2">
                                                         ${formatCurrency(getAssetPrice(item.assetSymbol))}
                                                         <div className="flex gap-1 items-center justify-center">
@@ -164,18 +168,18 @@ const AssetTrackerTable = (props: Props) => {
                                                     </div>
                                                 </td>
 
-                                                <td className='py-6 capitalize text-right text-sm'>${formatCurrency(Number(item.purchasePrice) * Number(item.quantity))}</td>
+                                                <td className='py-6 capitalize text-center text-sm'>${formatCurrency(Number(item.purchasePrice) * Number(item.quantity))}</td>
 
-                                                <td className='py-6 capitalize text-right text-sm'>${formatCurrency(getAssetPrice(item.assetSymbol) * Number(item.quantity))}</td>
+                                                <td className='py-6 capitalize text-center text-sm'>${formatCurrency(getAssetPrice(item.assetSymbol) * Number(item.quantity))}</td>
 
-                                                <td className={`py-6 pe-5 capitalize text-right text-sm ${item.purchasePrice < Number(getAssetPrice(item.assetSymbol).toFixed(2)) ? 'text-[#22C55E]' : item.purchasePrice > Number(getAssetPrice(item.assetSymbol).toFixed(2)) ? 'text-[#B91C1C]' : 'text-[#919191]'}`}>
+                                                <td className={`py-6 pe-5 capitalize text-center text-sm ${item.purchasePrice < Number(getAssetPrice(item.assetSymbol).toFixed(2)) ? 'text-[#22C55E]' : item.purchasePrice > Number(getAssetPrice(item.assetSymbol).toFixed(2)) ? 'text-[#B91C1C]' : 'text-[#919191]'}`}>
                                                     ${
                                                         formatCurrency(
                                                             (Number(getAssetPrice(item.assetSymbol).toFixed(2)) - Number(Number(item.purchasePrice).toFixed(2)) )* Number(item.quantity)
                                                         )
                                                     }
                                                 </td>
-                                                <td className={`py-6 pe-5 capitalize text-right text-sm text-[#919191]`}>
+                                                <td className={`py-6 pe-5 capitalize text-center text-sm text-[#919191]`}>
                                                     <Clock className="inline-block me-2 mb-1" size={14} />
                                                     {marketData.length > 0 ? new Date(marketData[0].last_updated).toLocaleTimeString(
                                                         [], { hour: '2-digit', minute: '2-digit', hour12: true }
@@ -183,60 +187,76 @@ const AssetTrackerTable = (props: Props) => {
                                                 </td>
                                                 <td className={`py-6 `}>
                                                     <div className="flex items-center justify-center">
-                                                        <Popover>
+                                                        <Popover open={openPopover} onOpenChange={(open) => setOpenPopover(!open)}>
                                                             <PopoverTrigger asChild>
-                                                                <Button variant={null} size="icon-xs" className="bg-none hover:bg-[#475d7b] flex items-center justify-center transition cursor-pointer p-1.5 rounded-sm !mx-auto" onClick={(e) => {
+                                                                <Button variant={null} size="icon-xs" className="bg-none hover:bg-[#475d7b] flex items-center justify-center transition cursor-pointer p-1.5 rounded-0-sm !mx-auto" onClick={(e) => {
                                                                     e.stopPropagation()
+                                                                    setOpenPopover(true);
                                                                 }}>
                                                                     <Ellipsis className="inline-block text-[#919191]" size={16} />
                                                                 </Button>
                                                             </PopoverTrigger>
-                                                            <PopoverContent className=' !p-0 !bg-[#111827] border border-[#374151] max-w-[180px]'>
-                                                                <div className="flex flex-col">
-                                                                    <button className="text-left text-sm px-4  hover:bg-[#374151] cursor-pointer" onClick={(e) => {
-                                                                        e.stopPropagation()
-                                                                    }}>
-                                                                        <div className="border-b-[0.5px] border-b-[#374151] flex items-center gap-1 text-white py-2">
-                                                                            <FaRegEdit className="inline-block me-2" size={16} />
-                                                                            Edit
-                                                                        </div>
-                                                                    </button>
-                                                                    <button className="text-left text-sm px-4  hover:bg-[#374151] cursor-pointer" onClick={(e) => {
-                                                                        e.stopPropagation()
-                                                                    }}>
-                                                                        <div className="border-b-[0.5px] border-b-[#374151] flex items-center gap-1 text-white py-2">
-                                                                            <PlusIcon className="inline-block me-2" size={16} />
-                                                                            Add More {item.assetSymbol.toUpperCase()}
-                                                                        </div>
-                                                                    </button>
-                                                                    <button className="text-left text-sm px-4  hover:bg-[#374151] cursor-pointer" onClick={(e) => {
-                                                                        e.stopPropagation()
-                                                                        handleDeleteAsset(item.itemId);
-                                                                        console.log('Delete asset with id:', item.itemId);
-                                                                        if (!isPending) {
-                                                                            router.refresh();
-                                                                        }
-                                                                    }}>
-                                                                        <div className="flex items-center gap-1 text-red-400 hover:text-red-500 py-2">
-                                                                            {
-                                                                                isPending ? (
-                                                                                    <>
-                                                                                        <svg className="animate-spin h-4 w-4 text-red-400 inline-block me-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                                                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                                                                        </svg>
-                                                                                        Deleting...
-                                                                                    </>
-                                                                                ) : (
-                                                                                    <>
-                                                                                        <RiDeleteBin5Line className="inline-block me-2" size={16} />
-                                                                                        Delete
-                                                                                    </>
-                                                                                )
+                                                            <PopoverContent className={`!p-0 !bg-[#111827] border border-[#374151] ${props.showDeleteAssetModal ? 'max-w-[350px]' : 'max-w-[180px]'}`}>
+                                                                {
+                                                                    props.showDeleteAssetModal ? (
+                                                                        <ConfirmDeleteAssetModal showDeleteAssetModal={props.showDeleteAssetModal} setShowDeleteAssetModal={props.setShowDeleteAssetModal} openPopover={openPopover} setOpenPopover={setOpenPopover} assetId={item.itemId} deleteAsset={handleDeleteAsset} />
+                                                                    ) : 
+                                                                    <div className="flex flex-col">
+                                                                        <button className="text-left text-sm px-4  hover:bg-[#374151] cursor-pointer" onClick={(e) => {
+                                                                            e.stopPropagation()
+                                                                        }}>
+                                                                            <div className="border-b-[0.5px] border-b-[#374151] flex items-center gap-1 text-white py-2">
+                                                                                <FaRegEdit className="inline-block me-2" size={16} />
+                                                                                Edit
+                                                                            </div>
+                                                                        </button>
+                                                                        <button className="text-left text-sm px-4  hover:bg-[#374151] cursor-pointer" onClick={(e) => {
+                                                                            e.stopPropagation()
+                                                                        }}>
+                                                                            <div className="border-b-[0.5px] border-b-[#374151] flex items-center gap-1 text-white py-2">
+                                                                                <PlusIcon className="inline-block me-2" size={16} />
+                                                                                Add More {item.assetSymbol.toUpperCase()}
+                                                                            </div>
+                                                                        </button>
+                                                                        <button className=""></button>
+                                                                        <button className="text-left text-sm px-4  hover:bg-[#374151] cursor-pointer" onClick={(e) => {
+                                                                            e.stopPropagation()
+                                                                            props.setShowDeleteAssetModal(true);
+                                                                        }}>
+                                                                            <div className="flex items-center gap-1 text-[#B91C1C] py-2">
+                                                                                <Trash2 className="inline-block me-2" size={16} />
+                                                                                Delete
+                                                                            </div>
+                                                                        </button>
+                                                                        {/* <button className="text-left text-sm px-4  hover:bg-[#374151] cursor-pointer" onClick={(e) => {
+                                                                            e.stopPropagation()
+                                                                            handleDeleteAsset(item.itemId);
+                                                                            console.log('Delete asset with id:', item.itemId);
+                                                                            if (!isPending) {
+                                                                                router.refresh();
                                                                             }
-                                                                        </div>
-                                                                    </button>
-                                                                </div>
+                                                                        }}>
+                                                                            <div className="flex items-center gap-1 text-red-400 hover:text-red-500 py-2">
+                                                                                {
+                                                                                    isPending ? (
+                                                                                        <>
+                                                                                            <svg className="animate-spin h-4 w-4 text-red-400 inline-block me-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                                                            </svg>
+                                                                                            Deleting...
+                                                                                        </>
+                                                                                    ) : (
+                                                                                        <>
+                                                                                            <RiDeleteBin5Line className="inline-block me-2" size={16} />
+                                                                                            Delete
+                                                                                        </>
+                                                                                    )
+                                                                                }
+                                                                            </div>
+                                                                        </button> */}
+                                                                    </div>
+                                                                }
                                                             </PopoverContent>
                                                         </Popover>
                                                     </div>
@@ -247,7 +267,7 @@ const AssetTrackerTable = (props: Props) => {
                                                 <tr className="bg-[#111727] border-l-[5px] border-[#28c76f]">
                                                     <td colSpan={9} className="p-5 text-sm text-gray-300">
                                                         <div className="grid grid-cols-2 md:grid-cols-3 gap-5 mb-5">
-                                                            <div className="flex flex-col gap-4 bg-[#0b121e] rounded-sm p-5">
+                                                            <div className="flex flex-col gap-4 bg-[#0b121e] rounded-0-sm p-5">
                                                                 <p className="text-[14px]/[21px] tracking-[-0.56px] font-normal text-[#6B7280] capitalize">
                                                                     Asset Details    
                                                                 </p>
@@ -274,7 +294,7 @@ const AssetTrackerTable = (props: Props) => {
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div className="flex flex-col gap-4 bg-[#0b121e] rounded-sm p-5">
+                                                            <div className="flex flex-col gap-4 bg-[#0b121e] rounded-0-sm p-5">
                                                                 <p className="text-[14px]/[21px] tracking-[-0.56px] font-normal text-[#6B7280] capitalize">
                                                                     Position Information   
                                                                 </p>
@@ -284,7 +304,7 @@ const AssetTrackerTable = (props: Props) => {
                                                                         remaining quantity
                                                                         </p>
                                                                         <h2 className="text-[14px]/[21px] tracking-[-0.96px] font-medium text-white">
-                                                                            {item.quantity}
+                                                                            {formatCurrency(item.quantity)}
                                                                         </h2>
                                                                     </div>
                                                                     <div className="w-full flex items-center justify-between">
@@ -293,7 +313,7 @@ const AssetTrackerTable = (props: Props) => {
                                                                                 average buy price
                                                                         </p>
                                                                         <h2 className="text-[14px]/[21px] tracking-[-0.96px] font-medium text-white">
-                                                                            ${Number(item.purchasePrice).toFixed(2)}
+                                                                            ${formatCurrency(item.purchasePrice)}
                                                                         </h2>
                                                                     </div>
                                                                     <div className="w-full flex items-center justify-between">
@@ -301,12 +321,12 @@ const AssetTrackerTable = (props: Props) => {
                                                                             total invested
                                                                         </p>
                                                                         <h2 className="text-[14px]/[21px] tracking-[-0.96px] font-medium text-white">
-                                                                            ${Number(item.purchasePrice * item.quantity).toFixed(2)}
+                                                                            ${formatCurrency(item.purchasePrice * item.quantity)}
                                                                         </h2>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div className="flex flex-col gap-4 bg-[#0b121e] rounded-sm p-5">
+                                                            <div className="flex flex-col gap-4 bg-[#0b121e] rounded-0-sm p-5">
                                                                 <p className="text-[14px]/[21px] tracking-[-0.56px] font-normal text-[#6B7280] capitalize">
                                                                     current performance   
                                                                 </p>
@@ -317,7 +337,7 @@ const AssetTrackerTable = (props: Props) => {
                                                                         current price
                                                                         </p>
                                                                         <h2 className="text-[14px]/[21px] tracking-[-0.96px] font-medium text-white">
-                                                                            ${Number(getAssetPrice(item.assetSymbol)).toFixed(2)}
+                                                                            ${formatCurrency(getAssetPrice(item.assetSymbol))}
                                                                         </h2>
                                                                     </div>
                                                                     <div className="w-full flex items-center justify-between">
@@ -326,7 +346,7 @@ const AssetTrackerTable = (props: Props) => {
                                                                                 current value
                                                                         </p>
                                                                         <h2 className="text-[14px]/[21px] tracking-[-0.96px] font-medium text-white">
-                                                                            ${Number(getAssetPrice(item.assetSymbol) * item.quantity).toFixed(2)}
+                                                                            ${formatCurrency(getAssetPrice(item.assetSymbol) * item.quantity)}
                                                                         </h2>
                                                                     </div>
                                                                     <div className="w-full flex items-center justify-between">
@@ -335,7 +355,7 @@ const AssetTrackerTable = (props: Props) => {
                                                                             p&l
                                                                         </p>
                                                                         <h2 className="text-[14px]/[21px] tracking-[-0.96px] font-medium text-white">
-                                                                            ${Number(item.purchasePrice * item.quantity).toFixed(2)}
+                                                                            ${formatCurrency(item.purchasePrice * item.quantity)}
                                                                         </h2>
                                                                     </div>
                                                                 </div>
@@ -422,7 +442,7 @@ const AssetTrackerTable = (props: Props) => {
                         </tbody>
                     </table>
                 </div>
-            </div>     
+            </div>  
         </div>
     )
 }
