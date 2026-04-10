@@ -9,35 +9,14 @@ import AddAssetModal from '../../components/ui/AddAssetModal';
 import AssetTrackerTable from '../../components/ui/AssetTrackerTable';
 import { useRouter } from 'next/navigation';
 import { useTransition } from 'react';
-import { getAssetPrice } from '@/lib/getAssetPrice';
 import { formatCurrency } from '@/lib/formatCurrency';
-import { useMarketData } from '@/hooks/useMarketData';
 import { GoDash } from 'react-icons/go';
+import { AssetData } from '@/types/assetData';
+import { getAssetData } from '@/lib/getAssetData';
+import { useMarketData } from '@/hooks/useMarketData';
 
 type Props = {
-    assets: {
-        id: string;
-        assetSymbol: string;
-        quantity: number;
-        purchasePrice: number;
-        transactionDate: string;
-        notes?: string;
-        createdAt: string;
-        updatedAt: string;
-    }[]
-}
-
-export interface AssetTrackerProps {
-    assets: {
-        id: string;
-        assetSymbol: string;
-        quantity: number;
-        purchasePrice: number;
-        transactionDate: string;
-        notes?: string;
-        createdAt: string;
-        updatedAt: string;
-    }[]
+    assets: AssetData[];
 }
 
 const AssetTracker = (props: Props) => {
@@ -48,16 +27,13 @@ const AssetTracker = (props: Props) => {
     const router = useRouter();
 
     // Then other logic
-    const { data: marketData, loading, error } = useMarketData();
-    const assets = props.assets;
-    const totalAssets = assets.length;
-    const investedValue = assets.reduce((total, asset) => total + (asset.purchasePrice * asset.quantity), 0);
-    const currentValue = assets.reduce((total, asset) => {
-        const price = getAssetPrice(asset.assetSymbol, marketData);
-        return total + (price * asset.quantity);
-    }, 0);
-    const pnl = currentValue - investedValue;
+    const assets = props.assets || [];
+    const {data, loading, error} = useMarketData();
+    const assetData = getAssetData(assets, data || []);
+    const investedValue = assetData.reduce((acc, asset) => acc + (asset.purchasePrice * asset.quantity), 0);
+    const pnl = assetData.reduce((acc, asset) => acc + asset.pnl, 0);
     const roi = investedValue > 0 ? (pnl / investedValue) * 100 : 0;
+    const totalAssets = assetData.length;
     
     const handleRefresh = () => {
         startTransition(() => {
@@ -173,7 +149,7 @@ const AssetTracker = (props: Props) => {
                     deleted assets
                 </button>
             </div>
-            <AssetTrackerTable isAssetModalOpen={isAddAssetModalOpen} assets={assets} showDeleteAssetModal={showDeleteAssetModal} setShowDeleteAssetModal={setShowDeleteAssetModal} setIsAddAssetModalOpen={setIsAddAssetModalOpen} />
+            <AssetTrackerTable isAssetModalOpen={isAddAssetModalOpen} showDeleteAssetModal={showDeleteAssetModal} setShowDeleteAssetModal={setShowDeleteAssetModal} setIsAddAssetModalOpen={setIsAddAssetModalOpen} assetData={assetData} />
         </div>
     )
 }

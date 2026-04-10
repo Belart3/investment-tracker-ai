@@ -34,7 +34,7 @@ export async function getAssetsByUserId (userId: string) {
     const assets = await Asset.find({ userId: new mongoose.Types.ObjectId(userId) }).sort({ createdAt: -1 }).lean();
     return assets.map((asset: any) => ({
         id: asset._id.toString(),
-        assetSymbol: asset.assetSymbol,
+        symbol: asset.assetSymbol,
         quantity: asset.quantity,
         purchasePrice: asset.purchasePrice,
         transactionDate: asset.transactionDate,
