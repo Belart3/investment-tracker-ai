@@ -18,22 +18,23 @@ import {
 ChartJS.register(ArcElement, LineElement, CategoryScale, LinearScale, PointElement, BarElement, LogarithmicScale, Title, Filler, Tooltip, Legend);
 
 type Props = {
-    label: string[];
-    labelValue: (string | number)[];
+    assetCoins: string[];
+    value: number[];
+    loading: boolean;
 }
 
 const DoughnutChart = (props: Props) => {
     return (
         <div className="h-[300px] md:h-100 xl:h-[500px] flex items-center justify-center p-5">
             {
-                props.label && props.labelValue && props.label.length > 0 && props.labelValue.length > 0 ? (
+                !props.loading && props.assetCoins.length > 0 ? (
                 <Doughnut
                     data={{
-                    labels: props.label,
+                    labels: props.assetCoins,
                     datasets: [
                         {
-                            data: props.labelValue,
-                            backgroundColor: ['#FF638420','#36A2EB20','#FFCE5620','#4BC0C020','#9966FF20','#FF9F4020','#C9CBCE20','#00CD5620','#7848D420','#EC706320'],
+                            data: props.value,
+                            backgroundColor: ['#FF638490','#36A2EB90','#FFCE5690','#4BC0C090','#9966FF90','#FF9F4090','#C9CBCE90','#00CD5690','#7848D490','#EC706390'],
                             hoverBackgroundColor: ['#FF6384','#36A2EB','#FFCE56','#4BC0C0','#9966FF','#FF9F40','#C9CBCE','#00CD56','#7848D4','#EC7063'],
                         },
                     ],

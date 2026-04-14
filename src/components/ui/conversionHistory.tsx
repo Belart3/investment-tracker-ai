@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import TablePagination from '@mui/material/TablePagination';
-import Skeleton from '@mui/material/Skeleton';
 import {
     Select,
     SelectContent,
@@ -101,7 +100,7 @@ const ConversionHistory = (props: Props) => {
                         </div>
                     </div>
                     <div className="rounded-0-[16px] rounded-0-t-none border border-[#374151] !overflow-hidden bg-[#161B22]">
-                        <div className="max-h-[600px] overflow-y-scroll">
+                        <div className="overflow-y-scroll">
                             <table className="table-auto w-full">
                             <thead className="sticky top-0 bg-[#161B22] z-10">
                                 <tr className={`text-[#6B7280] text-[12px]/[18px] tracking-[-0.48px] font-normal border-b border-[#374151]`}>

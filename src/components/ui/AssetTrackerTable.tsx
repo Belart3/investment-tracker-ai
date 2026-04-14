@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ChevronRight, Clock, DollarSignIcon, Ellipsis, PlusIcon, Trash2, TrendingDown } from 'lucide-react';
+import { ChevronRight, Clock, DollarSignIcon, Ellipsis, Loader, PlusIcon, Trash2, TrendingDown } from 'lucide-react';
 import { FiPercent } from "react-icons/fi";
 import { IoMdTrendingUp } from "react-icons/io";
 import { RiDeleteBin5Line } from "react-icons/ri";
@@ -21,6 +21,7 @@ import { CiCalendarDate } from 'react-icons/ci';
 import { formatCurrency } from '@/lib/formatCurrency';
 import ConfirmDeleteAssetModal from './ConfirmDeleteAssetModal';
 import { AssetDataWithMarket } from '@/types/assetData';
+import LoadState from './LoadSate';
 
 type Props = {
     setIsAddAssetModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -71,7 +72,7 @@ const AssetTrackerTable = (props: Props) => {
                 {
                     loading ? (
                         <div className="flex flex-col items-center justify-center py-10 gap-2">
-                            <FaSpinner className="animate-spin duration-500 mx-auto text-[#28C76F]" size={32} />
+                            <LoadState />
                             <p className="text-white mt-2">Fetching Assets</p>
                         </div>
                     ) : error ? (   
@@ -259,16 +260,21 @@ const AssetTrackerTable = (props: Props) => {
                                                             <div className="flex flex-col gap-1">
                                                                 <div className="w-full flex items-center justify-between">
                                                                     <p className="text-[14px]/[21px] tracking-[-0.56px] font-normal text-[#6B7280] capitalize">
-                                                                    <GoPulse className="inline-block me-2 text-white" size={14} />
                                                                         symbol
                                                                     </p>
-                                                                    <h2 className="text-[14px]/[21px] tracking-[-0.96px] font-medium text-white">
+                                                                    <h2 className="text-[14px]/[21px] tracking-[-0.96px] font-medium text-white flex items-center gap-1">
+                                                                        <span>
+                                                                            <TokenIcon
+                                                                                symbol={item.symbol.toUpperCase()}
+                                                                                size={20}
+                                                                                variant='branded'
+                                                                            />
+                                                                        </span>
                                                                         {item.symbol.toUpperCase()}
                                                                     </h2>
                                                                 </div>
                                                                 <div className="w-full flex items-center justify-between">
                                                                     <p className="text-[14px]/[21px] tracking-[-0.56px] font-normal text-[#6B7280] capitalize">
-                                                                    <CiCalendarDate className="inline-block me-2 text-white" size={14} />
                                                                         first purchase
                                                                     </p>
                                                                     <h2 className="text-[14px]/[21px] tracking-[-0.96px] font-medium text-white">
@@ -294,7 +300,6 @@ const AssetTrackerTable = (props: Props) => {
                                                                 </div>
                                                                 <div className="w-full flex items-center justify-between">
                                                                     <p className="text-[14px]/[21px] tracking-[-0.56px] font-normal text-[#6B7280] capitalize">
-                                                                        <DollarSignIcon className="inline-block me-2 text-white" size={14} />
                                                                             average buy price
                                                                     </p>
                                                                     <h2 className="text-[14px]/[21px] tracking-[-0.96px] font-medium text-white">
@@ -318,7 +323,6 @@ const AssetTrackerTable = (props: Props) => {
                                                             <div className="flex flex-col gap-1">
                                                                 <div className="w-full flex items-center justify-between">
                                                                     <p className="text-[14px]/[21px] tracking-[-0.56px] font-normal text-[#6B7280] capitalize">
-                                                                    <IoMdTrendingUp className="inline-block me-2 text-white" size={14} />
                                                                     current price
                                                                     </p>
                                                                     <h2 className="text-[14px]/[21px] tracking-[-0.96px] font-medium text-white">
@@ -327,7 +331,6 @@ const AssetTrackerTable = (props: Props) => {
                                                                 </div>
                                                                 <div className="w-full flex items-center justify-between">
                                                                     <p className="text-[14px]/[21px] tracking-[-0.56px] font-normal text-[#6B7280] capitalize">
-                                                                        <DollarSignIcon className="inline-block me-2 text-white" size={14} />
                                                                             current value
                                                                     </p>
                                                                     <h2 className="text-[14px]/[21px] tracking-[-0.96px] font-medium text-white">
@@ -336,10 +339,9 @@ const AssetTrackerTable = (props: Props) => {
                                                                 </div>
                                                                 <div className="w-full flex items-center justify-between">
                                                                     <p className="text-[14px]/[21px] tracking-[-0.56px] font-normal text-[#6B7280] capitalize">
-                                                                    <FiPercent className="inline-block me-2 text-white" size={14} />
                                                                         p&l
                                                                     </p>
-                                                                    <h2 className="text-[14px]/[21px] tracking-[-0.96px] font-medium text-white">
+                                                                    <h2 className={`text-[14px]/[21px] tracking-[-0.96px] font-medium ${item.purchasePrice < Number(item.currentPrice) ? 'text-[#22C55E]' : item.purchasePrice > Number(item.currentPrice) ? 'text-[#B91C1C]' : 'text-[#919191]'}`}>
                                                                         ${formatCurrency((item.currentPrice - item.purchasePrice) * item.quantity)}
                                                                     </h2>
                                                                 </div>
@@ -347,7 +349,7 @@ const AssetTrackerTable = (props: Props) => {
                                                         </div>
                                                     </div>
                                                     <p className="text-[14px]/[21px] tracking-[-0.56px] font-normal text-[#6B7280] capitalize mb-3">
-                                                        transactions
+                                                        transaction history
                                                     </p>
                                                     <table className='table-auto w-full'>
                                                         <thead>

@@ -85,11 +85,19 @@ const AssetTracker = (props: Props) => {
                 <div className="grid grid-cols-2 grid-rows-2 md:grid-cols-4 md:grid-rows-1 gap-5 ">
                     <div className="flex flex-col gap-2 bg-[#0D1117] py-1 px-2 lg:p-3 border border-[#374151] rounded-0-sm">
                         <p className="text-[14px]/[21px] tracking-[-0.56px] font-normal text-[#6B7280] capitalize">
-                            value
+                            current value {investedValue + pnl < 0 && <GoDash size={12} color="#6B7280" />} 
                         </p>
-                        <h2 className="text-[18px]/[28px] tracking-[-0.96px] font-semibold text-white">
-                            ${formatCurrency(investedValue)}
-                        </h2>
+                        <div className="flex items-center gap-1">
+                            <h2 className={`text-[18px]/[28px] tracking-[-0.96px] font-semibold text-white `}>
+                                ${formatCurrency(investedValue + pnl)} 
+                                <span className={`text-[14px]/[21px] tracking-[-0.56px] font-normal mx-1 ${roi >= 0 ? 'text-[#22C55E]' : 'text-[#B91C1C]'}`}>
+                                    {roi >= 0 ? '+' : ''}
+                                    {
+                                        roi.toFixed(2)
+                                    }%
+                                </span>
+                            </h2>
+                        </div>
                     </div>
                     <div className="flex flex-col gap-2 bg-[#0D1117] py-1 px-2 lg:p-3 border border-[#374151] rounded-0-sm">
                         <p className="text-[14px]/[21px] tracking-[-0.56px] font-normal text-[#6B7280] capitalize">
@@ -101,26 +109,11 @@ const AssetTracker = (props: Props) => {
                     </div>
                     <div className="flex flex-col gap-2 bg-[#0D1117] py-1 px-2 lg:p-3 border border-[#374151] rounded-0-sm">
                         <p className="text-[14px]/[21px] tracking-[-0.56px] font-normal text-[#6B7280] capitalize">
-                            ROI
+                            invested value
                         </p>
-                        <div className="flex items-center gap-1">
-                            <span>
-                                {
-                                    roi > 0 ? (
-                                        <IoTriangleSharp size={6} color="#22C55E" className="translate-y-[-25%]" />
-                                    ) : roi < 0 ? (
-                                        <IoTriangleSharp size={6} color="#B91C1C" className="translate-y-[0%] rotate-180" />
-                                    ) : (
-                                        <GoDash size={12} color="#919191" className="translate-y-[-12.5%]" />
-                                    )
-                                }
-                            </span>
-                            <h2 className={`text-[18px]/[28px] tracking-[-0.96px] font-semibold ${roi >= 0 ? 'text-[#22C55E]' : 'text-[#B91C1C]'}`}>
-                                {
-                                    roi.toFixed(2)
-                                }%
-                            </h2>
-                        </div>
+                        <h2 className="text-[18px]/[28px] tracking-[-0.96px] font-semibold text-white">
+                            ${formatCurrency(investedValue)}
+                        </h2>
                     </div>
                     <div className="flex flex-col gap-2 bg-[#0D1117] py-1 px-2 lg:p-3 border border-[#374151] rounded-0-sm">
                         <p className="text-[14px]/[21px] tracking-[-0.56px] font-normal text-[#6B7280] capitalize">
@@ -143,10 +136,6 @@ const AssetTracker = (props: Props) => {
                 <button className='flex items-center justify-center outline-none border-none bg-transparent cursor-pointer text-sm text-white px-3 lg:px-10 py-1 rounded-0-sm g-[#374151] capitalize hover:bg-[#0D1117] transition-colors ease-linear duration-150 font-normal tracking-[-0.56px]'>
                     <IoTrashBinOutline className='me-2' strokeWidth={2} />
                     closed assets
-                </button>
-                <button className='flex items-center justify-center outline-none border-none bg-transparent cursor-pointer text-sm text-white px-3 lg:px-10 py-1 rounded-0-sm g-[#374151] capitalize hover:bg-[#0D1117] transition-colors ease-linear duration-150 font-normal tracking-[-0.56px]'>
-                    <FaRegTrashAlt className='me-2' strokeWidth={2} />
-                    deleted assets
                 </button>
             </div>
             <AssetTrackerTable isAssetModalOpen={isAddAssetModalOpen} showDeleteAssetModal={showDeleteAssetModal} setShowDeleteAssetModal={setShowDeleteAssetModal} setIsAddAssetModalOpen={setIsAddAssetModalOpen} assetData={assetData} />

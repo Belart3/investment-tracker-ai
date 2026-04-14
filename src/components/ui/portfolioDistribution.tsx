@@ -3,8 +3,9 @@ import TimeFilter from './liveMarketTimeFilter'
 import DoughnutChart from './doughnutChart'
 
 type Props = {
-    labels: string[];
-    labelValue: string[];
+    assetCoins: string[];
+    value: number[];
+    loading: boolean;
 }
 
 const portfolioDistribution = (props: Props) => {
@@ -14,7 +15,7 @@ const portfolioDistribution = (props: Props) => {
             <h3 className="text-white text-[16px]/[16px] font-medium">Portfolio Distribution</h3>
             {/* <TimeFilter /> */}
             </div>
-            <DoughnutChart label={props.labels} labelValue={props.labelValue} />
+            <DoughnutChart assetCoins={props.assetCoins} loading={props.loading} value={props.value} />
         </div>
     )
 }
