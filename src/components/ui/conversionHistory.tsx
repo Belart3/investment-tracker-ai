@@ -39,18 +39,18 @@ const ConversionHistory = (props: Props) => {
     const [filterByTransaction, setFilterByTransaction] = useState('');
     const [slice, setSlice] = useState(10);
     return (
-        <div className="flex flex-col justify-start space-y-2 order-4 bg-[#161B22] border border-[#374151] rounded-[16px] mb-10 lg:mb-20">
+        <div className="flex flex-col justify-start space-y-2 order-4 bg-[var(--bg-surface)] border border-[var(--border-subtle)] shadow-[0_1px_2px_rgba(28,25,23,0.04)] rounded-[8px] mb-10 lg:mb-20">
             {
                 props.loading ? (
                     <div className="p-5 w-full flex items-center justify-center h-[200px]">
-                        <p className="text-white">
+                        <p className="text-[var(--text-secondary)] text-[13px]">
                             Loading conversion history...
                         </p>
                     </div>
                 ) : 
                 <>
                     <div className="flex flex-col gap-1 items-start md:flex-row md:items-center justify-between px-2 py-4 xl:p-5">
-                        <h2 className="text-white capitalize text-lg">conversion history</h2>
+                        <h2 className="text-[var(--text-primary)] capitalize text-[17px] leading-[25px] font-semibold tracking-[-0.005em]">conversion history</h2>
                         <div className="flex items-center md:items-center justify-end gap-4 w-full">
                             <div className="flex flex-col gap-1">
                                 <p className="text-white text-xs capitalize hidden md:block">asset</p>
@@ -100,7 +100,7 @@ const ConversionHistory = (props: Props) => {
                             </div>
                         </div>
                     </div>
-                    <div className="rounded-[16px] rounded-t-none border border-[#374151] !overflow-hidden bg-[#161B22]">
+                            <div className="rounded-[8px] rounded-t-none border border-[var(--border-subtle)] !overflow-hidden bg-[var(--bg-surface)]">
                         <div className="max-h-[600px] overflow-y-scroll">
                             <table className="table-auto w-full">
                             <thead className="sticky top-0 bg-[#161B22] z-10">
@@ -116,7 +116,7 @@ const ConversionHistory = (props: Props) => {
                             </thead>
                             <tbody className="">
                                 {
-                                    props.exchangeHistory.length > 0 ?
+                                    props.exchangeHistory && props.exchangeHistory.length > 0 ?
                                     props.exchangeHistory.filter((exchange) => filterByAsset !== '' ? exchange.fromCoin === filterByAsset || exchange.toCoin === filterByAsset : exchange).map((exchange, index) => (
                                     <tr key={index} className={`text-white text-[16px]/[24px] tracking-[-0.64px] font-normal relative border-b last-of-type:!border-0 border-[#374151] hover:bg-[#1F2937] cursor-pointer`}>
                                         <td className='py-1 xl:py-5 capitalize ps-2 xl:ps-5 text-sm md:text-xl text-end md:text-start px-[2px]'>
@@ -189,7 +189,7 @@ const ConversionHistory = (props: Props) => {
                                 <TablePagination
                                 className={`!text-white`}
                                 color="white"
-                                count={props.exchangeHistory.length}
+                                count={ props.exchangeHistory ? props.exchangeHistory.length : 0}
                                 page={0}
                                 rowsPerPage={slice}
                                 onPageChange={() => {}}

@@ -23,6 +23,7 @@ export async function unifiedWalletBalance() {
             c.push({
                 asset: item.coin,
                 balance: item.totalWalletBalance,
+                totalEquity: item.totalEquity,
                 accountType: item.accountType,
             })
         }

@@ -10,6 +10,7 @@ import { Skeleton } from "@mui/material";
 import { SidebarContext } from "@/context/sidebarContext";
 import { useWalletBalance } from "@/hooks/useWalletBalance";
 import { useExchangeHistory } from "@/hooks/useExchangeHistory";
+import { usePortfolioHistory } from "@/hooks/usePortfolioHistory";
 
 type Balance = {
   accountType?: string;
@@ -40,8 +41,9 @@ type ExchangeHistoryData = {
 }
 
 type user = {
-  name: string;
-  email: string;
+  name?: string;
+  email?: string;
+  _id?: string;
 }
 
 type Props = { 
@@ -52,8 +54,9 @@ export default function Home({ user }: Props) {
   const { showSidebar } = useContext(SidebarContext);
   const {balance:balance, loading, error} = useWalletBalance();
   const {exchangeHistory: exchangeHistoryData, loading: exchangeHistoryLoading, error: exchangeHistoryError} = useExchangeHistory();
+  const { data: portfolioHistory, loading: portfolioHistoryLoading } = usePortfolioHistory(30);
 
-  const accountType = balance?.accountType || 'N/A';
+  const accountType: string = balance?.accountType || 'N/A';
   const assets = balance?.asset || [];
   const balExists = balance && Object.keys(balance).length > 0 && assets.length > 0;
   const labels = balExists ? assets.map((item: any) => item.coin) : [];
@@ -105,25 +108,23 @@ export default function Home({ user }: Props) {
   ) : [];
 
   return (
-    <div className={`xl:ms-[237px] transition-all duration-300`}>
+    <div className={`xl:ms-[237px] transition-all duration-300 min-h-screen bg-[var(--bg-canvas)] p-8`}>
       {/* page header */}
-      <div className="border-b border-[#374151] bg-[#161B22] p-2 xl:p-5 w-full ">
-        <div className="flex items-center justify-between w-full max-w-[1440px] mx-auto px-3 xl:px-5">
-          <h2 className="text-white font-semibold text-sm lg:text-[27px]/[27px] tracking-[-1.62px]">Dashboard</h2>
-          {
-            balExists &&
-            <p className="text-white font-normal text-sm xl:text-[16px]/[16px] tracking-[-1.62px]">
-            Hey, {user ? user.name : <Skeleton variant="text" width={100} />} 
-              <span className="mx-2">
+      <div className="flex items-center justify-between w-full max-w-[1440px] mx-auto">
+        <div className="flex flex-col gap-1">
+          <h2 className="text-(--text-primary) font-semibold text-[22px] leading-7 tracking-[-0.012em]">Dashboard</h2>
+          {balExists &&
+            <p className="text-[var(--text-secondary)] font-medium text-[13px] leading-[19px]">
+            Hey, <span className="text-[var(--text-primary)]">{user ? user.name : <Skeleton variant="text" width={100} />} —</span>
+              <span className="mx-2 hidden sm:inline capitalize">
                 {
-                  `You are viewing your ${balance.accountType} account.` 
+                  `${accountType.toLowerCase()} account.` 
                 }
               </span>
-            </p>
-          }
+            </p>}
         </div>
       </div>
-      <div className="flex flex-col w-full max-w-[1440px] mx-auto px-3 xl:px-5">
+      <div className="flex flex-col w-full max-w-[1440px] mx-auto">
         {/* check if there is data from the api first */}
         {
           !balExists ? (
@@ -133,7 +134,7 @@ export default function Home({ user }: Props) {
               </h1>
             </div>
           ) : 
-          <div className="mt-[42px] flex flex-col gap-4">
+          <div className="mt-8 flex flex-col gap-5">
             <div className="gap-4 grid md:grid-cols-2 xl:gap-5 w-full h-fit 2xl:h-fit">
               <div className="flex flex-col gap-4">
                 {/* Portfolio Overview */}
@@ -150,6 +151,11 @@ export default function Home({ user }: Props) {
                 <PortfolioDistribution labels={labels} labelValue={labelValue} />
               </div>
             </div>
+            <AssetLineChart
+              label={portfolioHistory.map((point) => point.date)}
+              labelValue={portfolioHistory.map((point) => point.value)}
+              loading={portfolioHistoryLoading}
+            />
             {/* Asset trade information table */}
             <ConversionHistory filterAssets={filterAssets} exchangeHistory={exchangeHistoryData} loading={exchangeHistoryLoading} error={exchangeHistoryError} />
           </div>

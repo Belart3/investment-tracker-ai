@@ -62,14 +62,14 @@ const DebtTracker = ({ user, debts }: DebtTrackerProps) => {
 
     return (
         (debts ?? []).length > 0 ? (
-            <div className="xl:ms-[237px] bg-[#0D1117] relative pb-15 flex flex-col items-center justify-center">
-                <div className="border-b border-[#374151] bg-[#161B22] w-full p-5">
+            <div className="xl:ms-[237px] min-h-screen bg-[var(--bg-canvas)] relative pb-15 flex flex-col items-center justify-center">
+                <div className="border-b border-[var(--border-subtle)] bg-[var(--bg-canvas)] w-full p-5">
                     <div className="flex items-center justify-between w-full max-w-[1440px] mx-auto">
-                        <h2 className="text-white font-semibold text-lg lg:text-[27px]/[27px] tracking-[-1.62px] capitalize">
+                        <h2 className="text-[var(--text-primary)] font-semibold text-[22px] leading-7 tracking-[-0.012em] capitalize">
                             outstanding balances
                         </h2>
                         <div className="flex items-center justify-between">
-                            <button className="bg-transparent text-[#28C76F] text-[14px]/[14px] font-semibold tracking-[-0.56px] capitalize text-center px-6 py-2 transition-colors rounded-[12px] flex items-center gap-2 border !border-[#28C76F] cursor-pointer" onClick={() => setShowAddDebtModal(true)}>
+                            <button className="bg-[var(--brand)] text-white text-[13px] leading-[19px] font-semibold capitalize text-center px-4 py-2 transition-colors rounded-[8px] flex items-center gap-2 border border-[var(--brand)] cursor-pointer hover:bg-[var(--brand-hover)]" onClick={() => setShowAddDebtModal(true)}>
                                 <GoPlus size={24} />
                                 log my debt
                             </button>
@@ -81,43 +81,43 @@ const DebtTracker = ({ user, debts }: DebtTrackerProps) => {
                         <div className="mt-[42px] flex flex-col lg:flex-row gap-5 h-fit">
                             {/* debts overview */}
                             <div className="grid grid-cols-2 gap-4 h-[300px] w-full lg:w-3/7">
-                                <div className="flex flex-col justify-center items-center gap-2 bg-[#161B22] rounded-[16px] border border-[#374151]">
-                                    <h4 className="text-[12px]/[18px] text-[#D1D5DB] capitalize">
+                                <div className="flex flex-col justify-center items-center gap-2 bg-[var(--bg-surface)] rounded-[8px] border border-[var(--border-subtle)] shadow-[0_1px_2px_rgba(28,25,23,0.04)]">
+                                    <h4 className="type-label text-[var(--text-secondary)] capitalize">
                                         total amount owed
                                     </h4>
-                                    <p className="text-[27px]/[27px] tracking-[-1.62px] text-[#FBBF24] font-semibold flex">
+                                    <p className="figure-mono text-[22px] leading-7 tracking-[-0.012em] text-[var(--warning)] font-medium flex">
                                         <TbCurrencyNaira size={27} /> {debts?.reduce((total, debt) => total + debt.amount, 0) ?? 0}
                                     </p>
                                 </div>
-                                <div className="flex flex-col justify-center items-center gap-2 bg-[#161B22] rounded-[16px] border border-[#374151]">
-                                    <h4 className="text-[12px]/[18px] text-[#D1D5DB] capitalize">
+                                <div className="flex flex-col justify-center items-center gap-2 bg-[var(--bg-surface)] rounded-[8px] border border-[var(--border-subtle)] shadow-[0_1px_2px_rgba(28,25,23,0.04)]">
+                                    <h4 className="type-label text-[var(--text-secondary)] capitalize">
                                         no of people owed
                                     </h4>
-                                    <p className="text-[27px]/[27px] tracking-[-1.62px] text-white font-semibold flex">
+                                    <p className="figure-mono text-[22px] leading-7 tracking-[-0.012em] text-[var(--text-primary)] font-medium flex">
                                         <MdOutlinePersonOutline size={27} />  {debts?.length}
                                     </p>
                                 </div>
-                                <div className="flex flex-col justify-center items-center gap-2 bg-[#161B22] rounded-[16px] border border-[#374151]">
-                                    <h4 className="text-[12px]/[18px] text-[#D1D5DB] capitalize">
+                                <div className="flex flex-col justify-center items-center gap-2 bg-[var(--bg-surface)] rounded-[8px] border border-[var(--border-subtle)] shadow-[0_1px_2px_rgba(28,25,23,0.04)]">
+                                    <h4 className="type-label text-[var(--text-secondary)] capitalize">
                                         biggest debt
                                     </h4>
-                                    <p className="text-[27px]/[27px] tracking-[-1.62px] text-[#E60000] font-semibold flex">
+                                    <p className="figure-mono text-[22px] leading-7 tracking-[-0.012em] text-[var(--negative)] font-medium flex">
                                         <TbCurrencyNaira size={27} /> {debts?.reduce((prev, current) => (prev.amount > current.amount) ? prev : current)?.amount ?? 0}
                                     </p>
                                 </div>
-                                <div className="flex flex-col justify-center items-center gap-2 bg-[#161B22] rounded-[16px] border border-[#374151]">
-                                    <h4 className="text-[12px]/[18px] text-[#D1D5DB] capitalize">
+                                <div className="flex flex-col justify-center items-center gap-2 bg-[var(--bg-surface)] rounded-[8px] border border-[var(--border-subtle)] shadow-[0_1px_2px_rgba(28,25,23,0.04)]">
+                                    <h4 className="type-label text-[var(--text-secondary)] capitalize">
                                         smallest debt
                                     </h4>
-                                    <p className="text-[27px]/[27px] tracking-[-1.62px] text-[#00AC4F] font-semibold flex">
+                                    <p className="figure-mono text-[22px] leading-7 tracking-[-0.012em] text-[var(--positive)] font-medium flex">
                                         <TbCurrencyNaira size={27} /> {debts?.reduce((prev, current) => (prev.amount < current.amount) ? prev : current)?.amount ?? 0}
                                     </p>
                                 </div>
                             </div>
                             {/* debtee bar chart */}
-                            <div className="bg-[#161B22] rounded-[16px] flex flex-col justify-items-start col-span-1 row-span-2 border border-[#374151] w-full lg:w-4/7 max-h-[400px]">
-                                <div className="flex items-center justify-between p-5 border-b border-[#374151]">
-                                    <h3 className="text-white text-[16px]/[16px] font-medium capitalize">
+                            <div className="bg-[var(--bg-surface)] rounded-[8px] flex flex-col justify-items-start col-span-1 row-span-2 border border-[var(--border-subtle)] shadow-[0_1px_2px_rgba(28,25,23,0.04)] w-full lg:w-4/7 max-h-[400px]">
+                                <div className="flex items-center justify-between p-5 border-b border-[var(--border-subtle)]">
+                                    <h3 className="text-[var(--text-primary)] text-[17px] leading-[25px] font-semibold tracking-[-0.005em] capitalize">
                                         debts Overview
                                     </h3>
                                 </div> 
@@ -281,7 +281,6 @@ const DebtTracker = ({ user, debts }: DebtTrackerProps) => {
                                                                             <td className='py-2 lg:py-5 cursor-pointer relative'>
                                                                                 <MoreHorizontal className='text-[#9d9d9d] hover:bg-[#28C76F] hover:text-white transition-colors duration-200 ease-in-out rounded-xs size-5 lg:size-6' onClick={() => {
                                                                                     setOpenMenu(isActive ? null : subIndex)
-                                                                                    console.log(subIndex)
                                                                                 }} />
                                                                                 <div className={` ${isActive  ? 'absolute' : 'hidden'} bg-white z-[999999] rounded-md shadow-lg mt-2`}>
                                                                                     <div className="py-1 w-full">

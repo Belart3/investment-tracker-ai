@@ -35,25 +35,25 @@ export default function SignupForm() {
     }, [state, router]);
     const [showPassword, setShowPassword] = useState(false);
     return (
-        <form action={action} className='flex flex-col space-y-2 border border-white p-6 rounded-md bg-gray-800'>
-            <div className='flex flex-col space-y-1'>
-                <label htmlFor="name" className='text-white'>Name</label>
-                <input id="name" name="name" className='border border-white bg-white' placeholder="Name" required />
+        <form action={action} className='flex flex-col space-y-4'>
+            <div className='flex flex-col space-y-1.5'>
+                <label htmlFor="Full name" className='text-(--text-secondary) font-(--text-xs) tracking-(--ls-xs) font-semibold'>Full name</label>
+                <input id="name" name="name" className='w-full h-11 rounded-[8px] border border-(--border-strong) bg-(--bg-surface-2) text-(--text-primary) font-(--text-sm) font-(--font-body) px-4 py-6' placeholder="Name" required />
             </div>
             {state?.errors?.name && <p className='text-red-500'>{state.errors.name}</p>}
-            <div className='flex flex-col space-y-1'>
-                <label htmlFor="email" className='text-white'>Email</label>
-                <input id="email" name="email" className='border border-white bg-white' type="email" placeholder="Email" required />
+            <div className='flex flex-col space-y-1.5'>
+                <label htmlFor="email" className='text-(--text-secondary) font-(--text-xs) tracking-(--ls-xs) font-semibold'>Email</label>
+                <input id="email" name="email" className='w-full h-11 rounded-[8px] border border-(--border-strong) bg-(--bg-surface-2) text-(--text-primary) font-(--text-sm) font-(--font-body) px-4 py-6' type="email" placeholder="Email" required />
             </div>
             {state?.errors?.email && <p className='text-red-500'>{state.errors.email}</p>}
-            <div className='flex flex-col space-y-1'>
-                <label htmlFor="password" className='text-white'>Password</label>
+            <div className='flex flex-col space-y-1.5'>
+                <label htmlFor="password" className='text-(--text-secondary) font-(--text-xs) tracking-(--ls-xs) font-semibold'>Password</label>
                 <div className="relative">
-                    <input id="password" name="password" className='border border-white bg-white pr-6' type={showPassword ? 'text' : 'password'} required />
+                    <input id="password" name="password" className='w-full h-11 rounded-[8px] border border-(--border-strong) bg-(--bg-surface-2) text-(--text-primary) font-(--text-sm) font-(--font-body) px-4 py-6' type={showPassword ? 'text' : 'password'} required />
                     <button
                     type="button"
                     onClick={() => setShowPassword((prev) => !prev)}
-                    className="absolute right-[2px] top-1/2 transform -translate-y-1/2 cursor-pointer"
+                    className="absolute right-[16px] top-1/2 transform -translate-y-1/2 cursor-pointer"
                     >
                         {showPassword ? <Eye size={20} /> : <EyeClosed size={20} />}
                     </button>
@@ -61,7 +61,7 @@ export default function SignupForm() {
             </div>
             {state?.errors?.password && (
                 <div>
-                    <p className='text-white'>Password must:</p>
+                    <p className='text-(--text-secondary) font-(--text-xs) tracking-(--ls-xs) font-semibold'>Password must:</p>
                     <ul>
                         {state.errors.password.map((error) => (
                             <li key={error} className='text-red-500'>- {error}</li>
@@ -70,7 +70,7 @@ export default function SignupForm() {
                 </div>
             )}
 
-            <button type="submit" disabled={pending} className='bg-white py-2 cursor-pointer'>{pending ? 'Creating Account...' : 'Sign Up'}</button>
+            <button type="submit" disabled={pending} className='bg-(--brand) hover:bg-(--brand-hover) ease-in duration-120 cursor-pointer rounded-[8px] h-11 text-white font-semibold mt-4'>{pending ? 'Creating Account...' : 'Sign Up'}</button>
         </form>
     )
 }

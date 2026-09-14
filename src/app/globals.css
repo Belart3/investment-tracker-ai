@@ -10,8 +10,9 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-figure);
+  --font-display: var(--font-space-grotesk), sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -47,43 +48,62 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-body {
-  font-family: var(--font-inter), sans-serif;
-}
-
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --radius: 8px;
+  --background: #faf7f2;
+  --foreground: #1c1917;
+  --card: #ffffff;
+  --card-foreground: #1c1917;
+  --popover: #ffffff;
+  --popover-foreground: #1c1917;
+  --primary: #2c3e63;
+  --primary-foreground: #ffffff;
+  --secondary: #f3efe8;
+  --secondary-foreground: #1c1917;
+  --muted: #f3efe8;
+  --muted-foreground: #6f675d;
+  --accent: #eae4da;
+  --accent-foreground: #1c1917;
+  --destructive: #c1272d;
+  --border: #e8e3db;
+  --input: #d6cfc2;
+  --ring: #2c3e63;
+  --chart-1: #2c3e63;
+  --chart-2: #1f8a5f;
+  --chart-3: #b8860b;
+  --chart-4: #c1272d;
+  --chart-5: #8d7b68;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #1c1917;
+  --sidebar-primary: #2c3e63;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f3efe8;
+  --sidebar-accent-foreground: #1c1917;
+  --sidebar-border: #e8e3db;
+  --sidebar-ring: #2c3e63;
+  --bg-canvas: #faf7f2;
+  --bg-surface: #ffffff;
+  --bg-surface-2: #f3efe8;
+  --bg-surface-3: #eae4da;
+  --border-subtle: #e8e3db;
+  --border-strong: #d6cfc2;
+  --text-primary: #1c1917;
+  --text-secondary: #6f675d;
+  --text-tertiary: #a79e91;
+  --brand: #2c3e63;
+  --brand-hover: #374b78;
+  --brand-active: #22314d;
+  --brand-muted: rgba(44, 62, 99, 0.08);
+  --positive: #1f8a5f;
+  --positive-muted: rgba(31, 138, 95, 0.1);
+  --negative: #c1272d;
+  --negative-muted: rgba(193, 39, 45, 0.1);
+  --warning: #b8860b;
+  --warning-muted: rgba(184, 134, 11, 0.1);
+  --font-body: var(--font-inter), sans-serif;
+  --font-display-family: var(--font-space-grotesk), sans-serif;
+  --font-figure: var(--font-jetbrains), monospace;
+  --shadow-card-lg: 0 12px 32px rgba(28, 25, 23, 0.07), 0 2px 8px rgba(28, 25, 23, 0.04);
 }
 
 .dark {
@@ -126,7 +146,35 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 24px;
   }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display-family) !important;
+  }
+  button, a, input, select, textarea {
+    font: inherit;
+  }
+}
+
+.figure-mono {
+  font-family: var(--font-figure);
+  font-variant-numeric: tabular-nums;
+}
+
+.type-label {
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.01em;
+  font-weight: 600;
+}
+
+.type-meta {
+  font-size: 10px;
+  line-height: 14px;
+  letter-spacing: 0.02em;
+  font-weight: 500;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */

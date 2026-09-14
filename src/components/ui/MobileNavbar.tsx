@@ -23,23 +23,23 @@ const MobileNavbar = (props: Props) => {
     }, [pathname]);
 
     return (
-        <nav className='fixed bottom-[10px] left-1/2 -translate-1/2 rounded-full w-fit backdrop-blur-xs bg-black/10 border border-gray-700 flex xl:hidden z-50 justify-start items-center p-[2px]'>
+        <nav className='fixed bottom-4 left-1/2 -translate-x-1/2 rounded-full w-fit bg-[var(--bg-surface)]/95 border border-[var(--border-strong)] shadow-[0_8px_24px_rgba(28,25,23,0.12)] flex xl:hidden z-50 justify-start items-center p-1'>
             <a href="/" className="">
-                <div className={`flex flex-col justify-center items-center py-1 w-fit rounded-full transition-all ease-in duration-200 hover:border hover:border-white/20 hover:bg-black/10 hover:backdrop-blur-xl shadow-xl hover:px-5 hover:py-1 ${active === "dashboard" ? 'border border-white/20 bg-black/10 backdrop-blur-xl shadow-xl px-5 py-1' : ' px-4'}`} onClick={() => setActive("dashboard")}>
-                    <MdDashboard size={30} className={`${active === 'dashboard' ? 'text-[#22C55E]' : 'text-gray-300'}`}/>
-                    <p className={`text-xs capitalize ${active === 'dashboard' ? 'text-[#22C55E]' : 'text-white'}`}>dashboard</p>
+                <div className={`flex flex-col justify-center items-center py-1 w-fit rounded-full transition-all ${active === "dashboard" ? 'bg-[var(--brand-muted)] px-5' : 'px-4'}`} onClick={() => setActive("dashboard")}>
+                    <MdDashboard size={22} className={`${active === 'dashboard' ? 'text-[var(--brand)]' : 'text-[var(--text-tertiary)]'}`}/>
+                    <p className={`text-[10px] leading-[14px] capitalize ${active === 'dashboard' ? 'text-[var(--brand)] font-semibold' : 'text-[var(--text-secondary)]'}`}>dashboard</p>
                 </div>
             </a>
             <a href="/asset-tracker" className="">
-                <div className={`flex flex-col justify-center items-center py-1 p-[2px] w-fit rounded-full transition-all ease-in duration-200 hover:border hover:border-white/20 hover:bg-black/10 hover:backdrop-blur-xl shadow-xl hover:px-5 hover:py-1 ${active === "asset-tracker" ? 'border border-white/20 bg-black/10 backdrop-blur-xl shadow-xl px-5 py-1' : 'px-4'}`} onClick={() => setActive("asset-tracker")}>
-                    <TrendingUp size={30} className={`${active === 'asset-tracker' ? 'text-[#22C55E]' : 'text-gray-300'}`}/>
-                    <p className={`text-xs capitalize ${active === 'asset-tracker' ? 'text-[#22C55E]' : 'text-white'}`}>assets</p>
+                <div className={`flex flex-col justify-center items-center py-1 p-[2px] w-fit rounded-full transition-all ${active === "asset-tracker" ? 'bg-[var(--brand-muted)] px-5' : 'px-4'}`} onClick={() => setActive("asset-tracker")}>
+                    <TrendingUp size={22} className={`${active === 'asset-tracker' ? 'text-[var(--brand)]' : 'text-[var(--text-tertiary)]'}`}/>
+                    <p className={`text-[10px] leading-[14px] capitalize ${active === 'asset-tracker' ? 'text-[var(--brand)] font-semibold' : 'text-[var(--text-secondary)]'}`}>assets</p>
                 </div>
             </a>
             <a href="track-debts" className="">
-                <div className={`flex flex-col justify-center items-center py-1 p-[2px] w-fit rounded-full transition-all ease-in duration-200 hover:border hover:border-white/20 hover:bg-black/10 hover:backdrop-blur-xl shadow-xl hover:px-5 hover:py-1 ${active === "track-debts" ? 'border border-white/20 bg-black/10 backdrop-blur-xl shadow-xl px-5 py-1' : 'px-4'}`} onClick={() => setActive("track-debts")}>
-                    <IoReceiptOutline size={30} className={`${active === 'track-debts' ? 'text-[#22C55E]' : 'text-gray-300'}`}/>
-                    <p className={`text-xs capitalize ${active === 'track-debts' ? 'text-[#22C55E]' : 'text-white'}`}>debts</p>
+                <div className={`flex flex-col justify-center items-center py-1 p-[2px] w-fit rounded-full transition-all ${active === "track-debts" ? 'bg-[var(--brand-muted)] px-5' : 'px-4'}`} onClick={() => setActive("track-debts")}>
+                    <IoReceiptOutline size={22} className={`${active === 'track-debts' ? 'text-[var(--brand)]' : 'text-[var(--text-tertiary)]'}`}/>
+                    <p className={`text-[10px] leading-[14px] capitalize ${active === 'track-debts' ? 'text-[var(--brand)] font-semibold' : 'text-[var(--text-secondary)]'}`}>debts</p>
                 </div>
             </a>
         </nav>

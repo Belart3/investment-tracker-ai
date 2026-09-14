@@ -9,9 +9,9 @@ type Props = {
 
 const portfolioDistribution = (props: Props) => {
     return (
-        <div className="bg-[#161B22] rounded-[16px] flex flex-col justify-start border border-[#374151] order-2 ">
-            <div className="px-2 py-4 xl:p-5 border-b border-[#374151] flex items-center justify-between">
-            <h3 className="text-white text-[16px]/[16px] font-medium">Portfolio Distribution</h3>
+        <div className="bg-[var(--bg-surface)] rounded-[8px] flex flex-col justify-start border border-[var(--border-subtle)] shadow-[0_1px_2px_rgba(28,25,23,0.04)] order-2">
+            <div className="px-4 py-4 xl:p-5 border-b border-[var(--border-subtle)] flex items-center justify-between">
+            <h3 className="text-[var(--text-primary)] text-[17px] leading-[25px] font-semibold tracking-[-0.005em]">Portfolio Distribution</h3>
             {/* <TimeFilter /> */}
             </div>
             <DoughnutChart label={props.labels} labelValue={props.labelValue} />

@@ -22,7 +22,6 @@ export async function addDebtAction(state: FormState, formData: FormData): Promi
     try {
         await connectDB();
         const newDebt = await addDebt(name, item, amount);
-        console.log('Saved debt:', newDebt);
         if (!newDebt) {
             return {
                 error: 'Failed to add debt. Please try again.',

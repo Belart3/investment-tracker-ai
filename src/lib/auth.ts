@@ -4,7 +4,15 @@ import { verifyToken } from "./jwt";
 import User from "@/models/User";
 import { connectDB } from "./mongodb";
 
-export async function getCurrentUser() {
+export type SafeUser = {
+    _id?: string;
+    name?: string;
+    email?: string;
+    createdAt?: string;
+    updatedAt?: string;
+};
+
+export async function getCurrentUser(): Promise<SafeUser | null> {
     await connectDB();
 
     const token = (await cookies()).get('token')?.value;
@@ -16,6 +24,16 @@ export async function getCurrentUser() {
         return null;
     }
 
-    const user = await User.findById(decoded.userId).select('-password');
-    return user;
+    const user = await User.findById(decoded.userId).select('-password').lean();
+    if (!user || typeof user !== 'object') {
+        return null;
+    }
+
+    return {
+        _id: user._id ? String(user._id) : undefined,
+        name: typeof user.name === 'string' ? user.name : undefined,
+        email: typeof user.email === 'string' ? user.email : undefined,
+        createdAt: user.createdAt ? new Date(user.createdAt).toISOString() : undefined,
+        updatedAt: user.updatedAt ? new Date(user.updatedAt).toISOString() : undefined,
+    };
 }

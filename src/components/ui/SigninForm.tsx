@@ -37,16 +37,16 @@ export default function SigninForm() {
     }, [state, router]);
 
     return (
-        <form action={action} className='flex flex-col space-y-2 border border-white p-6 rounded-md bg-gray-800'>
-            <div className='flex flex-col space-y-1'>
-                <label htmlFor="email" className='text-white'>Email</label>
-                <input id="email" name="email" className='border border-white bg-white' type="email" placeholder="email" required />
+        <form action={action} className='flex flex-col space-y-4'>
+            <div className='flex flex-col space-y-1.5'>
+                <label htmlFor="email" className='text-(--text-secondary) font-(--text-xs) tracking-(--ls-xs) font-semibold'>Email</label>
+                <input id="email" name="email" className='w-full h-11 rounded-[8px] border border-(--border-strong) bg-(--bg-surface-2) text-(--text-primary) font-(--text-sm) font-(--font-body) px-4 py-6' type="email" placeholder="email" required />
             </div>
             {state?.errors?.email && <p className='text-red-500'>{state.errors.email}</p>}
-            <div className='flex flex-col space-y-1'>
-                <label htmlFor="password" className='text-white'>Password</label>
+            <div className='flex flex-col space-y-1.5'>
+                <label htmlFor="password" className='text-(--text-secondary) font-(--text-xs) tracking-(--ls-xs) font-semibold'>Password</label>
                 <div className="relative">
-                    <input id="password" name="password" className='border border-white bg-white pr-5' type={showPassword ? 'text' : 'password'} required />
+                    <input id="password" name="password" className='w-full h-11 rounded-[8px] border border-(--border-strong) bg-(--bg-surface-2) text-(--text-primary) font-(--text-sm) font-(--font-body) px-4 py-6' type={showPassword ? 'text' : 'password'} required />
                     <button
                     type="button"
                     onClick={() => setShowPassword((prev) => !prev)}
@@ -58,7 +58,7 @@ export default function SigninForm() {
             </div>
             {state?.errors?.password && (
                 <div>
-                    <p className='text-white'>Password must:</p>
+                    <p className='text-(--text-secondary) font-(--text-xs) tracking-(--ls-xs) font-semibold'>Password must:</p>
                     <ul>
                         {state.errors.password.map((error) => (
                             <li key={error} className='text-red-500'>- {error}</li>
@@ -67,7 +67,7 @@ export default function SigninForm() {
                 </div>
             )}
 
-            <button type="submit" disabled={pending} className='bg-white py-2 cursor-pointer'>{pending ? 'Signing in...' : 'Sign In'}</button>
+            <button type="submit" disabled={pending} className='bg-(--brand) hover:bg-(--brand-hover) ease-in duration-120 cursor-pointer rounded-[8px] h-11 text-white font-semibold mt-4'>{pending ? 'Signing in...' : 'Sign in'}</button>
             <ToastContainer theme='dark' icon={({ type, theme }) => {
                 // theme is not used in this example but you could
                 switch (type) {

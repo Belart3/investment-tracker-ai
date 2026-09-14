@@ -27,9 +27,9 @@ type Props = {
 
 const AssetBarChart = (props: Props) => {
     return (
-        <div className="bg-[#161B22] rounded-[16px] flex flex-col justify-start border border-[#374151]  space-y-2 order-4 w-full">
-            <div className="px-2 py-4 xl:p-5 border-b border-[#374151] flex items-center justify-between">
-                <h3 className="text-white text-[16px]/[16px] font-medium">Individual Asset Value ($)</h3>
+        <div className="bg-[var(--bg-surface)] rounded-[8px] flex flex-col justify-start border border-[var(--border-subtle)] shadow-[0_1px_2px_rgba(28,25,23,0.04)] space-y-2 order-4 w-full">
+            <div className="px-4 py-4 xl:p-5 border-b border-[var(--border-subtle)] flex items-center justify-between">
+                <h3 className="text-[var(--text-primary)] text-[17px] leading-[25px] font-semibold tracking-[-0.005em]">Individual Asset Value ($)</h3>
                 {/* <TimeFilter/> */}
             </div>
             <div className="h-[300px] w-full px-4">
@@ -65,7 +65,7 @@ const AssetBarChart = (props: Props) => {
                                     display: false,
                                 },
                                 ticks: {
-                                    color: '#9E9E9E',
+                                    color: '#6F675D',
                                     font: {
                                     size: 12,
                                     }
@@ -74,10 +74,10 @@ const AssetBarChart = (props: Props) => {
                                 y: {
                                 type: 'logarithmic',
                                 grid: {
-                                    color: '#374151',
+                                    color: '#E8E3DB',
                                 },
                                 ticks: {
-                                    color: '#9E9E9E',
+                                    color: '#6F675D',
                                     font: {
                                     size: 12,
                                     }

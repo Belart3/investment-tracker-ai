@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { Inter } from "next/font/google";
+import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import FixedSideBar from "../components/ui/fixedSideBar";
 import MobileNavbar from "@/components/ui/MobileNavbar";
@@ -9,6 +9,16 @@ import LiveMarketData from "@/components/ui/liveMarketData";
 
 const inter = Inter({
   variable: "--font-inter",
+  subsets: ["latin"],
+});
+
+export const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
+  subsets: ["latin"],
+});
+
+export const jetBrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains",
   subsets: ["latin"],
 });
 
@@ -24,10 +34,8 @@ export default function RootLayout({
 
   const showSideBar = !hideSideBarRoutes.includes(pathname);
   return (
-    <html lang="en" className={`${inter.variable}`}>
-      <body
-        className={`antialiased bg-[#0D1117]`}
-      >
+    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} ${jetBrainsMono.variable}`}>
+      <body className="antialiased">
         {
           showSideBar && <FixedSideBar />
         }

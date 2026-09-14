@@ -25,7 +25,7 @@ const liveMarketTimeFilter = (props: Props) => {
     return (
         <Tooltip>
             <TooltipTrigger asChild>
-                <div className="flex rounded-[8px] bg-[#161B22] border border-[#374151]">
+                <div className="flex rounded-[8px] bg-(--bg-canvas) border border-(--border-subtle) px-1 items-center gap-1 cursor-pointer">
                     <Select value={props.timefilter} onValueChange={(value) => {
                         props.setTimeFilter(value);
                     }}>
@@ -46,8 +46,8 @@ const liveMarketTimeFilter = (props: Props) => {
                     </Select>
                 </div>
             </TooltipTrigger>
-            <TooltipContent>
-                <p className="text-[12px]/[18px] tracking-[-0.48px] text-[#6B7280] capitalize">live data - updated {formatedLastUpdated}</p>
+            <TooltipContent className='!bg-(--bg-surface) border border-[var(--border-subtle)] shadow-[0_1px_2px_rgba(28,25,23,0.04)] rounded-[8px] p-2'>
+                <p className="text-[12px]/[18px] tracking-[-0.48px] text-(--text-secondary) capitalize">last updated - {formatedLastUpdated}</p>
             </TooltipContent>
         </Tooltip>
     )
