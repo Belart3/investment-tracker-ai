@@ -129,7 +129,7 @@ export default function Home({ user }: Props) {
         {
           !balExists ? (
             <div className=" mt-[42px] flex flex-col gap-4 w-full h-full items-center justify-center">
-              <h1 className="text-white text-[16px]/[16px] font-medium">
+              <h1 className="text-(--text-secondary) text-[16px]/[16px] font-medium">
                 Loading your dashboard...  
               </h1>
             </div>

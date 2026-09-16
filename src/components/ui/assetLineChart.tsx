@@ -17,11 +17,11 @@ const AssetLineChart = (props: Props) => {
                     !props.loading && props.label.length > 0 && props.labelValue.length > 0 ?
                     <Line
                         data={{
-                            labels: [1,2,3,4,5,6,7,8,9,10],
+                            labels: props.label,
                             datasets: [
                                 {
                                     label: '',
-                                    data: [20,100,90,98,99,40,99,9],
+                                    data: props.labelValue,
                                     fill: true,
                                     backgroundColor: (context) => {
                                         const { ctx, chartArea } = context.chart;
