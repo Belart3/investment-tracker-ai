@@ -36,7 +36,7 @@ const PortfolioSnapshotSchema = new Schema<IPortfolioSnapshot>(
         },
         ],
     },
-    { timestamps: true }
+    { timestamps: true, collection: "portfolioSnapshots" }
 );
 
 PortfolioSnapshotSchema.index({ userId: 1, date: 1 }, { unique: true });

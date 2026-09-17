@@ -24,7 +24,7 @@ type Props = {
 
 const DoughnutChart = (props: Props) => {
     return (
-        <div className="h-[300px] md:h-100 xl:h-[500px] flex items-center justify-center p-5">
+        <div className="flex items-center justify-center p-5">
             {
                 props.label && props.labelValue && props.label.length > 0 && props.labelValue.length > 0 ? (
                 <Doughnut
@@ -33,7 +33,7 @@ const DoughnutChart = (props: Props) => {
                     datasets: [
                         {
                             data: props.labelValue,
-                            backgroundColor: ['#FF638420','#36A2EB20','#FFCE5620','#4BC0C020','#9966FF20','#FF9F4020','#C9CBCE20','#00CD5620','#7848D420','#EC706320'],
+                            backgroundColor: ['#FF6384','#36A2EB','#FFCE56','#4BC0C0','#9966FF','#FF9F40','#C9CBCE','#00CD56','#7848D4','#EC7063'],
                             hoverBackgroundColor: ['#FF6384','#36A2EB','#FFCE56','#4BC0C0','#9966FF','#FF9F40','#C9CBCE','#00CD56','#7848D4','#EC7063'],
                         },
                     ],
@@ -41,6 +41,21 @@ const DoughnutChart = (props: Props) => {
                     options={{
                         responsive: true,
                         maintainAspectRatio: false,
+                        circumference: 180,
+                        rotation: -90,
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                                labels: {
+                                    boxWidth: 12,
+                                    boxHeight: 12,
+                                    padding: 20,
+                                    font: {
+                                        size: 12,
+                                    },
+                                },
+                            },
+                        },
                     }}
                 />
                 ) : 

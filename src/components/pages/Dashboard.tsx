@@ -54,14 +54,17 @@ export default function Home({ user }: Props) {
   const { showSidebar } = useContext(SidebarContext);
   const {balance:balance, loading, error} = useWalletBalance();
   const {exchangeHistory: exchangeHistoryData, loading: exchangeHistoryLoading, error: exchangeHistoryError} = useExchangeHistory();
-  const { data: portfolioHistory, loading: portfolioHistoryLoading } = usePortfolioHistory(30);
 
   const accountType: string = balance?.accountType || 'N/A';
   const assets = balance?.asset || [];
-  const balExists = balance && Object.keys(balance).length > 0 && assets.length > 0;
-  const labels = balExists ? assets.map((item: any) => item.coin) : [];
-  const labelValue: string[] = balExists ? assets.map((item: typeof assets[number]) => item.usdValue) : [];
-  const cumRealisedPnl: string = balExists && assets.reduce((acc: number, item: Asset) => acc + parseFloat(item.cumRealisedPnl || '0'), 0).toFixed(2) || '0';
+  const validAssets = assets.filter((asset) => asset.usdValue && parseFloat(asset.usdValue) >= 1);
+  const sortedAssets = validAssets.sort((a, b) => parseFloat(b.usdValue) - parseFloat(a.usdValue));
+  const topAssets = sortedAssets.slice(0, 10);
+  const balExists = balance && Object.keys(balance).length > 0 && validAssets.length > 0;
+  const labels = balExists ? validAssets.map((item: any) => item.coin) : [];
+  const labelValue: string[] = balExists ? validAssets.map((item: typeof validAssets[number]) => item.usdValue) : [];
+  console.log('labelvalue', labelValue);
+  const cumRealisedPnl: string = balExists && validAssets.reduce((acc: number, item: Asset) => acc + parseFloat(item.cumRealisedPnl || '0'), 0).toFixed(2) || '0';
   interface Asset {
     coin: string;
     usdValue: string;
@@ -125,7 +128,6 @@ export default function Home({ user }: Props) {
         </div>
       </div>
       <div className="flex flex-col w-full max-w-[1440px] mx-auto">
-        {/* check if there is data from the api first */}
         {
           !balExists ? (
             <div className=" mt-[42px] flex flex-col gap-4 w-full h-full items-center justify-center">
@@ -135,29 +137,12 @@ export default function Home({ user }: Props) {
             </div>
           ) : 
           <div className="mt-8 flex flex-col gap-5">
-            <div className="gap-4 grid md:grid-cols-2 xl:gap-5 w-full h-fit 2xl:h-fit">
-              <div className="flex flex-col gap-4">
-                {/* Portfolio Overview */}
-                <div className="col-span-1  xl:row-span-1">
-                  <PortfolioOverview balanceValue={totalBalance} accountType={accountType} pnl={cumRealisedPnl} />
-                </div>
-                {/* individual assets bar chart */}
-                <div className="col-span-1 row-span-2 grow">
-                  <AssetBarChart labels={labels} labelValue={labelValue}/>
-                </div>
-              </div>
-              {/* portfolio distribution doughnut chart */}
-              <div className="col-span-1">
-                <PortfolioDistribution labels={labels} labelValue={labelValue} />
-              </div>
+            <AssetLineChart             /> 
+            <div className="grid grid-cols-2 gap-5">
+              <PortfolioDistribution labels={labels} labelValue={labelValue} />
+
             </div>
-            <AssetLineChart
-              label={portfolioHistory.map((point) => point.date)}
-              labelValue={portfolioHistory.map((point) => point.value)}
-              loading={portfolioHistoryLoading}
-            />
-            {/* Asset trade information table */}
-            <ConversionHistory filterAssets={filterAssets} exchangeHistory={exchangeHistoryData} loading={exchangeHistoryLoading} error={exchangeHistoryError} />
+            {/* <ConversionHistory filterAssets={filterAssets} exchangeHistory={exchangeHistoryData} loading={exchangeHistoryLoading} error={exchangeHistoryError} /> */}
           </div>
         }
       </div>

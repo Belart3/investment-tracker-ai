@@ -4,6 +4,7 @@ import { savePortfolioSnapshot } from "@/lib/savePortfolioSnapshot";
 import User from "@/models/User";
 
 export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 
 function isAuthorized(request: Request) {
   const authorization = request.headers.get("authorization");
@@ -19,11 +20,19 @@ export async function GET(request: Request) {
     await connectDB();
     const users = await User.find({}).select("_id").lean();
 
-    const snapshots = await Promise.all(
+    const results = await Promise.allSettled(
       users.map((user) => savePortfolioSnapshot(String(user._id)))
     );
+    const saved = results.filter((result) => result.status === "fulfilled").length;
+    const failed = results.length - saved;
 
-    return NextResponse.json({ saved: snapshots.length });
+    results.forEach((result, index) => {
+      if (result.status === "rejected") {
+        console.error(`Failed to save portfolio snapshot for user ${String(users[index]._id)}`, result.reason);
+      }
+    });
+
+    return NextResponse.json({ saved, failed, total: results.length });
   } catch (error) {
     console.error("Failed to save scheduled portfolio snapshots", error);
     return NextResponse.json(

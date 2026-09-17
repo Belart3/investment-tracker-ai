@@ -56,7 +56,7 @@ const AssetTrackerTable = (props: Props) => {
     }, [])
 
     return (
-        <div className="col-span-6 flex flex-col justify-start row-span-2 space-y-2 order-4 bg-[#161B22] border border-[#374151] rounded-md">
+        <div className="col-span-6 flex flex-col justify-start row-span-2 space-y-2 bg-[#161B22] border border-[#374151] rounded-md">
             <div className="flex flex-col items-start gap-2 lg:flex-row lg:items-center justify-between p-5">
                 <h2 className="text-white capitalize">Portfolio assets</h2>
                 <div className="flex items-center justify-center gap-3">

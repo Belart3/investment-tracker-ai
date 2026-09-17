@@ -15,7 +15,9 @@ export async function connectDB() {
     }
 
     try {
-        const db = await mongoose.connect(MONGODB_URI as string);
+        const db = await mongoose.connect(MONGODB_URI as string, {
+            dbName: process.env.MONGODB_DB_NAME ?? 'InvestmentTracker',
+        });
         isConnected = db.connections[0].readyState === 1;
         console.log('MongoDB connected');
     } catch (error) {

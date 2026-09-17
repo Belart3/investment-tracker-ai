@@ -15,6 +15,13 @@ export function usePortfolioHistory(days = 30) {
 
         async function loadHistory() {
         try {
+            const saveResponse = await fetch("/api/portfolioSnapshots", {
+                method: "POST",
+            });
+            if (!saveResponse.ok) {
+                throw new Error("Failed to save portfolio snapshot");
+            }
+
             const response = await fetch(`/api/portfolioSnapshots?days=${days}`);
             if (!response.ok) {
             throw new Error("Failed to load portfolio history");
