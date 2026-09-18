@@ -35,7 +35,6 @@ const LiveMarketData = () => {
     const [timeFilter, setTimeFilter] = useState<string>('1h');
     const timeKey = `percent_change_${timeFilter}` as const;
     const lastUpdated = marketData.length > 0 ? marketData[0].last_updated : '';
-    console.log('Market Data in LiveMarketData component:', marketData);
 
     return (
         <div className="w-full border-b border-[var(--border-subtle)] bg-[var(--bg-surface)] p-2 lg:px-5 lg:py-3 flex items-center gap-1 lg:gap-2.5 sticky top-0 right-0 xl:ms-[237px] xl:w-[calc(100%-237px)] z-50">

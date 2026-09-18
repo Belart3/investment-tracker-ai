@@ -63,7 +63,6 @@ export default function Home({ user }: Props) {
   const balExists = balance && Object.keys(balance).length > 0 && validAssets.length > 0;
   const labels = balExists ? validAssets.map((item: any) => item.coin) : [];
   const labelValue: string[] = balExists ? validAssets.map((item: typeof validAssets[number]) => item.usdValue) : [];
-  console.log('labelvalue', labelValue);
   const cumRealisedPnl: string = balExists && validAssets.reduce((acc: number, item: Asset) => acc + parseFloat(item.cumRealisedPnl || '0'), 0).toFixed(2) || '0';
   interface Asset {
     coin: string;
@@ -137,7 +136,7 @@ export default function Home({ user }: Props) {
             </div>
           ) : 
           <div className="mt-8 flex flex-col gap-5">
-            <AssetLineChart             /> 
+            <AssetLineChart /> 
             <div className="grid grid-cols-2 gap-5">
               <PortfolioDistribution labels={labels} labelValue={labelValue} />
 

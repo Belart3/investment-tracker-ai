@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Line } from "react-chartjs-2";
 import { Skeleton } from '@mui/material';
 import { IoTriangleSharp } from 'react-icons/io5';
@@ -8,46 +8,76 @@ type Props = {
 }
 
 const AssetLineChart = (props: Props) => {
-    const { data: portfolioHistory, loading: portfolioHistoryLoading } = usePortfolioHistory(30);
-    const label = portfolioHistory.map((point: PortfolioHistoryPoint) => point.date);
-    console.log('portfolioHistory:', portfolioHistory);
-    const labelValue = portfolioHistory.map((point: PortfolioHistoryPoint) => point.value);
+    const [days, setDays] = useState(30);
+    const { data: portfolioHistory, loading: portfolioHistoryLoading } = usePortfolioHistory(days);
+    const historyDates = portfolioHistory.map((point: PortfolioHistoryPoint) => point.date);
+    const historyValue = portfolioHistory.map((point: PortfolioHistoryPoint) => point.value);
+    const currentValue = historyValue.length > 0 ? historyValue[historyValue.length - 1] : 0;
+    const historyChange = historyValue.length > 1 ? historyValue[historyValue.length - 1] - historyValue[0] : 0;
+    const historyChangePercent = historyValue.length > 1 ? (historyChange / historyValue[0]) * 100 : 0;
+
+    const timeRanges = [
+        { label: '7D', value: 7 },
+        { label: '30D', value: 30 },
+        { label: '90D', value: 90 },
+        { label: '1Y', value: 365 },
+    ];
     return (
         <div className="bg-[var(--bg-surface)] rounded-[8px] flex flex-col justify-start border border-[var(--border-subtle)] shadow-[0_1px_2px_rgba(28,25,23,0.04)] space-y-2 px-4 py-4 xl:p-5 ">
-            <div className="flex flex-col gap-2 items-start justify-start">
-                <h3 className="text-[var(--text-primary)] text-[17px] leading-[25px] font-semibold tracking-[-0.005em]">Net Worth</h3>
-                <p className="text-[46px]/[48px] font-semibold font-mono tabular-nums text-(--text-primary) tracking-[-0.005em]">
-                    ${
-                        labelValue && labelValue.length > 0 ? (labelValue[labelValue.length - 1]) : <Skeleton variant="text" width={100} />
+            <div className="flex flex-col gap-3 lg:flex-row w-full items-start lg:items-center lg:justify-between">
+                <div className="flex flex-col gap-2 items-start justify-start">
+                    <h3 className="text-[var(--text-primary)] text-[17px] leading-[25px] font-semibold tracking-[-0.005em]">Net Worth</h3>
+                    <p className="text-[46px]/[48px] font-semibold font-mono tabular-nums text-[var(--text-primary)] tracking-[-0.005em]">
+                        {
+                            currentValue ? `$${currentValue.toFixed(2)}` : <Skeleton variant="text" width={100} />
+                        }
+                    </p>
+                    {
+                        historyChange && historyChangePercent ? (
+                            <p className="text-[13px]/[24px] font-semibold font-mono">
+                                {
+                                    historyChange && historyChange > 0 && 
+                                        <IoTriangleSharp className={`inline-block ease-linear duration-200 ${historyChange > 0 ? 'text-[var(--positive)]' : 'text-[var(--negative)] rotate-180'} mr-1`} size={8} /> 
+                                }
+                                <span className={`${historyChange > 0 ? 'text-[var(--positive)]' : 'text-[var(--negative)]'} text-[13px] font-medium`}>
+                                    {
+                                        historyChange && historyChange > 0 ? (
+                                            '+' 
+                                        ) : (
+                                            '-'
+                                        )
+                                    }
+                                    {historyChange.toFixed(2)}
+                                </span> <span className={`${historyChange > 0 ? 'text-[var(--positive)]' : 'text-[var(--negative)]'} text-[13px] font-medium`}>
+                                    ({historyChangePercent.toFixed(2)}%)
+                                </span> over <span className="">
+                                    {days} days
+                                </span>
+                            </p>
+                        ) : <Skeleton variant="text" width={150} height={20} />
                     }
-                </p>
-                <p className="text-[13px]/[24px] font-semibold font-mono">
-                    <IoTriangleSharp className={`inline-block text-[var(--text-success)] mr-1`} size={8} /> 
-                    <span className="">
-                        +$1,234.70
-                    </span> <span className="text-[var(--text-success)] text-[13px] font-medium">
-                        ({
-                            labelValue && labelValue.length > 0 ? (
-                                labelValue[labelValue.length - 1] && labelValue[0] ? 
-                                (
-                                    ((labelValue[labelValue.length - 1] - labelValue[0]) / labelValue[0]) * 100
-                                ) : 0
-                            ) : <Skeleton variant="text" width={50} />
-                        }%)
-                    </span> over <span className="">
-                        90 days
-                    </span>
-                </p>
+                </div>
+                <div className="flex gap-2 items-center justify-center">
+                    {timeRanges.map((range) => (
+                        <button
+                            key={range.value}
+                            onClick={() => setDays(range.value)}
+                            className={`px-4 py-px rounded-[8px] h-9 border border-[var(--border-strong)] text-[13px] bg-[var(--bg-surface)] font-semibold cursor-pointer ${days === range.value ? 'bg-[var(--brand)] text-[var(--bg-surface)]' : 'bg-[var(--bg-surface)] text-[var(--text-secondary)]'}`}
+                        >
+                            {range.label}
+                        </button>
+                    ))}
+                </div>
             </div>
             <div className="h-[250px] w-full px-4">
                 {
-                    !portfolioHistoryLoading && label.length > 0 && labelValue.length > 0 ?
+                    !portfolioHistoryLoading && historyDates.length > 0 && historyValue.length > 0 ?
                     <Line
                         data={{
-                            labels: portfolioHistory.map((point: PortfolioHistoryPoint) => point.date),
+                            labels: historyDates,
                             datasets: [
                                 {
-                                    data: portfolioHistory.map((point: PortfolioHistoryPoint) => point.value),
+                                    data: historyValue.map((value: number) => value.toFixed(2)),
                                     fill: true,
                                     backgroundColor: (context) => {
                                         const { ctx, chartArea } = context.chart;

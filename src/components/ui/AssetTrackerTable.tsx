@@ -40,7 +40,6 @@ const AssetTrackerTable = (props: Props) => {
         const assetList = await res.json();
 
         setAssets(assetList || []); 
-        console.log('Asset data set:', assetList );
         }
 
         loadUnifiedWalletBalance()
@@ -50,7 +49,6 @@ const AssetTrackerTable = (props: Props) => {
             const data = await res.json();
 
             setExchangeHistory(data || []);
-            //console.log('exchange History Log:', data);
         } 
         loadExchangeHistory();
     }, [])

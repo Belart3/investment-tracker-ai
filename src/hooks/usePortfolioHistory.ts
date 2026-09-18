@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { getPortfolioHistory } from "@/lib/getPortfolioHistory";
 
 export type PortfolioHistoryPoint = {
     date: string;
@@ -14,38 +15,17 @@ export function usePortfolioHistory(days = 30) {
         let cancelled = false;
 
         async function loadHistory() {
-        try {
-            const saveResponse = await fetch("/api/portfolioSnapshots", {
-                method: "POST",
-            });
-            if (!saveResponse.ok) {
-                throw new Error("Failed to save portfolio snapshot");
-            }
-
-            const response = await fetch(`/api/portfolioSnapshots?days=${days}`);
-            if (!response.ok) {
-            throw new Error("Failed to load portfolio history");
-            }
-
-            const history = (await response.json()) as PortfolioHistoryPoint[];
+            const data = await getPortfolioHistory(days);
             if (!cancelled) {
-            setData(history);
+                setData(data);
+                setLoading(false);
             }
-        } catch (requestError) {
-            if (!cancelled) {
-            setError(requestError as Error);
-            }
-        } finally {
-            if (!cancelled) {
-            setLoading(false);
-            }
-        }
         }
 
         loadHistory();
 
         return () => {
-        cancelled = true;
+            cancelled = true;
         };
     }, [days]);
 

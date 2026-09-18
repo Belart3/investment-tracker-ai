@@ -13,7 +13,6 @@ export async function getTransactionLog () {
             currency: 'USDT',
         })
         const data = result.result.list ?? [];
-        console.log('Bybit Transaction Log Data:', data);
         return data
     } catch (error: any) {
         console.error('Bybit API Error:', error);

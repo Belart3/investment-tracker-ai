@@ -25,7 +25,6 @@ export async function fetchLiveMarketData () {
                 volume: item.volume24h,
             })
         }
-        //console.log('live market data:', res)
         return res;
     } catch (error) {
         console.error('Bybit API Error:', error);

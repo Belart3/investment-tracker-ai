@@ -16,7 +16,6 @@ export async function fetchCurrentHoldings() {
         if (!data.length) {
             throw new Error('No balance data found');
         }
-        console.log('Bybit Balance Data:', data);
 
         const c = []
         for (const item of data) {
@@ -26,7 +25,6 @@ export async function fetchCurrentHoldings() {
                 accountType: item.type,
             })
         }
-        console.log('Processed Bybit Balance Data:', c[0]);
         return c[0];
     } catch (error) {
         console.error('Bybit API Error:', error);

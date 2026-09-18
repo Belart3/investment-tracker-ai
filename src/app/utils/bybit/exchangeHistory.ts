@@ -24,7 +24,6 @@ export async function fetchExchangeRecords () {
                 exchangeRate: item.exchangeRate
             })
         }
-        //console.log('exchange history:', res)
         return res;
     } catch (error) {
         console.error('Bybit API Error:', error);
