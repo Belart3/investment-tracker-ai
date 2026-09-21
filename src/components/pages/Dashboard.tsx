@@ -102,22 +102,13 @@ export default function Home({ user }: Props) {
         </div>
       </div>
       <div className="flex flex-col w-full max-w-[1440px] mx-auto">
-        {
-          !balExists ? (
-            <div className=" mt-[42px] flex flex-col gap-4 w-full h-full items-center justify-center">
-              <h1 className="text-(--text-secondary) text-[16px]/[16px] font-medium">
-                Loading your dashboard...  
-              </h1>
-            </div>
-          ) : 
-          <div className="mt-8 flex flex-col gap-5">
-            <AssetLineChart /> 
-            <div className="grid grid-cols-2 gap-5">
-              <PortfolioDistribution labels={labels} labelValue={labelValue} />
-            </div>
-            {/* <ConversionHistory filterAssets={filterAssets} exchangeHistory={exchangeHistoryData} loading={exchangeHistoryLoading} error={exchangeHistoryError} /> */}
+        <div className="mt-8 flex flex-col gap-5">
+          <AssetLineChart /> 
+          <div className="grid grid-cols-2 gap-5">
+            <PortfolioDistribution labels={labels} labelValue={labelValue} />
           </div>
-        }
+          {/* <ConversionHistory filterAssets={filterAssets} exchangeHistory={exchangeHistoryData} loading={exchangeHistoryLoading} error={exchangeHistoryError} /> */}
+        </div>
       </div>
     </div>
   );

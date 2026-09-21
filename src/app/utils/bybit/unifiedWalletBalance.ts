@@ -31,6 +31,7 @@ export async function unifiedWalletBalance() {
         const apiError = error as {
             code?: number;
             message?: string;
+            body?: unknown;
             response?: {
                 status?: number;
                 data?: unknown;
@@ -40,6 +41,7 @@ export async function unifiedWalletBalance() {
         console.error('Bybit API Error:', {
             code: apiError.code,
             message: apiError.message,
+            body: apiError.body,
             status: apiError.response?.status,
             response: apiError.response?.data,
         });

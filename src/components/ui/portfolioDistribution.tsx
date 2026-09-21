@@ -1,5 +1,4 @@
 import React from 'react'
-import TimeFilter from './liveMarketTimeFilter'
 import DoughnutChart from './doughnutChart'
 
 type Props = {
@@ -13,7 +12,15 @@ const portfolioDistribution = (props: Props) => {
             <div className="px-4 py-4 xl:p-5 flex items-center justify-between">
                 <h3 className="text-[var(--text-primary)] text-[17px] leading-[25px] font-semibold tracking-[-0.005em]">Portfolio Distribution</h3>
             </div>
-            <DoughnutChart label={props.labels} labelValue={props.labelValue} />
+            {
+                props.labelValue && props.labels.length > 0 && props.labelValue.length > 0 ? (
+                    <DoughnutChart label={props.labels} labelValue={props.labelValue} />
+                ) : (
+                    <div className="p-4 text-center text-[var(--text-secondary)]">
+                        No data available for portfolio distribution.
+                    </div>
+                )
+            }
         </div>
     )
 }
