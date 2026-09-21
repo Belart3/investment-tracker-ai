@@ -91,7 +91,7 @@ const AssetTracker = (props: Props) => {
                     </button>
                 ))}
             </div>
-            {/* <AssetTrackerTable isAssetModalOpen={isAddAssetModalOpen} setIsAddAssetModalOpen={setIsAddAssetModalOpen} /> */}
+            <AssetTrackerTable isAssetModalOpen={isAddAssetModalOpen} setIsAddAssetModalOpen={setIsAddAssetModalOpen} />
         </div>
     )
 }
