@@ -8,21 +8,9 @@ import PortfolioDistribution from "../ui/portfolioDistribution";
 import AssetLineChart from "../ui/assetLineChart";
 import { Skeleton } from "@mui/material";
 import { SidebarContext } from "@/context/sidebarContext";
-import { useWalletBalance } from "@/hooks/useWalletBalance";
+import { useWalletBalance, type WalletAsset } from "@/hooks/useWalletBalance";
 import { useExchangeHistory } from "@/hooks/useExchangeHistory";
 import { usePortfolioHistory } from "@/hooks/usePortfolioHistory";
-
-type Balance = {
-  accountType?: string;
-  balance?: string ;
-  totalAssets?: number | string;
-  asset?: {
-    coin: string;
-    usdValue: string;
-    walletBalance: string;
-    cumRealisedPnl: string ;
-  }[];
-};
 
 type MarketDatum = {
   symbol: string;
@@ -61,22 +49,9 @@ export default function Home({ user }: Props) {
   const sortedAssets = validAssets.sort((a, b) => parseFloat(b.usdValue) - parseFloat(a.usdValue));
   const topAssets = sortedAssets.slice(0, 10);
   const balExists = balance && Object.keys(balance).length > 0 && validAssets.length > 0;
-  const labels = balExists ? validAssets.map((item: any) => item.coin) : [];
+  const labels = balExists ? validAssets.map((item: WalletAsset) => item.coin) : [];
   const labelValue: string[] = balExists ? validAssets.map((item: typeof validAssets[number]) => item.usdValue) : [];
-  const cumRealisedPnl: string = balExists && validAssets.reduce((acc: number, item: Asset) => acc + parseFloat(item.cumRealisedPnl || '0'), 0).toFixed(2) || '0';
-  interface Asset {
-    coin: string;
-    usdValue: string;
-    walletBalance: string;
-    cumRealisedPnl: string;
-  }
-
-  interface Balance {
-    accountType?: string;
-    balance?: string;
-    totalAssets?: number | string;
-    asset?: Asset[];
-  }
+  const cumRealisedPnl: string = balExists && validAssets.reduce((acc: number, item: WalletAsset) => acc + parseFloat(item.cumRealisedPnl || '0'), 0).toFixed(2) || '0';
 
   interface MarketDatum {
     symbol: string;
@@ -102,7 +77,7 @@ export default function Home({ user }: Props) {
   interface DashboardProps {
     user?: User | null;
   }
-  const totalBalance = balExists ? assets.reduce((acc: number, item: any) => acc + parseFloat(item.usdValue || '0'), 0).toFixed(2) : 0;
+  const totalBalance = balExists ? assets.reduce((acc: number, item: WalletAsset) => acc + parseFloat(item.usdValue || '0'), 0).toFixed(2) : 0;
 
   const filterAssets: ExchangeHistoryData[] = exchangeHistoryData && exchangeHistoryData.length > 0 ? exchangeHistoryData.filter(
   (asset: ExchangeHistoryData, index: number, self: ExchangeHistoryData[]) =>
@@ -139,7 +114,6 @@ export default function Home({ user }: Props) {
             <AssetLineChart /> 
             <div className="grid grid-cols-2 gap-5">
               <PortfolioDistribution labels={labels} labelValue={labelValue} />
-
             </div>
             {/* <ConversionHistory filterAssets={filterAssets} exchangeHistory={exchangeHistoryData} loading={exchangeHistoryLoading} error={exchangeHistoryError} /> */}
           </div>

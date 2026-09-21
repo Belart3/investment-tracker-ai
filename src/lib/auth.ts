@@ -25,7 +25,7 @@ export async function getCurrentUser(): Promise<SafeUser | null> {
     }
 
     const user = await User.findById(decoded.userId).select('-password').lean();
-    if (!user || typeof user !== 'object') {
+    if (!user || typeof user !== 'object' || Array.isArray(user)) {
         return null;
     }
 
