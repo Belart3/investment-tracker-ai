@@ -28,7 +28,21 @@ export async function unifiedWalletBalance() {
         }
         return c[0];
     } catch (error) {
-        console.error('Bybit API Error:', error);
+        const apiError = error as {
+            code?: number;
+            message?: string;
+            response?: {
+                status?: number;
+                data?: unknown;
+            };
+        };
+
+        console.error('Bybit API Error:', {
+            code: apiError.code,
+            message: apiError.message,
+            status: apiError.response?.status,
+            response: apiError.response?.data,
+        });
         throw new Error('Failed to fetch UNIFIED balance data from Bybit');
     }
 }

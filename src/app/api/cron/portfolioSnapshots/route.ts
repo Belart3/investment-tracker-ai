@@ -5,6 +5,7 @@ import User from "@/models/User";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
+export const preferredRegion = "fra1";
 
 function isAuthorized(request: Request) {
   const authorization = request.headers.get("authorization");
