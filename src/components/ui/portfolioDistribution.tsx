@@ -8,8 +8,8 @@ type Props = {
 
 const portfolioDistribution = (props: Props) => {
     return (
-        <div className="bg-[var(--bg-surface)] rounded-[8px] flex flex-col justify-start border border-[var(--border-subtle)] shadow-[0_1px_2px_rgba(28,25,23,0.04)]">
-            <div className="px-4 py-4 xl:p-5 flex items-center justify-between">
+        <div className="bg-[var(--bg-surface)] rounded-[8px] flex flex-col justify-start border border-[var(--border-subtle)] shadow-[0_1px_2px_rgba(28,25,23,0.04)] px-4 pt-4 xl:p-5 ">
+            <div className="flex items-center justify-between">
                 <h3 className="text-[var(--text-primary)] text-[17px] leading-[25px] font-semibold tracking-[-0.005em]">Portfolio Distribution</h3>
             </div>
             {

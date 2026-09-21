@@ -11,6 +11,8 @@ import { SidebarContext } from "@/context/sidebarContext";
 import { useWalletBalance, type WalletAsset } from "@/hooks/useWalletBalance";
 import { useExchangeHistory } from "@/hooks/useExchangeHistory";
 import { usePortfolioHistory } from "@/hooks/usePortfolioHistory";
+import AllocationsVsTarget from "../ui/AllocationsVsTarget";
+import RecentActivity from "../ui/RecentActivity";
 
 type MarketDatum = {
   symbol: string;
@@ -37,6 +39,7 @@ type user = {
 type Props = { 
   user?: user | null 
 };
+
 
 export default function Home({ user }: Props) {
   const { showSidebar } = useContext(SidebarContext);
@@ -104,10 +107,11 @@ export default function Home({ user }: Props) {
       <div className="flex flex-col w-full max-w-[1440px] mx-auto">
         <div className="mt-8 flex flex-col gap-5">
           <AssetLineChart /> 
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid lg:grid-cols-2 gap-5">
+            <AllocationsVsTarget labels={labels} labelValue={labelValue} />
             <PortfolioDistribution labels={labels} labelValue={labelValue} />
           </div>
-          {/* <ConversionHistory filterAssets={filterAssets} exchangeHistory={exchangeHistoryData} loading={exchangeHistoryLoading} error={exchangeHistoryError} /> */}
+          <RecentActivity />
         </div>
       </div>
     </div>
