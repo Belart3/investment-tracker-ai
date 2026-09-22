@@ -1,4 +1,5 @@
 import React from 'react'
+import {useAssetData} from '@/hooks/useAssetData';
 
 type Props = {
     setIsAddAssetModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -6,6 +7,15 @@ type Props = {
 }
 
 const AssetTrackerTable = (props: Props) => {
+    const { assets, loading, error } = useAssetData();
+    const liveAssets = assets.filter(asset => asset.status === 'live');
+    const closedAssets = assets.filter(asset => asset.status === 'closed');
+    const deletedAssets = assets.filter(asset => asset.status === 'deleted');
+    const totalValue = liveAssets.reduce((acc, asset) => acc + (asset.purchasePrice * asset.quantity), 0);
+    const totalPnl = liveAssets.reduce((acc, asset) => acc + (asset.purchasePrice * asset.quantity * 0.1), 0);
+    const assetNumber = liveAssets.length;
+    const totalROI = totalValue > 0 ? (totalPnl / totalValue) * 100 : 0;
+
     return (
         <div className="max-h-[600px] overflow-y-scroll  border border-(--border-subtle) bg-(--bg-surface) rounded-2xl shadow-(--shadow-card) pb-10">
             <table className="table-auto w-full">
@@ -22,24 +32,20 @@ const AssetTrackerTable = (props: Props) => {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr className="border-b border-(--border-subtle) hover:bg-(--bg-surface-2) ease-in duration-200 cursor-pointer" onClick={() => props.setIsAddAssetModalOpen(true)}>
-                        {/* Asset Name */}
-                        <td className='text-left text-[13px]/[16px] font-semibold trackng-[1px] text-(--text-primary) py-3 px-4'>Asset Name</td>
-                        {/* Live Qty */}
-                        <td className='text-right text-[13px]/[16px] font-mono font-semibold trackng-[1px] text-(--text-primary) py-3 px-4'>10.00</td>
-                        {/* Avg Cost */}
-                        <td className='text-right text-[13px]/[16px] font-mono font-semibold trackng-[1px] text-(--text-primary) py-3 px-4'>$10.00</td>
-                        {/* Price */}
-                        <td className='text-right text-[13px]/[16px] font-mono font-semibold trackng-[1px] text-(--text-primary) py-3 px-4'>$10.00</td>
-                        {/* Invested */}
-                        <td className='text-right text-[13px]/[16px] font-mono font-semibold trackng-[1px] text-(--text-primary) py-3 px-4'>$10.00</td>
-                        {/* Value */}
-                        <td className='text-right text-[13px]/[16px] font-mono font-semibold trackng-[1px] text-(--text-primary) py-3 px-4'>$10.00</td>
-                        {/* Pnl */}
-                        <td className='text-right text-[13px]/[16px] font-mono font-semibold trackng-[1px] text-(--positive) py-3 px-4'>+$10.00</td>
-                        {/* Updated */}
-                        <td className='text-right text-[13px]/[16px] font-mono font-semibold trackng-[1px] text-(--text-primary) py-3 px-4'>10:00 AM</td>
-                    </tr>
+                    {
+                        liveAssets.map((asset) => (
+                            <tr key={asset._id} className="border-b border-(--border-subtle) hover:bg-(--bg-surface) ease-in duration-200 cursor-pointer">
+                                <td className='text-left text-[13px]/[16px] font-medium font-mono trackng-[1px] text-(--text-primary) py-3 px-4'>{asset.symbol}</td>
+                                <td className='text-right text-[13px]/[16px] font-medium font-mono trackng-[1px] text-(--text-primary) py-3 px-4'>{asset.quantity}</td>
+                                <td className='text-right text-[13px]/[16px] font-medium font-mono trackng-[1px] text-(--text-primary) py-3 px-4'>${asset.purchasePrice.toFixed(2)}</td>
+                                <td className='text-right text-[13px]/[16px] font-medium font-mono trackng-[1px] text-(--text-primary) py-3 px-4'>${(asset.purchasePrice * 1.1).toFixed(2)}</td>
+                                <td className='text-right text-[13px]/[16px] font-medium font-mono trackng-[1px] text-(--text-primary) py-3 px-4'>${(asset.purchasePrice * asset.quantity).toFixed(2)}</td>
+                                <td className='text-right text-[13px]/[16px] font-medium font-mono trackng-[1px] text-(--text-primary) py-3 px-4'>${(asset.purchasePrice * asset.quantity * 1.1).toFixed(2)}</td>
+                                <td className='text-right text-[13px]/[16px] font-medium font-mono trackng-[1px] text-(--text-primary) py-3 px-4'>${(asset.purchasePrice * asset.quantity * 0.1).toFixed(2)}</td>
+                                <td className='text-right text-[13px]/[16px] font-medium font-mono trackng-[1px] text-(--text-primary) py-3 px-4'>{new Date(asset.updatedAt).toLocaleDateString()}</td>
+                            </tr>
+                        ))
+                    }
                 </tbody>
             </table>
         </div>
