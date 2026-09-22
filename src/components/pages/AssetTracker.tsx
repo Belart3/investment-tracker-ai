@@ -18,7 +18,7 @@ const AssetTracker = (props: Props) => {
     const totalROI = totalValue > 0 ? (totalPnl / totalValue) * 100 : 0;
     const [isAddAssetModalOpen, setIsAddAssetModalOpen] = useState(false);
     return (
-        <div className='xl:ms-[237px] transition-all duration-300 min-h-screen bg-[var(--bg-canvas)] p-8'>
+        <div className='xl:ms-[237px] transition-all duration-300 min-h-screen bg-[var(--bg-canvas)] p-5 lg:p-8'>
             <div className=" w-full max-w-[1440px] mx-auto">
                 <div className="flex flex-row justify-between items-center">
                     <div className="flex flex-col gap-4 items-start lg:flex-row justify-between lg:items-center w-full">
@@ -46,36 +46,36 @@ const AssetTracker = (props: Props) => {
                         </div>
                     </div>
                 </div>
-                <div className="mt-10 grid grid-cols-4 w-full gap-4">
-                    <div className="flex flex-col gap-2 bg-(--bg-surface) p-6 shadow=(--shadow-card) border border-(--border-subtle) rounded-[14px]">
-                        <p className="type-label text-[12px]/[16px] font-semibold text-(--text-secondary) capitalize">
+                <div className="mt-10 grid grid-cols-2 gap-2 lg:grid-cols-4 w-full lg:gap-4">
+                    <div className="flex flex-col gap-2 bg-(--bg-surface) p-2 lg:p-6 shadow=(--shadow-card) border border-(--border-subtle) rounded-[14px]">
+                        <p className="type-label text-[8px] lg:text-[12px]/[16px] font-semibold text-(--text-secondary) capitalize">
                             value
                         </p>
-                        <h2 className="font-figure text-[32px] leading-[-0.32px] font-semibold tabular-nums text-[var(--text-primary)]">
+                        <h2 className="font-figure text-[14px]/[21px] lg:text-[32px] leading-[-0.32px] font-semibold tabular-nums text-[var(--text-primary)]">
                             ${totalValue.toFixed(2)}
                         </h2>
                     </div>
-                    <div className="flex flex-col gap-2 bg-(--bg-surface) p-6 shadow=(--shadow-card) border border-(--border-subtle) rounded-[14px]">
-                        <p className="type-label text-[12px]/[16px] font-semibold text-(--text-secondary) capitalize">
+                    <div className="flex flex-col gap-2 bg-(--bg-surface) p-2 lg:p-6 shadow=(--shadow-card) border border-(--border-subtle) rounded-[14px]">
+                        <p className="type-label text-[4px] lg:text-[12px]/[16px] font-semibold text-(--text-secondary) capitalize">
                             p&l
                         </p>
-                        <h2 className="font-figure text-[32px] leading-[-0.32px] font-semibold tabular-nums text-[var(--positive)]">
+                        <h2 className="font-figure text-[14px]/[21px] lg:text-[32px] leading-[-0.32px] font-semibold tabular-nums text-[var(--positive)]">
                             +${totalPnl.toFixed(2)}
                         </h2>
                     </div>
-                    <div className="flex flex-col gap-2 bg-(--bg-surface) p-6 shadow=(--shadow-card) border border-(--border-subtle) rounded-[14px]">
-                        <p className="type-label text-[12px]/[16px] font-semibold text-(--text-secondary) capitalize">
+                    <div className="flex flex-col gap-2 bg-(--bg-surface) p-2 lg:p-6 shadow=(--shadow-card) border border-(--border-subtle) rounded-[14px]">
+                        <p className="type-label text-[8px] lg:text-[12px]/[16px] font-semibold text-(--text-secondary) capitalize">
                             ROI
                         </p>
-                        <h2 className="font-figure text-[32px] leading-[-0.32px] font-semibold tabular-nums text-[var(--positive)]">
-                            <IoTriangleSharp className="inline-block me-1" size={18} /> {totalROI.toFixed(2)}%
+                        <h2 className="font-figure text-[14px]/[21px] lg:text-[32px] leading-[-0.32px] font-semibold tabular-nums text-[var(--positive)]">
+                            <IoTriangleSharp className="inline-block me-1 text-[10px] lg:text-[18px]"  /> {totalROI.toFixed(2)}%
                         </h2>
                     </div>
-                    <div className="flex flex-col gap-2 bg-(--bg-surface) p-6 shadow=(--shadow-card) border border-(--border-subtle) rounded-[14px]">
-                        <p className="type-label text-[12px]/[16px] font-semibold text-(--text-secondary) capitalize">
+                    <div className="flex flex-col gap-2 bg-(--bg-surface) p-2 lg:p-6 shadow=(--shadow-card) border border-(--border-subtle) rounded-[14px]">
+                        <p className="type-label text-[8px] lg:text-[12px]/[16px] font-semibold text-(--text-secondary) capitalize">
                             No. of assets
                         </p>
-                        <h2 className="font-figure text-[32px] leading-[-0.32px] font-semibold tabular-nums text-(--text-primary)">
+                        <h2 className="font-figure text-[14px]/[21px] lg:text-[32px] leading-[-0.32px] font-semibold tabular-nums text-(--text-primary)">
                             {assetNumber}
                         </h2>
                     </div>

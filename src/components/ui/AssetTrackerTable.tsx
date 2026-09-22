@@ -1,5 +1,9 @@
 import React, { act, useState } from 'react'
 import { AssetData } from '@/hooks/useAssetData';
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+
+dayjs.extend(relativeTime);
 
 type Props = {
     setIsAddAssetModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -56,14 +60,22 @@ const AssetTrackerTable = (props: Props) => {
                             filteredAssets.length > 0 ? (
                                 filteredAssets.map((asset) => (
                                     <tr key={asset._id} className="border-b last-of-type:border-0 border-(--border-subtle) hover:bg-(--bg-surface) ease-in duration-200 cursor-pointer">
+                                        {/* asset symbol */}
                                         <td className='text-left text-[13px]/[16px] font-medium font-mono trackng-[1px] text-(--text-primary) py-3 px-4'>{asset.symbol}</td>
+                                        {/* asset quantity */}
                                         <td className='text-right text-[13px]/[16px] font-medium font-mono trackng-[1px] text-(--text-primary) py-3 px-4'>{asset.quantity}</td>
+                                        {/* asset average cost */}
                                         <td className='text-right text-[13px]/[16px] font-medium font-mono trackng-[1px] text-(--text-primary) py-3 px-4'>${asset.purchasePrice.toFixed(2)}</td>
+                                        {/* asset purchase price*/}
                                         <td className='text-right text-[13px]/[16px] font-medium font-mono trackng-[1px] text-(--text-primary) py-3 px-4'>${(asset.purchasePrice * 1.1).toFixed(2)}</td>
+                                        {/* asset invested amount  */}
                                         <td className='text-right text-[13px]/[16px] font-medium font-mono trackng-[1px] text-(--text-primary) py-3 px-4'>${(asset.purchasePrice * asset.quantity).toFixed(2)}</td>
+                                        {/* asset value */}
                                         <td className='text-right text-[13px]/[16px] font-medium font-mono trackng-[1px] text-(--text-primary) py-3 px-4'>${(asset.purchasePrice * asset.quantity * 1.1).toFixed(2)}</td>
+                                        {/* asset pnl */}
                                         <td className='text-right text-[13px]/[16px] font-medium font-mono trackng-[1px] text-(--text-primary) py-3 px-4'>${(asset.purchasePrice * asset.quantity * 0.1).toFixed(2)}</td>
-                                        <td className='text-right text-[13px]/[16px] font-medium font-mono trackng-[1px] text-(--text-primary) py-3 px-4'>{new Date(asset.updatedAt).toLocaleDateString()}</td>
+                                        {/* last updated */}
+                                        <td className='text-right text-[13px]/[16px] font-medium font-mono trackng-[1px] text-(--text-primary) py-3 px-4'>{dayjs(asset.updatedAt).fromNow()}</td>
                                     </tr>
                                 ))
                             ) :
