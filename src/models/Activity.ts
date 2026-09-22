@@ -1,6 +1,7 @@
 import mongoose, { Document, Schema, models } from 'mongoose';
 
 export type ActivityActionType =
+  | 'ASSET_CREATED'
   | 'TARGET_CREATED'
   | 'TARGET_MET'
   | 'TRADE_BUY'
@@ -22,7 +23,7 @@ const ActivitySchema = new Schema<IActivity>({
   },
   actionType: {
     type: String,
-    enum: ['TARGET_CREATED', 'TARGET_MET', 'TRADE_BUY', 'TRADE_SELL'],
+    enum: ['ASSET_CREATED', 'TARGET_CREATED', 'TARGET_MET', 'TRADE_BUY', 'TRADE_SELL'],
     required: true,
   },
   description: {
