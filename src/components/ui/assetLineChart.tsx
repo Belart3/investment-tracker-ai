@@ -47,7 +47,7 @@ const AssetLineChart = (props: Props) => {
                                             '-'
                                         )
                                     }
-                                    {historyChange.toFixed(2)}
+                                    ${historyChange.toFixed(2)}
                                 </span> <span className={`${historyChange > 0 ? 'text-[var(--positive)]' : 'text-[var(--negative)]'} text-[13px] font-medium`}>
                                     ({historyChangePercent.toFixed(2)}%)
                                 </span> over <span className="">

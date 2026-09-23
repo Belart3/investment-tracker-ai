@@ -1,7 +1,8 @@
-import React, { act, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AssetData } from '@/hooks/useAssetData';
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { AssetLivePrice, fetchAssetLivePrice } from '@/lib/fetchAssetLivePrice';
 
 dayjs.extend(relativeTime);
 
@@ -24,7 +25,36 @@ const AssetTrackerTable = (props: Props) => {
         { name: 'deleted assets', value: 'deleted' },
     ];
     const [activeFilter, setActiveFilter] = useState('live');
+    const assetSymbols = assets.map(asset => asset.symbol)
     const filteredAssets = assets.filter(asset => asset.status === activeFilter);
+    const [livePrices, setLivePrices] = useState<AssetLivePrice[]>([]);
+    console.log(livePrices)
+
+    useEffect(() => {
+        if (assetSymbols.length === 0) {
+            setLivePrices([]);
+            return;
+        }
+
+        let requestIsCurrent = true;
+
+        void fetchAssetLivePrice(assetSymbols)
+            .then((prices) => {
+                if (requestIsCurrent && Array.isArray(prices)) {
+                    setLivePrices(prices);
+                }
+            })
+            .catch((error) => {
+                if (requestIsCurrent) {
+                    console.error("Error fetching live asset prices:", error);
+                    setLivePrices([]);
+                }
+            });
+
+        return () => {
+            requestIsCurrent = false;
+        };
+    }, [assets]);
 
     return (
         <div className="">
@@ -67,13 +97,29 @@ const AssetTrackerTable = (props: Props) => {
                                         {/* asset average cost */}
                                         <td className='text-right text-[13px]/[16px] font-medium font-mono trackng-[1px] text-(--text-primary) py-3 px-4'>${asset.purchasePrice.toFixed(2)}</td>
                                         {/* asset purchase price*/}
-                                        <td className='text-right text-[13px]/[16px] font-medium font-mono trackng-[1px] text-(--text-primary) py-3 px-4'>${(asset.purchasePrice * 1.1).toFixed(2)}</td>
+                                        <td className='text-right text-[13px]/[16px] font-medium font-mono trackng-[1px] text-(--text-primary) py-3 px-4'>${(asset.purchasePrice).toFixed(2)}</td>
                                         {/* asset invested amount  */}
                                         <td className='text-right text-[13px]/[16px] font-medium font-mono trackng-[1px] text-(--text-primary) py-3 px-4'>${(asset.purchasePrice * asset.quantity).toFixed(2)}</td>
                                         {/* asset value */}
-                                        <td className='text-right text-[13px]/[16px] font-medium font-mono trackng-[1px] text-(--text-primary) py-3 px-4'>${(asset.purchasePrice * asset.quantity * 1.1).toFixed(2)}</td>
-                                        {/* asset pnl */}
-                                        <td className='text-right text-[13px]/[16px] font-medium font-mono trackng-[1px] text-(--text-primary) py-3 px-4'>${(asset.purchasePrice * asset.quantity * 0.1).toFixed(2)}</td>
+                                        {
+                                            livePrices.map(symbol => (     
+                                                asset.symbol === symbol.symbol &&
+                                                <>
+                                                    <td className='text-right text-[13px]/[16px] font-medium font-mono trackng-[1px] text-(--text-primary) py-3 px-4'>$
+                                                        {
+                                                            Number(asset.quantity.toFixed(2)) * Number(symbol.price.toFixed(2))
+                                                        }
+                                                    </td>
+                                                    {/* asset pnl */}
+                                                    <td className='text-right text-[13px]/[16px] font-medium font-mono trackng-[1px] text-(--text-primary) py-3 px-4'>${
+                                                        (
+                                                            asset.quantity * symbol.price
+                                                        - 
+                                                        asset.purchasePrice * asset.quantity).toFixed(2)
+                                                    }</td>
+                                                </>
+                                            ))
+                                        }
                                         {/* last updated */}
                                         <td className='text-right text-[13px]/[16px] font-medium font-mono trackng-[1px] text-(--text-primary) py-3 px-4'>{dayjs(asset.updatedAt).fromNow()}</td>
                                     </tr>

@@ -14,15 +14,25 @@ type CoinMarketCapQuoteResponse = {
     data?: Record<string, CoinMarketCapQuote[]>;
 };
 
-export async function fetchAssetLivePrice(asset: string): Promise<number> {
-    const symbol = asset.trim().toUpperCase();
+export type AssetLivePrice = {
+    symbol: string;
+    price: number;
+};
 
-    if (!symbol) {
-        throw new Error("An asset symbol is required");
+export async function fetchAssetLivePrice(
+    assets: string | string[]
+): Promise<number | AssetLivePrice[]> {
+    const isArray = Array.isArray(assets);
+    const symbols = (isArray ? assets : [assets])
+        .map((asset) => asset.trim().toUpperCase())
+        .filter(Boolean);
+
+    if (symbols.length === 0) {
+        throw new Error("At least one asset symbol is required");
     }
 
     const response = await fetch(
-        `${COINMARKETCAP_API_URL}/cryptocurrency/quotes/latest?symbol=${encodeURIComponent(symbol)}&convert=USD`,
+        `${COINMARKETCAP_API_URL}/cryptocurrency/quotes/latest?symbol=${encodeURIComponent(symbols.join(","))}&convert=USD`,
         {
             headers: {
                 "X-CMC_PRO_API_KEY": process.env.CMC_API_KEY ?? "",
@@ -37,11 +47,17 @@ export async function fetchAssetLivePrice(asset: string): Promise<number> {
     }
 
     const data = (await response.json()) as CoinMarketCapQuoteResponse;
-    const price = data.data?.[symbol]?.[0]?.quote?.USD?.price;
+    const prices = symbols.map((symbol) => {
+        const price = Number(data.data?.[symbol]?.[0]?.quote?.USD?.price);
 
-    if (typeof price !== "number" || !Number.isFinite(price)) {
-        throw new Error(`No USD price was found for asset symbol: ${symbol}`);
-    }
+        if (!Number.isFinite(price)) {
+            throw new Error(`No USD price was found for asset symbol: ${symbol}`);
+        }
 
-    return price;
+        return {symbol, price};
+    });
+
+    console.log("live prices", Object.fromEntries(symbols.map((symbol, index) => [symbol, prices[index]])));
+
+    return isArray ? prices : prices[0].price;
 }
