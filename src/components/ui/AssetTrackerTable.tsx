@@ -3,6 +3,7 @@ import { AssetData } from '@/hooks/useAssetData';
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { AssetLivePrice, fetchAssetLivePrice } from '@/lib/fetchAssetLivePrice';
+import NumberFlow, { NumberFlowGroup } from '@number-flow/react'
 
 dayjs.extend(relativeTime);
 
@@ -105,22 +106,44 @@ const AssetTrackerTable = (props: Props) => {
                                             livePrices.map(symbol => (     
                                                 asset.symbol === symbol.symbol &&
                                                 <>
-                                                    <td className='text-right text-[13px]/[16px] font-medium font-mono trackng-[1px] text-(--text-primary) py-3 px-4'>$
-                                                        {
-                                                            Number(asset.quantity.toFixed(2)) * Number(symbol.price.toFixed(2))
-                                                        }
+                                                    <td className='text-right text-[13px]/[16px] font-medium font-mono trackng-[1px] text-(--text-primary) px-0!'>
+                                                        <NumberFlow 
+                                                            format={{ 
+                                                                style: 'currency', 
+                                                                currency: 'USD', 
+                                                                trailingZeroDisplay: 'stripIfInteger',
+                                                                maximumFractionDigits: 2,
+                                                            }} 
+                                                            value={Number(
+                                                                Number(asset.quantity.toFixed(2)) * Number(symbol.price.toFixed(2))
+                                                            )} 
+                                                            className="text-right text-[13px]/[16px] font-medium font-mono trackng-[1px] text-(--text-primary) py-3 px-4"
+                                                        />
                                                     </td>
                                                     {/* asset pnl */}
-                                                    <td className='text-right text-[13px]/[16px] font-medium font-mono trackng-[1px] text-(--text-primary) py-3 px-4'>${
-                                                        (
-                                                            asset.quantity * symbol.price
-                                                        - 
-                                                        asset.purchasePrice * asset.quantity).toFixed(2)
-                                                    }</td>
+                                                    <td className='text-right text-[13px]/[16px] font-medium font-mono trackng-[1px] text-(--text-primary) px-0!'>
+                                                        <NumberFlow 
+                                                            format={{ 
+                                                                style: 'currency', 
+                                                                currency: 'USD', 
+                                                                trailingZeroDisplay: 'stripIfInteger',
+                                                                maximumFractionDigits: 2,
+                                                            }} 
+                                                            value={Number(
+                                                                (
+                                                                asset.quantity * symbol.price
+                                                                - 
+                                                                asset.purchasePrice * asset.quantity).toFixed(2)
+                                                            )} 
+                                                            className="text-right text-[13px]/[16px] font-medium font-mono trackng-[1px] text-(--text-primary) py-3 px-4"
+                                                        />
+                                                    </td>
                                                 </>
                                             ))
                                         }
                                         {/* last updated */}
+                                        <td className='text-right text-[13px]/[16px] font-medium font-mono trackng-[1px] text-(--text-primary) py-3 px-4'>{dayjs(asset.updatedAt).fromNow()}</td>
+                                        {/* actions */}
                                         <td className='text-right text-[13px]/[16px] font-medium font-mono trackng-[1px] text-(--text-primary) py-3 px-4'>{dayjs(asset.updatedAt).fromNow()}</td>
                                     </tr>
                                 ))

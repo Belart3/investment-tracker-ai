@@ -3,6 +3,7 @@ import { Line } from "react-chartjs-2";
 import { Skeleton } from '@mui/material';
 import { IoTriangleSharp } from 'react-icons/io5';
 import { usePortfolioHistory, PortfolioHistoryPoint } from '@/hooks/usePortfolioHistory';
+import NumberFlow, { NumberFlowGroup } from '@number-flow/react'
 
 type Props = {
 }
@@ -25,34 +26,53 @@ const AssetLineChart = (props: Props) => {
     return (
         <div className="bg-[var(--bg-surface)] rounded-[8px] flex flex-col justify-start border border-[var(--border-subtle)] shadow-[0_1px_2px_rgba(28,25,23,0.04)] space-y-2 px-4 py-4 xl:p-5 ">
             <div className="flex flex-col gap-3 lg:flex-row w-full items-start lg:items-center lg:justify-between">
-                <div className="flex flex-col gap-2 items-start justify-start">
+                <div className="flex flex-col items-start justify-start">
                     <h3 className="text-[var(--text-primary)] text-[17px] leading-[25px] font-semibold tracking-[-0.005em]">Net Worth</h3>
-                    <p className="text-[46px]/[48px] font-semibold font-mono tabular-nums text-[var(--text-primary)] tracking-[-0.005em]">
                         {
-                            currentValue ? `$${currentValue.toFixed(2)}` : <Skeleton variant="text" width={100} />
+                            currentValue ? 
+                            <NumberFlow 
+                                format={{ style: 'currency', currency: 'USD', trailingZeroDisplay: 'stripIfInteger' }} 
+                                value={currentValue} 
+                                className="text-[46px]/[48px] font-semibold font-mono tabular-nums text-[var(--text-primary)] tracking-[-0.005em]" 
+                            />
+                            : <Skeleton variant="text" width={100} />
                         }
-                    </p>
                     {
                         historyChange && historyChangePercent ? (
-                            <p className="text-[13px]/[24px] font-semibold font-mono">
+                            <p className="text-[16px]/[24px] font-semibold font-mono capitalize">
                                 {
                                     historyChange && historyChange > 0 && 
                                         <IoTriangleSharp className={`inline-block ease-linear duration-200 ${historyChange > 0 ? 'text-[var(--positive)]' : 'text-[var(--negative)] rotate-180'} mr-1`} size={8} /> 
                                 }
-                                <span className={`${historyChange > 0 ? 'text-[var(--positive)]' : 'text-[var(--negative)]'} text-[13px] font-medium`}>
-                                    {
-                                        historyChange && historyChange > 0 ? (
-                                            '+' 
-                                        ) : (
-                                            '-'
-                                        )
-                                    }
-                                    ${historyChange.toFixed(2)}
-                                </span> <span className={`${historyChange > 0 ? 'text-[var(--positive)]' : 'text-[var(--negative)]'} text-[13px] font-medium`}>
-                                    ({historyChangePercent.toFixed(2)}%)
-                                </span> over <span className="">
-                                    {days} days
-                                </span>
+                                    <NumberFlowGroup>
+                                        <NumberFlow 
+                                            format={{
+                                                style: 'currency',
+                                                currency: 'USD',
+                                                trailingZeroDisplay: 'stripIfInteger',
+                                                signDisplay: 'exceptZero'
+                                            }}
+                                            className={`${historyChange > 0 ? 'text-[var(--positive)]' : 'text-[var(--negative)]'} text-[16px]/[24px] font-medium mx-1 p-0`} 
+                                            value={Number(historyChange.toFixed(2))} 
+                                        /> 
+                                        <NumberFlow 
+                                            className={`${historyChange > 0 ? 'text-[var(--positive)]' : 'text-[var(--negative)]'} text-[16px]/[24px] font-medium mx-1 p-0`}
+                                            value={Number(historyChangePercent/100)}
+                                            locales="en-US"
+                                            format={{
+                                                style: 'percent',
+                                                minimumFractionDigits: 1,
+                                                maximumFractionDigits: 2,
+                                                signDisplay: 'exceptZero'
+                                            }}
+                                        />
+                                        over
+                                        <NumberFlow 
+                                        className='mx-1'
+                                            value={days}
+                                        />
+                                        days
+                                    </NumberFlowGroup>
                             </p>
                         ) : <Skeleton variant="text" width={150} height={20} />
                     }

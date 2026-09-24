@@ -158,6 +158,10 @@
   }
 }
 
+.font-display-family{
+  font-family: var(--font-display-family) !important;
+}
+
 .figure-mono {
   font-family: var(--font-figure);
   font-variant-numeric: tabular-nums;

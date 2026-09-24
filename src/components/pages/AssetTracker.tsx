@@ -6,6 +6,7 @@ import { useState } from 'react';
 import AddAssetModal from '../../components/ui/AddAssetModal';
 import AssetTrackerTable from '../../components/ui/AssetTrackerTable';
 import { useAssetData } from '@/hooks/useAssetData';
+import NumberFlow, { NumberFlowGroup } from '@number-flow/react'
 
 type Props = {}
 
@@ -35,7 +36,7 @@ const AssetTracker = (props: Props) => {
                                 <RefreshCcw className="inline-block me-1 text-black" size={14} />
                                 refresh
                             </button>
-                            <button className="bg-(--bg-surface) border border-(--border-strong) rounded-[8px] px-2 lg:px-4 py-2 text-[13px] leading-[19px] font-semibold text-(--text-primary) hover:bg-[var(--brand-hover)] transition cursor-pointer flex items-center capitalize" onClick={() => setIsAddAssetModalOpen(true)}>
+                            <button className="bg-(--bg-surface) border border-(--border-strong) rounded-[8px] px-2 lg:px-4 py-2 text-[13px] leading-[19px] font-semibold text-(--text-primary) hover:bg-[var(--brand)] hover:border-transparent hover:text-white transition cursor-pointer flex items-center capitalize" onClick={() => setIsAddAssetModalOpen(true)}>
                                 <PlusIcon className="inline-block me-1" size={14} />
                                 Add Asset
                             </button>
@@ -51,33 +52,56 @@ const AssetTracker = (props: Props) => {
                         <p className="type-label text-[8px] lg:text-[12px]/[16px] font-semibold text-(--text-secondary) capitalize">
                             value
                         </p>
-                        <h2 className="font-figure text-[14px]/[21px] lg:text-[32px] leading-[-0.32px] font-semibold tabular-nums text-[var(--text-primary)]">
-                            ${totalValue.toFixed(2)}
-                        </h2>
+                        <NumberFlow 
+                            format={{ 
+                                style: 'currency', 
+                                currency: 'USD', 
+                                trailingZeroDisplay: 'stripIfInteger',
+                                maximumFractionDigits: 2,
+                            }} 
+                            value={Number(totalValue)} 
+                            className="font-display text-[14px]/[21px] lg:text-[32px] leading-[-0.32px] font-semibold tabular-nums text-[var(--text-primary)]"
+                        />
                     </div>
                     <div className="flex flex-col gap-2 bg-(--bg-surface) p-2 lg:p-6 shadow=(--shadow-card) border border-(--border-subtle) rounded-[14px]">
                         <p className="type-label text-[4px] lg:text-[12px]/[16px] font-semibold text-(--text-secondary) capitalize">
                             p&l
                         </p>
-                        <h2 className="font-figure text-[14px]/[21px] lg:text-[32px] leading-[-0.32px] font-semibold tabular-nums text-[var(--positive)]">
-                            +${totalPnl.toFixed(2)}
-                        </h2>
+                        <NumberFlow 
+                            format={{ 
+                                style: 'currency', 
+                                currency: 'USD', 
+                                trailingZeroDisplay: 'stripIfInteger',
+                                maximumFractionDigits: 2,
+                            }} 
+                            value={Number(totalPnl)} 
+                            className="font-display text-[14px]/[21px] lg:text-[32px] leading-[-0.32px] font-semibold tabular-nums text-[var(--positive)]"
+                        />
                     </div>
                     <div className="flex flex-col gap-2 bg-(--bg-surface) p-2 lg:p-6 shadow=(--shadow-card) border border-(--border-subtle) rounded-[14px]">
                         <p className="type-label text-[8px] lg:text-[12px]/[16px] font-semibold text-(--text-secondary) capitalize">
                             ROI
                         </p>
-                        <h2 className="font-figure text-[14px]/[21px] lg:text-[32px] leading-[-0.32px] font-semibold tabular-nums text-[var(--positive)]">
-                            <IoTriangleSharp className="inline-block me-1 text-[10px] lg:text-[18px]"  /> {totalROI.toFixed(2)}%
-                        </h2>
+                        <NumberFlow 
+                            locales="en-US"
+                            format={{
+                                style: 'percent',
+                                minimumFractionDigits: 1,
+                                maximumFractionDigits: 2,
+                                signDisplay: 'exceptZero'
+                            }}
+                            value={Number(totalROI/100)} 
+                            className="font-display text-[14px]/[21px] lg:text-[32px] leading-[-0.32px] font-semibold tabular-nums text-[var(--positive)]"
+                        />
                     </div>
                     <div className="flex flex-col gap-2 bg-(--bg-surface) p-2 lg:p-6 shadow=(--shadow-card) border border-(--border-subtle) rounded-[14px]">
                         <p className="type-label text-[8px] lg:text-[12px]/[16px] font-semibold text-(--text-secondary) capitalize">
                             No. of assets
                         </p>
-                        <h2 className="font-figure text-[14px]/[21px] lg:text-[32px] leading-[-0.32px] font-semibold tabular-nums text-(--text-primary)">
-                            {assetNumber}
-                        </h2>
+                        <NumberFlow 
+                            className="font-display text-[14px]/[21px] lg:text-[32px] leading-[-0.32px] font-semibold tabular-nums text-(--text-primary)"
+                            value={assetNumber}
+                        />
                     </div>
                 </div>
                 <AddAssetModal addAssetModalOpen={isAddAssetModalOpen} setAddAssetModalOpen={setIsAddAssetModalOpen} />
