@@ -4,20 +4,23 @@ import { IoTriangleSharp } from 'react-icons/io5';
 import { PlusIcon, RefreshCcw, TrendingDown } from 'lucide-react';
 import { useState } from 'react';
 import AddAssetModal from '../../components/ui/AddAssetModal';
+import AddExitModal from '../ui/AddExitModal';
 import AssetTrackerTable from '../../components/ui/AssetTrackerTable';
 import { useAssetData } from '@/hooks/useAssetData';
-import NumberFlow, { NumberFlowGroup } from '@number-flow/react'
+import NumberFlow, { NumberFlowGroup } from '@number-flow/react';
+import { AssetData } from '@/hooks/useAssetData';
 
 type Props = {}
 
 const AssetTracker = (props: Props) => {
     const { assets, loading, error } = useAssetData();
-    const liveAssets = assets.filter(asset => asset.status === 'live');
+    const liveAssets:AssetData[] = assets.filter(asset => asset.status === 'live');
     const totalValue = liveAssets.reduce((acc, asset) => acc + (asset.purchasePrice * asset.quantity), 0);
     const totalPnl = liveAssets.reduce((acc, asset) => acc + (asset.purchasePrice * asset.quantity * 0.1), 0);
     const assetNumber = liveAssets.length;
     const totalROI = totalValue > 0 ? (totalPnl / totalValue) * 100 : 0;
     const [isAddAssetModalOpen, setIsAddAssetModalOpen] = useState(false);
+    const [isAddExitModalOpen, setIsAddExitModalOpen] = useState(false);
     return (
         <div className='xl:ms-[237px] transition-all duration-300 min-h-screen bg-[var(--bg-canvas)] p-5 lg:p-8'>
             <div className=" w-full max-w-[1440px] mx-auto">
@@ -40,7 +43,7 @@ const AssetTracker = (props: Props) => {
                                 <PlusIcon className="inline-block me-1" size={14} />
                                 Add Asset
                             </button>
-                            <button className="bg-(--brand) rounded-[8px] px-2 lg:px-4 py-2 text-[13px] leading-[19px] font-semibold text-white hover:opacity-90 transition cursor-pointer flex items-center capitalize">
+                            <button className="bg-(--brand) rounded-[8px] px-2 lg:px-4 py-2 text-[13px] leading-[19px] font-semibold text-white hover:opacity-90 transition cursor-pointer flex items-center capitalize" onClick={() => setIsAddExitModalOpen(true)}>
                                 <TrendingDown className="inline-block me-1" size={14} />
                                 Add exit
                             </button>
@@ -105,6 +108,7 @@ const AssetTracker = (props: Props) => {
                     </div>
                 </div>
                 <AddAssetModal addAssetModalOpen={isAddAssetModalOpen} setAddAssetModalOpen={setIsAddAssetModalOpen} />
+                <AddExitModal assets={liveAssets} addAssetModalOpen={isAddExitModalOpen} setAddAssetModalOpen={setIsAddExitModalOpen} />
                 {
                     loading ? (
                         <div className="flex items-center justify-center w-full h-[400px]">

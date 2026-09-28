@@ -4,6 +4,16 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { AssetLivePrice, fetchAssetLivePrice } from '@/lib/fetchAssetLivePrice';
 import NumberFlow, { NumberFlowGroup } from '@number-flow/react'
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { GoKebabHorizontal } from 'react-icons/go';
 
 dayjs.extend(relativeTime);
 
@@ -29,7 +39,6 @@ const AssetTrackerTable = (props: Props) => {
     const assetSymbols = assets.map(asset => asset.symbol)
     const filteredAssets = assets.filter(asset => asset.status === activeFilter);
     const [livePrices, setLivePrices] = useState<AssetLivePrice[]>([]);
-    console.log(livePrices)
 
     useEffect(() => {
         if (assetSymbols.length === 0) {
@@ -84,6 +93,7 @@ const AssetTrackerTable = (props: Props) => {
                             <th className='text-right text-[12px]/[16px] font-medium font-mono trackng-[1px] text-(--text-secondary) py-3 px-4'>Value</th>
                             <th className='text-right text-[12px]/[16px] font-medium font-mono trackng-[1px] text-(--text-secondary) py-3 px-4'>Pnl</th>
                             <th className='text-right text-[12px]/[16px] font-medium font-mono trackng-[1px] text-(--text-secondary) py-3 px-4'>Updated</th>
+                            <th className='py-3 px-4'></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -144,7 +154,24 @@ const AssetTrackerTable = (props: Props) => {
                                         {/* last updated */}
                                         <td className='text-right text-[13px]/[16px] font-medium font-mono trackng-[1px] text-(--text-primary) py-3 px-4'>{dayjs(asset.updatedAt).fromNow()}</td>
                                         {/* actions */}
-                                        <td className='text-right text-[13px]/[16px] font-medium font-mono trackng-[1px] text-(--text-primary) py-3 px-4'>{dayjs(asset.updatedAt).fromNow()}</td>
+                                        <td>
+                                            <DropdownMenu>
+                                                <DropdownMenuTrigger className=" px-2 py-1 ms-5 cursor-pointer">
+                                                    <GoKebabHorizontal />
+                                                </DropdownMenuTrigger>
+                                                <DropdownMenuContent>
+                                                    <DropdownMenuGroup>
+                                                    <DropdownMenuItem className='capitalize hover:bg-(--bg-surface-2)!'>view details</DropdownMenuItem>
+                                                    <DropdownMenuItem className='capitalize hover:bg-(--bg-surface-2)!'>add exit</DropdownMenuItem>
+                                                    <DropdownMenuItem className='capitalize hover:bg-(--bg-surface-2)!'>edit</DropdownMenuItem>
+                                                    </DropdownMenuGroup>
+                                                    <DropdownMenuSeparator />
+                                                    <DropdownMenuGroup>
+                                                    <DropdownMenuItem className='capitalize text-(--negative) hover:text-(--negative)! hover:bg-(--negative-muted)!'>delete</DropdownMenuItem>
+                                                    </DropdownMenuGroup>
+                                                </DropdownMenuContent>
+                                            </DropdownMenu>
+                                        </td>
                                     </tr>
                                 ))
                             ) :
