@@ -20,6 +20,12 @@ dayjs.extend(relativeTime);
 type Props = {
     setIsAddAssetModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
     isAssetModalOpen: boolean;
+    addExitModalOpen: boolean;
+    exitAssetSymbol: string;
+    setExitAssetSymbol: (exit: string) => void;
+    addAssetSymbol: string;
+    setAddAssetSymbol: (symbol: string) => void;
+    setAddExitModalOpen: (isOpen: boolean) => void;
     assets: AssetData[]; 
     totalValue: number;
     totalPnl: number;
@@ -39,6 +45,25 @@ const AssetTrackerTable = (props: Props) => {
     const assetSymbols = assets.map(asset => asset.symbol)
     const filteredAssets = assets.filter(asset => asset.status === activeFilter);
     const [livePrices, setLivePrices] = useState<AssetLivePrice[]>([]);
+    
+    const handleAssetExit = (asset:string) => {
+        props.setExitAssetSymbol(asset);
+        const selectedAsset = assets.filter((asset) => asset.symbol !== props.exitAssetSymbol);
+        const assetSymbol = selectedAsset.map(asset => asset.symbol);
+        const assetExitQuantity = selectedAsset.map(asset => asset.quantity);
+        const assetExitPrice = selectedAsset.map(asset => asset.purchasePrice);
+        props.setAddAssetSymbol(assetSymbol)
+        // setAssetSymbol(assetSymbol);
+        // setAssetExitQuantity(assetExitQuantity);
+        // setAssetExitPrice(assetExitPrice);
+        // console.log(assetSymbol, assetExitQuantity)
+        props.setAddExitModalOpen(true);
+    }
+
+    const handleAddAsset = (asset:string) => {
+        props.setAddAssetSymbol(asset);
+        props.setIsAddAssetModalOpen(true);
+    }
 
     useEffect(() => {
         if (assetSymbols.length === 0) {
@@ -162,7 +187,16 @@ const AssetTrackerTable = (props: Props) => {
                                                 <DropdownMenuContent>
                                                     <DropdownMenuGroup>
                                                     <DropdownMenuItem className='capitalize hover:bg-(--bg-surface-2)!'>view details</DropdownMenuItem>
-                                                    <DropdownMenuItem className='capitalize hover:bg-(--bg-surface-2)!'>add exit</DropdownMenuItem>
+                                                    <DropdownMenuItem className='capitalize hover:bg-(--bg-surface-2)!'
+                                                        onClick={() => handleAddAsset(asset.symbol)}
+                                                    >
+                                                        add More {asset.symbol}
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem className='capitalize hover:bg-(--bg-surface-2)!'
+                                                        onClick={() => handleAssetExit(asset.symbol)}
+                                                    >
+                                                        add {asset.symbol} exit
+                                                    </DropdownMenuItem>
                                                     <DropdownMenuItem className='capitalize hover:bg-(--bg-surface-2)!'>edit</DropdownMenuItem>
                                                     </DropdownMenuGroup>
                                                     <DropdownMenuSeparator />

@@ -6,6 +6,8 @@ import { fetchAssetLivePrice } from '../../lib/fetchAssetLivePrice';
 type Props = {
     addAssetModalOpen: boolean;
     setAddAssetModalOpen: (isOpen: boolean) => void;
+    addAssetSymbol: string;
+    setAddAssetSymbol: (symbol: string) => void;
 }
 
 const AddAssetModal = (props: Props) => {

@@ -21,6 +21,9 @@ const AssetTracker = (props: Props) => {
     const totalROI = totalValue > 0 ? (totalPnl / totalValue) * 100 : 0;
     const [isAddAssetModalOpen, setIsAddAssetModalOpen] = useState(false);
     const [isAddExitModalOpen, setIsAddExitModalOpen] = useState(false);
+    const [addAssetSymbol, setAddAssetSymbol] = useState('');
+    const [exitAssetSymbol, setExitAssetSymbol] = useState('');
+
     return (
         <div className='xl:ms-[237px] transition-all duration-300 min-h-screen bg-[var(--bg-canvas)] p-5 lg:p-8'>
             <div className=" w-full max-w-[1440px] mx-auto">
@@ -107,8 +110,8 @@ const AssetTracker = (props: Props) => {
                         />
                     </div>
                 </div>
-                <AddAssetModal addAssetModalOpen={isAddAssetModalOpen} setAddAssetModalOpen={setIsAddAssetModalOpen} />
-                <AddExitModal assets={liveAssets} addAssetModalOpen={isAddExitModalOpen} setAddAssetModalOpen={setIsAddExitModalOpen} />
+                <AddAssetModal setAddAssetSymbol={setAddAssetSymbol} addAssetSymbol={addAssetSymbol} addAssetModalOpen={isAddAssetModalOpen} setAddAssetModalOpen={setIsAddAssetModalOpen} />
+                <AddExitModal exitAssetSymbol={exitAssetSymbol} setExitAssetSymbol={setExitAssetSymbol} assets={liveAssets} addExitModalOpen={isAddExitModalOpen} setAddExitModalOpen={setIsAddExitModalOpen} />
                 {
                     loading ? (
                         <div className="flex items-center justify-center w-full h-[400px]">
@@ -121,7 +124,7 @@ const AssetTracker = (props: Props) => {
                             <p className="text-(--text-secondary) text-[14px] leading-[20px] font-normal">Error: {error instanceof Error ? error.message : String(error)}</p>
                         </div>
                     ) : (
-                        <AssetTrackerTable  isAssetModalOpen={isAddAssetModalOpen} setIsAddAssetModalOpen={setIsAddAssetModalOpen} assets={assets} totalValue={totalValue} totalPnl={totalPnl} assetNumber={assetNumber} totalROI={totalROI} />
+                        <AssetTrackerTable setAddAssetSymbol={setAddAssetSymbol} addAssetSymbol={addAssetSymbol} exitAssetSymbol={exitAssetSymbol} setExitAssetSymbol={setExitAssetSymbol} addExitModalOpen={isAddExitModalOpen} setAddExitModalOpen={setIsAddExitModalOpen}   isAssetModalOpen={isAddAssetModalOpen} setIsAddAssetModalOpen={setIsAddAssetModalOpen} assets={assets} totalValue={totalValue} totalPnl={totalPnl} assetNumber={assetNumber} totalROI={totalROI} />
                     )
                 }
             </div>

@@ -10,8 +10,10 @@ import {
 } from "@/components/ui/native-select"
 
 type Props = {
-    addAssetModalOpen: boolean;
-    setAddAssetModalOpen: (isOpen: boolean) => void;
+    addExitModalOpen: boolean;
+    setAddExitModalOpen: (isOpen: boolean) => void;
+    exitAssetSymbol: string;
+    setExitAssetSymbol: (exit: string) => void;
     assets: AssetData[];
 }
 
@@ -21,12 +23,14 @@ const AddExitModal = (props: Props) => {
     const [assetExitPrice, setAssetExitPrice] = useState('');
     const [assetExitDate, setAssetExitDate] = useState('');
     const [assetExitNotes, setAssetExitNotes] = useState('');
+    const autoExitAsset = props.exitAssetSymbol;
 
     useEffect(() => {
         if (!assetSymbol) {
             setAssetExitPrice('');
             return;
         }
+        autoAssetExit()
 
         let requestIsCurrent = true;
         const timeoutId = window.setTimeout(async () => {
@@ -49,8 +53,21 @@ const AddExitModal = (props: Props) => {
         };
     }, [assetSymbol]);
 
+    const autoAssetExit = () => {
+        if (autoExitAsset !== '') {
+            const selectedAsset = props.assets.filter((asset) => asset.symbol !== autoExitAsset);
+            const assetSymbol = selectedAsset.map(asset => asset.symbol);
+            const assetExitQuantity = selectedAsset.map(asset => asset.quantity);
+            const assetExitPrice = selectedAsset.map(asset => asset.purchasePrice);
+        }
+        setAssetSymbol(assetSymbol);
+        setAssetExitQuantity(assetExitQuantity);
+        setAssetExitPrice(assetExitPrice);
+        console.log(assetSymbol, assetExitQuantity)
+    }
+
     const closeModal = () => {
-        props.setAddAssetModalOpen(false);
+        props.setAddExitModalOpen(false);
         setAssetSymbol('');
         setAssetExitQuantity('');
         setAssetExitPrice('');
@@ -58,7 +75,7 @@ const AddExitModal = (props: Props) => {
         setAssetExitNotes('');
     }
 
-    const handleAddAsset = async (e: React.ChangeEvent<HTMLFormElement>) => {
+    const handleExitAsset = async (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!assetSymbol || !setAssetExitQuantity || !assetExitPrice || !setAssetExitDate) {
             alert('Please fill in all required fields');
@@ -73,7 +90,7 @@ const AddExitModal = (props: Props) => {
 
     const frameworks = ["Next.js", "SvelteKit", "Nuxt.js", "Remix", "Astro"]
     return (
-        <div className={`fixed top-0 left-0 h-screen w-full inset-0 bg-black/50 bg-opacity-50 items-center justify-center z-[99999999] backdrop-blur-xs ${props.addAssetModalOpen ? 'flex' : 'hidden'}`} onClick={() => props.setAddAssetModalOpen(false)}>
+        <div className={`fixed top-0 left-0 h-screen w-full inset-0 bg-black/50 bg-opacity-50 items-center justify-center z-[99999999] backdrop-blur-xs ${props.addExitModalOpen ? 'flex' : 'hidden'}`} onClick={closeModal}>
             <div className="w-[550px] h-fit bg-(--bg-surface) border border-(--border-subtle) p-5 flex flex-col rounded-[16px]" onClick={(e) => e.stopPropagation()}>
                 <div className='flex items-center justify-between w-full'>
                     <div className="flex flex-col gap-1">
@@ -89,7 +106,7 @@ const AddExitModal = (props: Props) => {
                     </button>
                 </div>
 
-                <form className="flex flex-col gap-4 mt-4" onSubmit={handleAddAsset}>
+                <form className="flex flex-col gap-4 mt-4" onSubmit={handleExitAsset}>
                     {/* assets dropdown */}
                     <div className="flex w-full flex-col gap-2 [&>*:last-child]:!w-full">
                         <label htmlFor="asset-name" className="text-[12px] text-(--text-primary) capitalize">Asset</label>
