@@ -1,20 +1,15 @@
 "use client";
-import { useState, useEffect, useContext } from "react";
-import LiveMarketData from "../ui/liveMarketData";
-import PortfolioOverview from "../ui/portfolioOverview";
-import AssetBarChart from "../ui/assetBarChart";
-import ConversionHistory from "../ui/conversionHistory";
+import { useContext } from "react";
 import PortfolioDistribution from "../ui/portfolioDistribution";
 import AssetLineChart from "../ui/assetLineChart";
 import { Skeleton } from "@mui/material";
 import { SidebarContext } from "@/context/sidebarContext";
 import { useWalletBalance, type WalletAsset } from "@/hooks/useWalletBalance";
 import { useExchangeHistory } from "@/hooks/useExchangeHistory";
-import { usePortfolioHistory } from "@/hooks/usePortfolioHistory";
-import AllocationsVsTarget from "../ui/AllocationsVsTarget";
 import RecentActivity from "../ui/RecentActivity";
 import LogDebtButton from "../ui/LogDebtButton";
 import AddTransactionButton from "../ui/AddTransactionButton";
+import AssetAllocations from "../ui/AllocationsVsTarget";
 
 type MarketDatum = {
   symbol: string;
@@ -112,7 +107,7 @@ export default function Home({ user }: Props) {
           <div className="mt-8 flex flex-col gap-5">
             <AssetLineChart /> 
             <div className="grid lg:grid-cols-2 gap-5">
-              <AllocationsVsTarget labels={labels} labelValue={labelValue} />
+              <AssetAllocations labels={labels} labelValue={labelValue} />
               <PortfolioDistribution labels={labels} labelValue={labelValue} />
             </div>
             <RecentActivity />

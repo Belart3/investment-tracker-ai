@@ -43,8 +43,8 @@ const AssetLineChart = (props: Props) => {
                                 <div className={`rounded-full px-2 mt-1 ${historyChange > 0 ? 'bg-[var(--positive-muted)]' : 'bg-[var(--negative-muted)]'}`}>
                                     <p className="text-[12px] font-semibold font-mono capitalize">
                                         {
-                                            historyChange && historyChange > 0 && 
-                                            <IoTriangleSharp className={`inline-block ease-linear duration-200 ${historyChange > 0 ? 'text-[var(--positive)]' : 'text-[var(--negative)] rotate-180'} mr-1`} size={10} /> 
+                                            historyChange && 
+                                            <IoTriangleSharp className={`inline-block ease-linear duration-200 ${historyChange > 0 ? 'text-[var(--positive)] translate-y-[-25%]' : 'text-[var(--negative)] rotate-180'} mr-1`} size={10} /> 
                                         }
                                         <NumberFlowGroup>
                                             <NumberFlow 
@@ -52,6 +52,7 @@ const AssetLineChart = (props: Props) => {
                                                     style: 'currency',
                                                     currency: 'USD',
                                                     trailingZeroDisplay: 'stripIfInteger',
+                                                    signDisplay: 'never',
                                                 }}
                                                 className={`${historyChange > 0 ? 'text-[var(--positive)]' : 'text-[var(--negative)]'} text-[12px]  font-medium mx-1 p-0`} 
                                                 value={Number(historyChange.toFixed(2))} 
@@ -67,6 +68,7 @@ const AssetLineChart = (props: Props) => {
                                                     style: 'percent',
                                                     minimumFractionDigits: 1,
                                                     maximumFractionDigits: 2,
+                                                    signDisplay: "never"
                                                 }}
                                             />
                                         </NumberFlowGroup>
@@ -97,25 +99,29 @@ const AssetLineChart = (props: Props) => {
                 </div>
             </div>
             <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-3">
-                <div className="flex flex-col items-start justify-start rounded-[10px] bg-transparent py-3 px-4 border border-[#F0EBE3]">
-                    <p className="text-[var(--text-secondary)] text-[12px] leading-[25px] font-semibold tracking-[-0.005em]">
-                        Crypto Assets
-                    </p>
-                    {
-                        currentValue ?
-                        <NumberFlow 
-                            className={`text-[16px] font-semibold font-mono tabular-nums text-[var(--text-primary)] tracking-[-0.005em]`} 
-                            value={currentValue}
-                            format={{ style: 'currency', currency: 'USD', trailingZeroDisplay: 'stripIfInteger' }}  
-                        />
-                        : <Skeleton variant="text" width={150} height={20} />
-                    }
-                    <p className="text-[var(--text-secondary)] text-[12px] leading-[25px] font-semibold tracking-[-0.005em]">
-                        Manual $167,345.40 · Bybit $38.80
-                    </p>
-                </div>
+                {
+                    [1,2,3,4].map((item) => (
+                        <div className="flex flex-col items-start justify-start rounded-[10px] bg-transparent py-3 px-4 border border-[#F0EBE3]">
+                            <p className="text-[var(--text-secondary)] text-[12px] leading-[25px] font-semibold tracking-[-0.005em]">
+                                Crypto Assets
+                            </p>
+                            {
+                                currentValue ?
+                                <NumberFlow 
+                                    className={`text-[16px] font-semibold font-mono tabular-nums text-[var(--text-primary)] tracking-[-0.005em]`} 
+                                    value={currentValue}
+                                    format={{ style: 'currency', currency: 'USD', trailingZeroDisplay: 'stripIfInteger' }}  
+                                />
+                                : <Skeleton variant="text" width={150} height={20} />
+                            }
+                            <p className="text-[var(--text-secondary)] text-[12px] leading-[25px] font-semibold tracking-[-0.005em]">
+                                Manual $167,345.40 · Bybit $38.80
+                            </p>
+                        </div>
+                    ))
+                }
             </div>
-            <div className="h-[250px] w-full px-4">
+            <div className="h-[250px] w-full mt-15">
                 {
                     !portfolioHistoryLoading && historyDates.length > 0 && historyValue.length > 0 ?
                     <Line
@@ -123,11 +129,11 @@ const AssetLineChart = (props: Props) => {
                             labels: historyDates,
                             datasets: [
                                 {
-                                    data: historyValue.map((value: number) => value.toFixed(2)),
+                                    data: historyValue.map((value: number) => Number(value.toFixed(2))),
                                     fill: true,
                                     backgroundColor: (context) => {
                                         const { ctx, chartArea } = context.chart;
-                                        if (!chartArea) return ; 
+                                        if (!chartArea) return; 
                                         const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
                                         gradient.addColorStop(0, '#374b7890');
                                         gradient.addColorStop(1, '#2c3e6305');
@@ -135,9 +141,9 @@ const AssetLineChart = (props: Props) => {
                                     },
                                     borderColor: "#2c3e63",
                                     borderWidth: 2,
-                                    tension: 0.4,
-                                    pointRadius: 2,
-                                    pointHoverRadius: 5,
+                                    tension: 0,
+                                    pointRadius: 0,
+                                    pointHoverRadius: 0,
                                 },
                             ],
                         }}
@@ -155,22 +161,57 @@ const AssetLineChart = (props: Props) => {
                                 },
                             },
                             scales: {
-                            x: {
-                                display: false,
-                                grid: {
-                                    display: false,
+                                x: {
+                                    display: true,
+                                    grid: {
+                                        display: false,
+                                    },
+                                    border: {
+                                        display: false 
+                                    },
+                                    ticks: {
+                                        display: true,
+                                        maxTicksLimit: 7,
+                                        maxRotation: 0,
+                                        minRotation: 0,
+                                        color: '#6B635A',
+                                        font: {
+                                            size: 12,
+                                            family: 'monospace',
+                                            weight: 'bold',
+                                        },
+                                        callback: function(val, index) {
+                                            const rawDateStr = this.getLabelForValue(Number(val)); 
+                                            const date = new Date(rawDateStr);
+                                            if (isNaN(date.getTime())) return rawDateStr;
+                                            return date.toLocaleDateString('en-US', { 
+                                                month: 'short', 
+                                                day: 'numeric' 
+                                            });
+                                        }
+                                    },
                                 },
-                            },
-                            y: {
-                                display: false,
-                                type: 'linear',
-                                grid: {
-                                    display: false,
+                                y: {
+                                    type: 'linear', 
+                                    display: true, 
+                                    border: {
+                                        display: false 
+                                    },
+                                    grid: {
+                                        display: true,
+                                        color: 'rgba(231, 225, 215, 0.6)', 
+                                    },
+                                    ticks: {
+                                        display: false,
+                                        maxTicksLimit: 6 ,
+                                        color: '#6B635A',
+                                        font: {
+                                            size: 12,
+                                            family: 'monospace',
+                                            weight: 'bold'
+                                        },
+                                    },
                                 },
-                                ticks: {
-                                color: '#6F675D',
-                                },
-                            },
                             },        
                         }}
                     /> :
