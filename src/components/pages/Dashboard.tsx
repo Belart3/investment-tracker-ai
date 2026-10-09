@@ -13,6 +13,8 @@ import { useExchangeHistory } from "@/hooks/useExchangeHistory";
 import { usePortfolioHistory } from "@/hooks/usePortfolioHistory";
 import AllocationsVsTarget from "../ui/AllocationsVsTarget";
 import RecentActivity from "../ui/RecentActivity";
+import LogDebtButton from "../ui/LogDebtButton";
+import AddTransactionButton from "../ui/AddTransactionButton";
 
 type MarketDatum = {
   symbol: string;
@@ -89,29 +91,32 @@ export default function Home({ user }: Props) {
 
   return (
     <div className={`xl:ms-[237px] transition-all duration-300 min-h-screen bg-[var(--bg-canvas)] p-8`}>
-      {/* page header */}
-      <div className="flex items-center justify-between w-full max-w-[1440px] mx-auto">
-        <div className="flex flex-col gap-1">
-          <h2 className="text-(--text-primary) font-semibold text-[22px] leading-7 tracking-[-0.012em]">Dashboard</h2>
-          {balExists &&
-            <p className="text-[var(--text-secondary)] font-medium text-[13px] leading-[19px]">
-            Hey, <span className="text-[var(--text-primary)]">{user ? user.name : <Skeleton variant="text" width={100} />} —</span>
-              <span className="mx-2 hidden sm:inline capitalize">
-                {
-                  `${accountType.toLowerCase()} account.` 
-                }
-              </span>
-            </p>}
-        </div>
-      </div>
-      <div className="flex flex-col w-full max-w-[1440px] mx-auto">
-        <div className="mt-8 flex flex-col gap-5">
-          <AssetLineChart /> 
-          <div className="grid lg:grid-cols-2 gap-5">
-            <AllocationsVsTarget labels={labels} labelValue={labelValue} />
-            <PortfolioDistribution labels={labels} labelValue={labelValue} />
+      <div className="w-full max-w-[1440px] mx-auto">
+        {/* page header */}
+        <div className="flex items-center justify-between w-full">
+          <div className="flex flex-col gap-1">
+            <h2 className="text-(--text-primary) font-semibold text-[22px] leading-7 tracking-[-0.012em]">
+              Good evening, {user ? user.name : <Skeleton variant="text" width={100} />}
+            </h2>
+            {balExists &&
+              <p className="text-[var(--text-secondary)] font-medium text-[13px] leading-[19px]">
+                  Here's where you stand today · prices updated 2 min ago
+              </p>}
           </div>
-          <RecentActivity />
+          <div className="flex gap-3">
+            <LogDebtButton setShowAddDebtModal={() => {}} />
+            <AddTransactionButton setIsAddAssetModalOpen={() => {}} />
+          </div>
+        </div>
+        <div className="flex flex-col w-full">
+          <div className="mt-8 flex flex-col gap-5">
+            <AssetLineChart /> 
+            <div className="grid lg:grid-cols-2 gap-5">
+              <AllocationsVsTarget labels={labels} labelValue={labelValue} />
+              <PortfolioDistribution labels={labels} labelValue={labelValue} />
+            </div>
+            <RecentActivity />
+          </div>
         </div>
       </div>
     </div>
