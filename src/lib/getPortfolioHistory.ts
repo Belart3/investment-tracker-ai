@@ -9,7 +9,6 @@ export async function getPortfolioHistory(days = 30) {
             throw new Error('Failed to fetch portfolio history');
         }
         const balanceData = await res.json() as PortfolioHistoryPoint[];
-        console.log('balanceData', balanceData);
         return balanceData;
     } catch (error) {
         console.error('Error fetching portfolio history:', error);
