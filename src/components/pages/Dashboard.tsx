@@ -12,6 +12,8 @@ import { useAssetData } from "@/hooks/useAssetData";
 import { IoTriangleSharp } from 'react-icons/io5';
 import NumberFlow, { NumberFlowGroup } from '@number-flow/react'
 import { usePortfolioHistory, PortfolioHistoryPoint } from "@/hooks/usePortfolioHistory";
+import { formatMoney } from "@/lib/formatMoney";
+import { SUPPORTED_EXCHANGES } from "@/lib/supportedExchanges";
 
 type user = {
     name?: string;
@@ -35,8 +37,9 @@ export default function Home({ user }: Props) {
     const deletedAddedAssets = addedAssets.filter(asset => asset.status === 'deleted');
     const totalAddedAssetsValue = liveAddedAssets.reduce((acc, asset) => acc + (asset.purchasePrice * asset.quantity), 0);
     const exchangeAssets = balance?.asset || [];
-    const totalExchangeAssetsValue = exchangeAssets.reduce((acc, asset) => acc + parseFloat(asset.usdValue || '0'), 0);
-    const totalAssetsValue = totalAddedAssetsValue + totalExchangeAssetsValue;
+    const totalEquity = balance?.totalEquity ? parseFloat(balance.totalEquity) : 0;
+    const exchangeName = SUPPORTED_EXCHANGES.find((exchange) => exchange.id === balance?.exchange)?.name ?? 'Exchange';
+    const totalAssetsValue = totalAddedAssetsValue + totalEquity;
     const balExists = balance && Object.keys(balance).length > 0 && exchangeAssets.length > 0;
     const labels = balExists ? exchangeAssets.map((item: WalletAsset) => item.coin) : [];
     const labelValue: string[] = balExists ? exchangeAssets.map((item: typeof exchangeAssets[number]) => item.usdValue) : [];
@@ -85,10 +88,10 @@ export default function Home({ user }: Props) {
                             <div className="flex flex-col items-start justify-start">
                                 <h3 className="text-[var(--text-secondary)] text-[12px] leading-[25px] font-semibold tracking-[-0.005em]">Net Worth</h3>
                                 {
-                                    !walletLoading ? 
+                                    !walletLoading && !manualAssetsLoading ? 
                                     <NumberFlow 
                                         format={{ style: 'currency', currency: 'USD', trailingZeroDisplay: 'stripIfInteger' }} 
-                                        value={totalExchangeAssetsValue} 
+                                        value={totalAssetsValue} 
                                         className="text-[44px]/[48px] font-semibold font-mono tabular-nums text-[var(--text-primary)] tracking-[-0.005em]" 
                                     />
                                     : <Skeleton variant="text" width={100} />
@@ -155,24 +158,25 @@ export default function Home({ user }: Props) {
                             </div>
                         </div>
                         <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-3">
-                            {
-                                [1,2,3,4].map((item) => (
-                                    <div className="flex flex-col items-start justify-start rounded-[10px] bg-transparent py-3 px-4 border border-[#F0EBE3]">
-                                        <p className="text-[var(--text-secondary)] text-[12px] leading-[25px] font-semibold tracking-[-0.005em]">
-                                            Crypto Assets
-                                        </p>
-                                        {
-                                            totalAssetsValue !== undefined ?
-                                            <NumberFlow 
-                                                className={`text-[16px] font-semibold font-mono tabular-nums text-[var(--text-primary)] tracking-[-0.005em]`} 
-                                                value={totalAssetsValue}
-                                                format={{ style: 'currency', currency: 'USD', trailingZeroDisplay: 'stripIfInteger' }}  
-                                            />
-                                            : <Skeleton variant="text" width={150} height={20} />
-                                        }
-                                    </div>
-                                ))
-                            }
+                            <div className="flex flex-col items-start justify-start rounded-[10px] bg-transparent py-3 px-4 border border-[#F0EBE3]">
+                                <p className="text-[var(--text-secondary)] text-[12px] leading-[25px] font-normal tracking-[-0.005em]">
+                                    Crypto Assets
+                                </p>
+                                {
+                                    !walletLoading && !manualAssetsLoading ?
+                                    <NumberFlow 
+                                        className={`text-[16px] font-semibold font-mono tabular-nums text-[var(--text-primary)] tracking-[-0.005em]`} 
+                                        value={totalAssetsValue}
+                                        format={{ style: 'currency', currency: 'USD', trailingZeroDisplay: 'stripIfInteger' }}  
+                                    />
+                                    : <Skeleton variant="text" width={150} height={20} />
+                                }
+                                {!walletLoading && !manualAssetsLoading && (
+                                    <p className="text-[var(--text-secondary)] text-[12px] leading-[25px] font-normal tracking-[-0.005em]">
+                                        Manual {formatMoney(totalAddedAssetsValue)} · {balance?.connected ? `${exchangeName} ${formatMoney(totalEquity)}` : `${exchangeName} not connected`}
+                                    </p>
+                                )}
+                            </div>
                         </div>
                         <div className="h-[250px] w-full mt-15">
                             {

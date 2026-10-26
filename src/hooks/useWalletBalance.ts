@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { getWalletBalance } from "@/lib/getWalletBalance";
+import type { ExchangeId } from "@/lib/supportedExchanges";
 
 export type WalletAsset = {
     coin: string;
@@ -11,8 +12,11 @@ export type WalletAsset = {
 export type WalletBalance = {
     accountType?: string;
     balance?: string;
+    totalEquity?: string;
     totalAssets?: number | string;
     asset?: WalletAsset[];
+    connected?: boolean;
+    exchange?: ExchangeId;
 };
 
 export function useWalletBalance() {

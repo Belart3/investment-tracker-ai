@@ -1,6 +1,9 @@
+import mongoose from "mongoose";
 import { getCredentials } from "@/lib/exchanges/credentials";
 import { getWalletBalance } from "@/lib/exchanges/bybit/walletBalance";
+import { fetchAssetLivePrice, type AssetLivePrice } from "@/lib/fetchAssetLivePrice";
 import { connectDB } from "@/lib/mongodb";
+import Asset from "@/models/Asset";
 import PortfolioSnapshot from "@/models/PortfolioSnapshot";
 
 function startOfTodayUTC() {
@@ -16,6 +19,28 @@ function getNumericValue(value: unknown) {
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
+// Today's value of the user's manually added coins (live ones only), at today's prices
+async function getManualAssetsValue(userId: string) {
+  const assets = await Asset.find({
+    userId: new mongoose.Types.ObjectId(userId),
+    status: "live",
+  })
+    .select("symbol quantity")
+    .lean<{ symbol: string; quantity: number }[]>();
+
+  if (assets.length === 0) return 0;
+
+  // One price request for all coins; the same coin bought twice is only asked for once
+  const symbols = [...new Set(assets.map((asset) => asset.symbol.toUpperCase()))];
+  const prices = (await fetchAssetLivePrice(symbols)) as AssetLivePrice[];
+  const priceBySymbol = new Map(prices.map((p) => [p.symbol, p.price]));
+
+  return assets.reduce(
+    (total, asset) => total + asset.quantity * (priceBySymbol.get(asset.symbol.toUpperCase()) ?? 0),
+    0
+  );
+}
+
 export async function savePortfolioSnapshot(userId: string) {
   await connectDB();
 
@@ -23,9 +48,10 @@ export async function savePortfolioSnapshot(userId: string) {
   const credentials = await getCredentials(userId, "bybit");
   const balance = credentials ? await getWalletBalance(credentials) : null;
 
-  const totalValue = getNumericValue(
-    balance?.totalEquity ?? balance?.balance
-  );
+  const exchangeValue = getNumericValue(balance?.totalEquity ?? balance?.balance);
+  const manualValue = await getManualAssetsValue(userId);
+  const totalValue = exchangeValue + manualValue;
+
   const walletBalance = getNumericValue(balance?.balance);
   const coin = "TOTAL";
   const date = startOfTodayUTC();
@@ -36,6 +62,8 @@ export async function savePortfolioSnapshot(userId: string) {
       userId,
       date,
       totalValue,
+      exchangeValue,
+      manualValue,
       accountType: balance?.accountType,
       assets: [{ coin, usdValue: totalValue, walletBalance }],
     },

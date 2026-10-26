@@ -1,18 +1,12 @@
-import { useState } from 'react'
 import { Line } from "react-chartjs-2";
-import { usePortfolioHistory, PortfolioHistoryPoint } from '@/hooks/usePortfolioHistory';
 
 type Props = {
-    historyDates?: string[];
-    historyValues?: number[];
+    historyDates: string[];
+    historyValues: number[];
     timeRange: number;
 }
 
-const AssetLineChart = (props: Props) => {
-    const { data: portfolioHistory, loading: portfolioHistoryLoading } = usePortfolioHistory(props.timeRange);
-    const historyDates = portfolioHistory.map((point: PortfolioHistoryPoint) => point.date);
-    const historyValues = portfolioHistory.map((point: PortfolioHistoryPoint) => point.value);
-
+const AssetLineChart = ({historyDates, historyValues}: Props) => {
 
     return (
         <>
@@ -21,7 +15,7 @@ const AssetLineChart = (props: Props) => {
                     labels: historyDates,
                     datasets: [
                         {
-                            data: historyValues.map((value: number) => Number(value.toFixed(2))),
+                            data: (historyValues).map((value: number) => Number(value.toFixed(2))),
                             fill: true,
                             backgroundColor: (context) => {
                                 const { ctx, chartArea } = context.chart;

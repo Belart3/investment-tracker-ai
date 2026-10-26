@@ -13,11 +13,11 @@ export async function GET() {
 
         // Not connected yet: an empty wallet, not an error
         if (!credentials) {
-            return NextResponse.json({ connected: false, asset: [], balance: '0', totalEquity: '0', accountType: null });
+            return NextResponse.json({ exchange: 'bybit', connected: false, asset: [], balance: '0', totalEquity: '0', accountType: null });
         }
 
         const balanceData = await getWalletBalance(credentials);
-        return NextResponse.json({ connected: true, ...balanceData });
+        return NextResponse.json({ exchange: 'bybit', connected: true, ...balanceData });
     } catch (error) {
         console.error('Failed to fetch Bybit balance:', error instanceof Error ? error.message : 'unknown error');
         return NextResponse.json(
