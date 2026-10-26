@@ -1,27 +1,17 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
-import { verifyToken } from "@/lib/jwt";
+import { requireUser } from "@/lib/requireUser";
 import { connectDB } from "@/lib/mongodb";
 import Asset from "@/models/Asset";
 import mongoose from "mongoose";
 
 export async function GET() {
-    const token = (await cookies()).get("token")?.value;
-
-    if (!token) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    const decoded = verifyToken(token);
-
-    if (!decoded) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    const auth = await requireUser();
+    if (!auth.ok) return auth.response;
 
     try {
         await connectDB();
         const assets = await Asset.find({
-            userId: new mongoose.Types.ObjectId(decoded.userId),
+            userId: new mongoose.Types.ObjectId(auth.userId),
         })
             .sort({ createdAt: -1 })
             .lean();
