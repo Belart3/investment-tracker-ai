@@ -15,7 +15,11 @@ type Errors = {
 };
 
 
-export default function SigninForm() {
+type Props = {
+    next: string; // where to go after signing in, already checked by the sign-in page
+};
+
+export default function SigninForm({ next }: Props) {
     const [state, action, pending] = useActionState(signin, { errors: {}, message: undefined, error: undefined, userId: undefined })
     const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
@@ -32,9 +36,9 @@ export default function SigninForm() {
 
         // Handle success and redirect
         if (state.message && state.userId) {
-            setTimeout(() => router.push('/'), 1500);
+            setTimeout(() => router.push(next), 1500);
         }
-    }, [state, router]);
+    }, [state, router, next]);
 
     return (
         <form action={action} className='flex flex-col space-y-4'>

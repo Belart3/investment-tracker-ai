@@ -1,9 +1,20 @@
 import React from 'react'
 import SigninForm  from '@/components/ui/SigninForm'
 
-type Props = {}
+type Props = {
+    searchParams: Promise<{ next?: string | string[] }>
+}
 
-const page = (props: Props) => {
+const page = async ({ searchParams }: Props) => {
+    const { next } = await searchParams
+
+    // Only follow paths inside this app ("/onboarding"), never another site
+    // ("https://evil.com", "//evil.com", "/\evil.com")
+    const safeNext =
+        typeof next === 'string' && next.startsWith('/') && !next.startsWith('//') && !next.startsWith('/\\')
+            ? next
+            : '/'
+
     return (
         <div className='h-screen w-full flex flex-col items-center justify-center bg-(--bg-canvas) p-6'>
             <div className="px-6 py-8 bg-(--bg-surface) rounded-[14px] min-w-[300px] max-w-[400px] w-full flex flex-col shadow-(--shadow-card-lg)">
@@ -15,7 +26,7 @@ const page = (props: Props) => {
                         Sign in to access your portfolio and debts.
                     </p>
                 </div>
-                <SigninForm />
+                <SigninForm next={safeNext} />
                 <p className="text-[14px]/[21px] tracking-[-0.56px] text-(--text-secondary) text-center font-medium mt-4">
                     Don't have an account? <a href="/signup" className="text-(--brand) hover:underline font-semibold">Sign up</a>
                 </p>

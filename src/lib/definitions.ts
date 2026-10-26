@@ -1,4 +1,11 @@
 import * as z from 'zod'
+import { CURRENCIES, type CurrencyCode } from './currencies'
+import { SUPPORTED_EXCHANGES, type ExchangeId } from './supportedExchanges'
+
+const CURRENCY_CODES = CURRENCIES.map((currency) => currency.code) as [CurrencyCode, ...CurrencyCode[]]
+const CONNECTABLE_EXCHANGES = SUPPORTED_EXCHANGES
+    .filter((exchange) => exchange.available)
+    .map((exchange) => exchange.id) as [ExchangeId, ...ExchangeId[]]
 
 export const SignupFormSchema = z.object({
     name: z
@@ -40,6 +47,20 @@ export const DebtFormSchema = z.object({
     amount: z.number({ message: 'Amount must be a number.' })
 })
 
+export const OnboardingFormSchema = z.object({
+    displayCurrency: z.enum(CURRENCY_CODES, { error: 'Pick a currency from the list.' }),
+    debtCurrency: z.enum(CURRENCY_CODES, { error: 'Pick a currency from the list.' }),
+    exchange: z.enum(CONNECTABLE_EXCHANGES, { error: 'This exchange can’t be connected yet.' }),
+    apiKey: z.string({ error: 'Paste your API key.' })
+    .trim()
+    .min(1, { error: 'Paste your API key.' })
+    .max(200, { error: 'That doesn’t look like an API key.' }),
+    apiSecret: z.string({ error: 'Paste your API secret.' })
+    .trim()
+    .min(1, { error: 'Paste your API secret.' })
+    .max(200, { error: 'That doesn’t look like an API secret.' }),
+})
+
 export type FormState = {
     errors?: {
         name?: string[];
@@ -48,6 +69,11 @@ export type FormState = {
         general?: string[];
         item?: string[];
         amount?: string[];
+        displayCurrency?: string[];
+        debtCurrency?: string[];
+        exchange?: string[];
+        apiKey?: string[];
+        apiSecret?: string[];
     };
     error?: string;
     message?: string;
