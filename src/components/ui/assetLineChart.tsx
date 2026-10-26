@@ -9,8 +9,7 @@ type Props = {
 }
 
 const AssetLineChart = (props: Props) => {
-    const [days, setDays] = useState(props.timeRange);
-    const { data: portfolioHistory, loading: portfolioHistoryLoading } = usePortfolioHistory(days);
+    const { data: portfolioHistory, loading: portfolioHistoryLoading } = usePortfolioHistory(props.timeRange);
     const historyDates = portfolioHistory.map((point: PortfolioHistoryPoint) => point.date);
     const historyValues = portfolioHistory.map((point: PortfolioHistoryPoint) => point.value);
 
