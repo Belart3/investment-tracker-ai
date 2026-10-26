@@ -1,4 +1,5 @@
-import { unifiedWalletBalance } from "@/app/utils/bybit/unifiedWalletBalance";
+import { getCredentials } from "@/lib/exchanges/credentials";
+import { getWalletBalance } from "@/lib/exchanges/bybit/walletBalance";
 import { connectDB } from "@/lib/mongodb";
 import PortfolioSnapshot from "@/models/PortfolioSnapshot";
 
@@ -18,12 +19,15 @@ function getNumericValue(value: unknown) {
 export async function savePortfolioSnapshot(userId: string) {
   await connectDB();
 
-  const balance = await unifiedWalletBalance();
+  // This user's own Bybit wallet; no key saved = nothing on an exchange (0)
+  const credentials = await getCredentials(userId, "bybit");
+  const balance = credentials ? await getWalletBalance(credentials) : null;
+
   const totalValue = getNumericValue(
     balance?.totalEquity ?? balance?.balance
   );
   const walletBalance = getNumericValue(balance?.balance);
-  const coin = typeof balance?.asset === "string" ? balance.asset : "TOTAL";
+  const coin = "TOTAL";
   const date = startOfTodayUTC();
 
   return PortfolioSnapshot.findOneAndUpdate(

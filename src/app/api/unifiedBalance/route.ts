@@ -1,14 +1,25 @@
-import { unifiedWalletBalance } from "@/app/utils/bybit/unifiedWalletBalance";
 import { NextResponse } from "next/server";
+import { requireUser } from "@/lib/requireUser";
+import { getCredentials } from "@/lib/exchanges/credentials";
+import { getWalletBalance } from "@/lib/exchanges/bybit/walletBalance";
 
 export async function GET() {
+    const auth = await requireUser();
+    if (!auth.ok) return auth.response;
+
     try {
-        const balanceData = await unifiedWalletBalance();
-        if (!balanceData || Object.keys(balanceData).length === 0) {
-            return NextResponse.json({ error: 'No balance data found' }, { status: 404 });
+        // The logged-in user's own Bybit key
+        const credentials = await getCredentials(auth.userId, 'bybit');
+
+        // Not connected yet: an empty wallet, not an error
+        if (!credentials) {
+            return NextResponse.json({ connected: false, asset: [], balance: '0', totalEquity: '0', accountType: null });
         }
-        return NextResponse.json(balanceData) 
-    } catch (error: any) {
+
+        const balanceData = await getWalletBalance(credentials);
+        return NextResponse.json({ connected: true, ...balanceData });
+    } catch (error) {
+        console.error('Failed to fetch Bybit balance:', error instanceof Error ? error.message : 'unknown error');
         return NextResponse.json(
             { error: "Failed to fetch Bybit balance data" },
             { status: 500 }
