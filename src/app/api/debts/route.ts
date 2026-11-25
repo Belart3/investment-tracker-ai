@@ -1,29 +1,16 @@
-"use server"
-import { cookies } from "next/headers";
-import { verifyToken } from "@/lib/jwt";
+import { requireUser } from "@/lib/requireUser";
 import { connectDB } from "@/lib/mongodb";
 import Debts from "@/models/Debts";
 import mongoose from "mongoose";
 
-// Helper: Get userId from cookie token
-async function getUserIdFromCookies() {
-    const token = (await cookies()).get('token')?.value;
-    if (!token) return null;
-
-    const decoded = verifyToken(token);
-    return decoded?.userId || null;
-}
-
 // GET debts for current user
 export async function GET() {
-    try {
-        const userId = await getUserIdFromCookies();
-        if (!userId) {
-            return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
-        }
+    const auth = await requireUser();
+    if (!auth.ok) return auth.response;
 
+    try {
         await connectDB();
-        const debts = await Debts.find({ userId: new mongoose.Types.ObjectId(userId) }).sort({ createdAt: -1 });
+        const debts = await Debts.find({ userId: new mongoose.Types.ObjectId(auth.userId) }).sort({ createdAt: -1 });
         return new Response(JSON.stringify(debts), { status: 200 });
     } catch (error: any) {
         console.error('Failed to fetch debts:', error);
@@ -33,17 +20,15 @@ export async function GET() {
 
 // POST a new debt
 export async function POST(req: Request) {
-    try {
-        const userId = await getUserIdFromCookies();
-        if (!userId) {
-            return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
-        }
+    const auth = await requireUser();
+    if (!auth.ok) return auth.response;
 
+    try {
         const { name, item, amount } = await req.json();
         await connectDB();
 
         const newDebt = new Debts({
-            userId: new mongoose.Types.ObjectId(userId),
+            userId: new mongoose.Types.ObjectId(auth.userId),
             name,
             item,
             amount

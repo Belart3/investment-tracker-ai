@@ -1,15 +1,13 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
-import { getUserId } from "@/lib/getUserId";
+import { requireUser } from "@/lib/requireUser";
 import PortfolioSnapshot from "@/models/PortfolioSnapshot";
 import { savePortfolioSnapshot } from "@/lib/savePortfolioSnapshot";
 
 export async function POST() {
-    const userId = await getUserId();
-
-    if (typeof userId !== "string") {
-        return userId;
-    }
+    const auth = await requireUser();
+    if (!auth.ok) return auth.response;
+    const { userId } = auth;
 
     try {
         const snapshot = await savePortfolioSnapshot(userId);
@@ -25,11 +23,9 @@ export async function POST() {
 }
 
 export async function GET(request: Request) {
-    const userId = await getUserId();
-
-    if (typeof userId !== "string") {
-        return userId;
-    }
+    const auth = await requireUser();
+    if (!auth.ok) return auth.response;
+    const { userId } = auth;
 
     const { searchParams } = new URL(request.url);
     const requestedDays = Number(searchParams.get("days") ?? 30);

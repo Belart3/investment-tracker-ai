@@ -1,16 +1,23 @@
-import { fetchExchangeRecords } from "@/app/utils/bybit/exchangeHistory";
 import { NextResponse } from "next/server";
+import { requireUser } from "@/lib/requireUser";
+import { getCredentials } from "@/lib/exchanges/credentials";
+import { getConversionHistory } from "@/lib/exchanges/bybit/conversionHistory";
 
 export async function GET () {
+    const auth = await requireUser();
+    if (!auth.ok) return auth.response;
+
     try {
-        const exchangeHistory = await fetchExchangeRecords();
-        if(!exchangeHistory) {
-            return NextResponse.json({ error: 'No exchange history found' }, { status: 404 });
+        // The logged-in user's own Bybit key; not connected = no conversions
+        const credentials = await getCredentials(auth.userId, 'bybit');
+        if (!credentials) {
+            return NextResponse.json([]);
         }
-        const data = JSON.parse(JSON.stringify(exchangeHistory));
-        return NextResponse.json(data)
-    } catch (error: any) {
-        console.error('Trade History Data fetch failed:', error);
+
+        const history = await getConversionHistory(credentials);
+        return NextResponse.json(history);
+    } catch (error) {
+        console.error('Conversion history fetch failed:', error instanceof Error ? error.message : 'unknown error');
         return NextResponse.json({ error: 'Failed to fetch exchange history data' }, { status: 500 });
     }
-} 
+}

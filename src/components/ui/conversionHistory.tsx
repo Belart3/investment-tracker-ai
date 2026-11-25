@@ -39,7 +39,7 @@ const ConversionHistory = (props: Props) => {
     const [filterByTransaction, setFilterByTransaction] = useState('');
     const [slice, setSlice] = useState(10);
     return (
-        <div className="flex flex-col justify-start space-y-2 order-4 bg-[var(--bg-surface)] border border-[var(--border-subtle)] shadow-[0_1px_2px_rgba(28,25,23,0.04)] rounded-[8px] mb-10 lg:mb-20">
+        <div className="flex flex-col justify-start space-y-2 bg-[var(--bg-surface)] border border-[var(--border-subtle)] shadow-[0_1px_2px_rgba(28,25,23,0.04)] rounded-[8px] mb-10 lg:mb-20">
             {
                 props.loading ? (
                     <div className="p-5 w-full flex items-center justify-center h-[200px]">

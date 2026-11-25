@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server';
+import { requireUser } from '@/lib/requireUser';
 
 export async function GET() {
+    const auth = await requireUser();
+    if (!auth.ok) return auth.response;
+
     try {
         const res = await fetch(
         'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',

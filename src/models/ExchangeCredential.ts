@@ -1,10 +1,12 @@
 import mongoose, { Schema, Document, models } from "mongoose";
+import { SUPPORTED_EXCHANGES, type ExchangeId } from "@/lib/supportedExchanges";
 
 export interface IExchangeCredential extends Document {
     userId: mongoose.Types.ObjectId;
-    exchange: string;
-    apiKey: string;
+    exchange: ExchangeId;
+    apiKey: string;     
     apiSecret: string;
+    expiresAt: Date | null;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -18,7 +20,7 @@ const ExchangeCredentialSchema = new Schema<IExchangeCredential>({
     exchange: {
         type: String,
         required: true,
-        enum: ['binance', 'coinbase', 'bybit', 'bitfinex'], 
+        enum: SUPPORTED_EXCHANGES.map((exchange) => exchange.id),
     },
     apiKey: {
         type: String,
@@ -28,9 +30,15 @@ const ExchangeCredentialSchema = new Schema<IExchangeCredential>({
         type: String,
         required: true,
     },
+    expiresAt: {
+        type: Date,
+        default: null,
+    },
 }, {
     timestamps: true,
 })
+
+ExchangeCredentialSchema.index({ userId: 1, exchange: 1 }, { unique: true });
 
 const ExchangeCredential = models.ExchangeCredential || mongoose.model<IExchangeCredential>('ExchangeCredential', ExchangeCredentialSchema);
 

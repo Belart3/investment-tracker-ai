@@ -4,5 +4,6 @@ export async function getWalletBalance(){
         throw new Error('Failed to fetch wallet balance');
     }
     const balanceData = await res.json();
+    console.log('balanceData', balanceData);
     return balanceData;
 }

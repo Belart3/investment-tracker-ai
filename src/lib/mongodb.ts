@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
 
-const MONGODB_URI = process.env.MONGODB_URI ?? process.env.DATABASE_URL;
+const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) {
-    throw new Error('Please define the DATABASE_URL environment variable inside .env.local');
+    throw new Error('Please define the MONGODB_URI environment variable inside .env.local');
 }
 
 let isConnected = false;
@@ -15,9 +15,10 @@ export async function connectDB() {
     }
 
     try {
-        const db = await mongoose.connect(MONGODB_URI as string);
+        const db = await mongoose.connect(MONGODB_URI as string, {
+            dbName: process.env.MONGODB_DB_NAME ?? 'InvestmentTracker',
+        });
         isConnected = db.connections[0].readyState === 1;
-        console.log('MongoDB connected');
     } catch (error) {
         console.error('MongoDB connection error:', error);
         throw error;

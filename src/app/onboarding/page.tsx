@@ -1,14 +1,19 @@
-import React from 'react'
-import OnboardingForm from '@/components/ui/OnboardingForm';
+import { Suspense } from 'react'
+import { redirect } from 'next/navigation'
+import { getCurrentUser } from '@/lib/auth'
+import OnboardingFlow from '@/components/ui/onboarding/OnboardingFlow'
 
-type Props = {}
+export default async function OnboardingPage() {
+    // Logged-out visitors go to sign in before seeing any of the form
+    const user = await getCurrentUser()
+    if (!user) {
+        redirect('/signin?next=/onboarding')
+    }
 
-const page = (props: Props) => {
+    // The flow reads ?step from the URL, so (like the header) it sits inside <Suspense>
     return (
-        <div className='h-screen w-full flex flex-col items-center justify-center gap-2'>
-            <OnboardingForm />
-        </div>
+        <Suspense>
+            <OnboardingFlow />
+        </Suspense>
     )
 }
-
-export default page

@@ -1,82 +1,107 @@
-import React from 'react'
 import { Line } from "react-chartjs-2";
-import { Skeleton } from '@mui/material';
 
 type Props = {
-    label: string[];
-    labelValue: (string | number)[];
-    loading?: boolean;
+    historyDates: string[];
+    historyValues: number[];
+    timeRange: number;
 }
 
-const AssetLineChart = (props: Props) => {
+const AssetLineChart = ({historyDates, historyValues}: Props) => {
+
     return (
-        <div className="bg-[var(--bg-surface)] rounded-[8px] flex flex-col justify-start border border-[var(--border-subtle)] shadow-[0_1px_2px_rgba(28,25,23,0.04)] space-y-2 order-3 px-4 py-4 xl:p-5 ">
-            <h3 className="text-[var(--text-primary)] text-[17px] leading-[25px] font-semibold tracking-[-0.005em]">Net Worth</h3>
-            <div className="h-[350px] w-full px-4">
-                {
-                    !props.loading && props.label.length > 0 && props.labelValue.length > 0 ?
-                    <Line
-                        data={{
-                            labels: props.label,
-                            datasets: [
-                                {
-                                    label: '',
-                                    data: props.labelValue,
-                                    fill: true,
-                                    backgroundColor: (context) => {
-                                        const { ctx, chartArea } = context.chart;
-                                        if (!chartArea) return ; 
-                                        const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
-                                        gradient.addColorStop(0, '#374b7890');
-                                        gradient.addColorStop(1, '#2c3e6305');
-                                        return gradient;
-                                    },
-                                    borderColor: "#2c3e63",
-                                    borderWidth: 2,
-                                    tension: 0.4,
-                                    pointRadius: 2,
-                                    pointHoverRadius: 5,
-                                },
-                            ],
-                        }}
-                        options={{
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            interaction: {
-                                mode: 'index',       
-                                intersect: false,   
-                                axis: 'x'            
+        <>
+            <Line
+                data={{
+                    labels: historyDates,
+                    datasets: [
+                        {
+                            data: (historyValues).map((value: number) => Number(value.toFixed(2))),
+                            fill: true,
+                            backgroundColor: (context) => {
+                                const { ctx, chartArea } = context.chart;
+                                if (!chartArea) return; 
+                                const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+                                gradient.addColorStop(0, '#374b7890');
+                                gradient.addColorStop(1, '#2c3e6305');
+                                return gradient;
                             },
-                            plugins: {
-                            legend: {
+                            borderColor: "#2c3e63",
+                            borderWidth: 2,
+                            tension: 0,
+                            pointRadius: 0,
+                            pointHoverRadius: 0,
+                        },
+                    ],
+                }}
+                options={{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',       
+                        intersect: false,   
+                        axis: 'x'            
+                    },
+                    plugins: {
+                        legend: {
+                            display: false,
+                        },
+                    },
+                    scales: {
+                        x: {
+                            display: true,
+                            grid: {
                                 display: false,
                             },
+                            border: {
+                                display: false 
                             },
-                            scales: {
-                            x: {
-                                grid: {
+                            ticks: {
+                                display: true,
+                                maxTicksLimit: 7,
+                                maxRotation: 0,
+                                minRotation: 0,
+                                color: '#6B635A',
+                                font: {
+                                    size: 12,
+                                    family: 'monospace',
+                                    weight: 'bold',
+                                },
+                                callback: function(val, index) {
+                                    const rawDateStr = this.getLabelForValue(Number(val)); 
+                                    const date = new Date(rawDateStr);
+                                    if (isNaN(date.getTime())) return rawDateStr;
+                                    return date.toLocaleDateString('en-US', { 
+                                        month: 'short', 
+                                        day: 'numeric' 
+                                    });
+                                }
+                            },
+                        },
+                        y: {
+                            type: 'linear', 
+                            display: true, 
+                            border: {
+                                display: false 
+                            },
+                            grid: {
+                                display: true,
+                                color: 'rgba(231, 225, 215, 0.6)', 
+                            },
+                            ticks: {
                                 display: false,
+                                maxTicksLimit: 6 ,
+                                color: '#6B635A',
+                                font: {
+                                    size: 12,
+                                    family: 'monospace',
+                                    weight: 'bold'
                                 },
                             },
-                            y: {
-                                type: 'linear',
-                                grid: {
-                                    display: false,
-                                },
-                                ticks: {
-                                color: '#6F675D',
-                                },
-                            },
-                            },        
-                        }}
-                    /> :
-                    <div className='h-full w-full flex items-center justify-center p-2'>
-                        <Skeleton variant="rectangular" width={'100%'} height={'100%'} sx={{bgcolor: '#374151'}} />
-                    </div>    
-                }
-                
-            </div>
-        </div>
+                        },
+                    },        
+                }}
+            />   
+        </>
     )
 }
 

@@ -14,7 +14,6 @@ const PortfolioOverview = (props: Props) => {
         <div className="bg-[var(--bg-surface)] overflow-scroll xl:overflow-hidden rounded-[8px] flex flex-col justify-center border border-[var(--border-subtle)] shadow-[0_1px_2px_rgba(28,25,23,0.04)] w-full">
             <div className="flex items-center justify-between px-4 py-4 xl:p-5">
                 <h3 className="text-[var(--text-primary)] text-[17px] leading-[25px] font-semibold tracking-[-0.005em]">Portfolio Overview</h3>
-                {/* <TimeFilter /> */}
             </div>
             {
                 props.balanceValue ? (
@@ -49,18 +48,6 @@ const PortfolioOverview = (props: Props) => {
                         }
                         </p>
                     </div>
-                    {/* <div className="flex flex-col gap-2">
-                        <h4 className="text-[12px]/[18px] text-[#D1D5DB]">
-                        {
-                            balanceValue.totalAssets 
-                        }
-                        </h4>
-                        <p className="text-[27px]/[27px] tracking-[-1.62px] text-white font-semibold">
-                        {
-                            balanceValue.totalAssets
-                        }
-                        </p>
-                    </div> */}
                 </div>
                 ) :   
                 <div className='flex px-2 py-4 xl:p-5 justify-between gap-5 border-t border-[#374151] max-w-full'>

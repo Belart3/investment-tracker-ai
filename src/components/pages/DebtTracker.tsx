@@ -31,9 +31,8 @@ import { ChevronRight, MoreHorizontal, PencilIcon } from 'lucide-react'
 
 interface DebtTrackerProps {
     user?: { 
-    name?: string ,
-        email?: string,
-        userId: string
+        name?: string,
+        email?: string
     } | null;
 
     debts?: {

@@ -27,12 +27,11 @@ type Props = {
 
 const AssetBarChart = (props: Props) => {
     return (
-        <div className="bg-[var(--bg-surface)] rounded-[8px] flex flex-col justify-start border border-[var(--border-subtle)] shadow-[0_1px_2px_rgba(28,25,23,0.04)] space-y-2 order-4 w-full">
+        <div className="bg-[var(--bg-surface)] rounded-[8px] flex flex-col justify-start border border-[var(--border-subtle)] shadow-[0_1px_2px_rgba(28,25,23,0.04)] space-y-2 w-full">
             <div className="px-4 py-4 xl:p-5 border-b border-[var(--border-subtle)] flex items-center justify-between">
                 <h3 className="text-[var(--text-primary)] text-[17px] leading-[25px] font-semibold tracking-[-0.005em]">Individual Asset Value ($)</h3>
-                {/* <TimeFilter/> */}
             </div>
-            <div className="h-[300px] w-full px-4">
+            <div className="w-full px-4">
                 {
                     props.labels && props.labelValue && props.labels.length > 0 && props.labelValue.length > 0 ? (
                         <Bar 
@@ -75,6 +74,7 @@ const AssetBarChart = (props: Props) => {
                                 type: 'logarithmic',
                                 grid: {
                                     color: '#E8E3DB',
+                                    display: false,
                                 },
                                 ticks: {
                                     color: '#6F675D',
